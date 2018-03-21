@@ -34,6 +34,4 @@ MainPars::MainPars(int ar, char **av)
 	std::string ext = libname.substr(size);
 	if (ext != ".so")
 		throw Error ("Wrong extension of library");
-
-
 }

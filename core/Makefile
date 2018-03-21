@@ -1,3 +1,10 @@
+##
+## EPITECH PROJECT, 2018
+## Makefile
+## File description:
+## Makefile
+##
+
 NAME	= program
 
 CC	= g++
