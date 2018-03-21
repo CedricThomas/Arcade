@@ -6,7 +6,7 @@
 ##
 
 
-NAME = libarcade_ncurse.so
+NAME = libarcade_ncurses.so
 
 SRC = entry.cpp
 
