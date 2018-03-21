@@ -2,13 +2,13 @@
 ** EPITECH PROJECT, 2018
 ** arcade
 ** File description:
-** MainPars
+** MainParse
 */
 
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include "MainPars.hpp"
+#include "MainParse.hpp"
 #include "Error.hpp"
 
 /**
@@ -18,7 +18,7 @@
 * @param av content of arg given in main
 */
 
-MainPars::MainPars(int ar, char **av)
+Arcade::MainParse::MainParse(int ar, char **av)
 {
 	if (ar != 2) {
 		std::cout << "Print Usage" << std::endl;

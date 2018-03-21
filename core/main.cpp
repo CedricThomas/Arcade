@@ -7,15 +7,14 @@
 
 #include <exception>
 #include <iostream>
-#include "MainPars.hpp"
+#include "MainParse.hpp"
 
 int main(int argc, char **argv)
 {
 	try {
-		MainPars(argc, argv);
-
+		Arcade::MainParse(argc, argv);
 	}
-	catch (const std::exception &e) {
+	catch (const std::exception &e) { // TODO create Parse exception
 		std::cerr << "ERROR: " << e.what() << std::endl;
 		return 84;
 	}

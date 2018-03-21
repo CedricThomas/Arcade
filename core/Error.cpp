@@ -12,15 +12,16 @@
  * @param message to print
  */
 
-Error::Error(std::string const &message) noexcept : _message(message)
-{}
+Arcade::Error::Error(std::string const &message) noexcept : _message(message)
+{
+}
 
 /**
 * Function to return what in char*
 * @return message to print
 */
 
-const char *Error::what() const noexcept
+const char *Arcade::Error::what() const noexcept
 {
 	return _message.c_str();
 }

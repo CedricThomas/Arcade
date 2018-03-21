@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-NAME	= program
+NAME	= core
 
 CC	= g++
 
@@ -13,7 +13,7 @@ RM	= rm -f
 
 SRCS	= ./Core.cpp \
 	  ./Error.cpp \
-	  ./MainPars.cpp \
+	  ./MainParse.cpp \
 	  ./main.cpp 
 
 OBJS	= $(SRCS:.cpp=.o)
