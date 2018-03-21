@@ -5,7 +5,18 @@
 ** main.cpp
 */
 
-int main()
-{
+#include <exception>
+#include <iostream>
+#include "MainPars.hpp"
 
+int main(int argc, char **argv)
+{
+	try {
+		MainPars(argc, argv);
+
+	}
+	catch (const std::exception &e) {
+		std::cerr << "ERROR: " << e.what() << std::endl;
+		return 84;
+	}
 }
