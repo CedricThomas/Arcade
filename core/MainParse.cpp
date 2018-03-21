@@ -26,12 +26,10 @@ Arcade::MainParse::MainParse(int ar, char **av)
 	}
 	std::string libname(av[1]);
 	if (libname.empty())
-		throw Error ("There is no filename in argument");
+		throw ParseError ("There is no filename in argument");
 	std::ifstream libstream(libname);
 	if (!libstream)
-		throw Error ("No such File exist");
+		throw ParseError ("No such File exist");
 	size_t size = libname.find_last_of('.');
 	std::string ext = libname.substr(size);
-	if (ext != ".so")
-		throw Error ("Wrong extension of library");
 }
