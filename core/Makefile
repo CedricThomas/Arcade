@@ -12,7 +12,7 @@ CC	= g++
 RM	= rm -f
 
 SRCS	= ./Core.cpp \
-	  ./Error.cpp \
+	  ./ParseError.cpp \
 	  ./MainParse.cpp \
 	  ./main.cpp 
 

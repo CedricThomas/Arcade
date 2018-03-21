@@ -10,8 +10,8 @@ set(sources
 
         core/main.cpp
         core/DLLoader.hpp
-        core/Error.cpp
-        core/Error.hpp
+        core/ParseError.cpp
+        core/ParseError.hpp
         core/MainParse.cpp
         core/MainParse.hpp
         core/Core.cpp

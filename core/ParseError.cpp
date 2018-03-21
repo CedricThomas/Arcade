@@ -5,14 +5,14 @@
 ** Error
 */
 
-#include "Error.hpp"
+#include "ParseError.hpp"
 
 /**
  * Constructor for Error
  * @param message to print
  */
 
-Arcade::Error::Error(std::string const &message) noexcept : _message(message)
+Arcade::ParseError::ParseError(std::string const &message) noexcept : _message(message)
 {
 }
 
@@ -21,7 +21,7 @@ Arcade::Error::Error(std::string const &message) noexcept : _message(message)
 * @return message to print
 */
 
-const char *Arcade::Error::what() const noexcept
+const char *Arcade::ParseError::what() const noexcept
 {
 	return _message.c_str();
 }

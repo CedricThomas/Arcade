@@ -9,7 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include "MainParse.hpp"
-#include "Error.hpp"
+#include "ParseError.hpp"
 
 /**
 * Check for main Parsing : if exist, if good extesion (.so) or if enough arg

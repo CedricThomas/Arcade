@@ -13,10 +13,10 @@
 // TODO specify exceptions
 
 namespace Arcade {
-	class Error : public std::exception
+	class ParseError : public std::exception
 	{
 	public:
-		Error(std::string const &message = "Unknown") noexcept;
+		ParseError(std::string const &message = "Unknown") noexcept;
 		const char *what() const noexcept;
 
 	protected:
