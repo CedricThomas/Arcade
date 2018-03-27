@@ -6,7 +6,7 @@
 ##
 
 
-NAME = libarcade_game1.so
+NAME = lib_arcade_sdl2.so
 
 SRC = entry.cpp
 

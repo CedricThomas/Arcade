@@ -6,7 +6,7 @@
 ##
 
 
-NAME = libarcade_sfml.so
+NAME = lib_arcade_sfml.so
 
 SRC = entry.cpp
 

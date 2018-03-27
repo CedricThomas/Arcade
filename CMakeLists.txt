@@ -19,14 +19,14 @@ set(sources
 
         #games
 
-        games/game1/entry.cpp
-        games/game2/entry.cpp
+        games/pacman/entry.cpp
+        games/nibbler/entry.cpp
 
         #libs
 
         lib/nCurses/entry.cpp
         lib/SFML/entry.cpp
-        lib/SDL/entry.cpp
+        lib/SDL2/entry.cpp
 
         )
 

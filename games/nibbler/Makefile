@@ -6,7 +6,7 @@
 ##
 
 
-NAME = libarcade_sdl.so
+NAME = lib_arcade_nibbler.so
 
 SRC = entry.cpp
 

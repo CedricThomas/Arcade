@@ -15,21 +15,21 @@ CORE_FOLDER	=	core
 CORE_DEST_FOLDER =	$(shell pwd)
 
 
-NCURSES	=		libarcade_ncurses.so
+NCURSES	=		lib_arcade_ncurses.so
 
 NCURSES_FOLDER	=	lib/nCurses
 
 NCURSES_DEST_FOLDER =	lib
 
 
-SDL	=		libarcade_sdl.so
+SDL	=		lib_arcade_sdl2.so
 
-SDL_FOLDER	=	lib/SDL
+SDL_FOLDER	=	lib/SDL2
 
 SDL_DEST_FOLDER =	lib
 
 
-SFML	=		libarcade_sfml.so
+SFML	=		lib_arcade_sfml.so
 
 SFML_FOLDER	=	lib/SFML
 
@@ -37,16 +37,16 @@ SFML_DEST_FOLDER =	lib
 
 
 
-GAME1	=		libarcade_game1.so
+GAME1	=		lib_arcade_pacman.so
 
-GAME1_FOLDER	=	games/game1
+GAME1_FOLDER	=	games/pacman
 
 GAME1_DEST_FOLDER =	games
 
 
-GAME2	=		libarcade_game2.so
+GAME2	=		lib_arcade_nibbler.so
 
-GAME2_FOLDER	=	games/game2
+GAME2_FOLDER	=	games/nibbler
 
 GAME2_DEST_FOLDER =	games
 

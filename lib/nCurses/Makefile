@@ -6,7 +6,7 @@
 ##
 
 
-NAME = libarcade_ncurses.so
+NAME = lib_arcade_ncurses.so
 
 SRC = entry.cpp
 

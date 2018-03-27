@@ -6,7 +6,7 @@
 ##
 
 
-NAME = libarcade_game2.so
+NAME = lib_arcade_pacman.so
 
 SRC = entry.cpp
 
