@@ -8,11 +8,13 @@
 
 NAME = lib_arcade_sfml.so
 
-SRC = entry.cpp
+SRC = entryPoint.cpp \
+        SFML.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
 CXXFLAGS = -Wall -Wextra -fPIC
+CXXFLAGS += -I../../include/
 
 LDFLAGS	= -shared
 

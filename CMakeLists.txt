@@ -6,6 +6,17 @@ set(CMAKE_EXE_LINKER_FLAGS "-W -Wall -Wextra -g ")
 
 set(sources
 
+        #include
+
+        Color.hpp
+        entryPoint.cpp
+        IGameLib.hpp
+        IGraphicLib.hpp
+        Keys.hpp
+        PixelBox.hpp
+        TextBox.hpp
+        Vect.hpp
+
         #core
 
         core/main.cpp
@@ -26,6 +37,8 @@ set(sources
 
         lib/nCurses/entry.cpp
         lib/SFML/entry.cpp
+        lib/SFML/SFML.cpp
+        lib/SFML/SFML.hpp
         lib/SDL2/entry.cpp
 
         )
