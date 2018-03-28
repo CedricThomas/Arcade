@@ -6,16 +6,16 @@ set(CMAKE_EXE_LINKER_FLAGS "-W -Wall -Wextra -g ")
 
 set(sources
 
-        #include
+        #api
 
-        Color.hpp
-        entryPoint.cpp
-        IGameLib.hpp
-        IGraphicLib.hpp
-        Keys.hpp
-        PixelBox.hpp
-        TextBox.hpp
-        Vect.hpp
+        api/Color.hpp
+        api/entryPoint.cpp
+        api/IGameLib.hpp
+        api/IGraphicLib.hpp
+        api/Keys.hpp
+        api/PixelBox.hpp
+        api/TextBox.hpp
+        api/Vect.hpp
 
         #core
 
@@ -36,9 +36,8 @@ set(sources
         #libs
 
         lib/nCurses/entry.cpp
-        lib/SFML/entry.cpp
-        lib/SFML/SFML.cpp
-        lib/SFML/SFML.hpp
+        lib/lib_SFML/SFML.cpp
+        lib/lib_SFML/SFML.hpp
         lib/SDL2/entry.cpp
 
         )

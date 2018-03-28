@@ -7,7 +7,7 @@
 
 #include "SFML.hpp"
 
-/* "Arcade::SFML" : For example, use the class of your lib */
+/* "Arcade::lib_SFML" : For example, use the class of your lib */
 Arcade::SFML *ret = nullptr;
 
 __attribute__((constructor))

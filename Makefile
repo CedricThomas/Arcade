@@ -31,7 +31,7 @@ SDL_DEST_FOLDER =	lib
 
 SFML	=		lib_arcade_sfml.so
 
-SFML_FOLDER	=	lib/SFML
+SFML_FOLDER	=	lib/lib_SFML
 
 SFML_DEST_FOLDER =	lib
 

@@ -2,15 +2,13 @@
 ** EPITECH PROJECT, 2018
 ** cpp_arcade
 ** File description:
-** entryPoint.cpp
+** entry.cpp
 */
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "CannotResolve"
 #include <IGraphicLib.hpp>
 #include "SFML.hpp"
 
-/* "Arcade::SFML" : For example, use the class of your lib */
+/* "Arcade::lib_SFML" : For example, use the class of your lib */
 Arcade::SFML *ret = nullptr;
 
 __attribute__((constructor))
@@ -29,7 +27,5 @@ void out()
 
 extern "C" Arcade::IGraphicLib *entryPoint()
 {
-	//return ret;
+	return ret;
 }
-
-#pragma clang diagnostic pop
