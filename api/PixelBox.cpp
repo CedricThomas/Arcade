@@ -14,68 +14,82 @@ Arcade::PixelBox::PixelBox(Arcade::Vect<size_t> size, Arcade::Vect<size_t> pos,
 
 }
 
-size_t Arcade::PixelBox::getHeight() const {
-	return 0;
+size_t Arcade::PixelBox::getHeight() const
+{
+	return _pos.getY();
 }
 
-size_t Arcade::PixelBox::getY() const {
-	return 0;
+size_t Arcade::PixelBox::getY() const
+{
+	return _size.getY();
 }
 
-void Arcade::PixelBox::setHeight(size_t height) {
-
+void Arcade::PixelBox::setHeight(size_t height)
+{
+	_pos.setY(height);
 }
 
-void Arcade::PixelBox::setY(size_t y) {
-
+void Arcade::PixelBox::setY(size_t y)
+{
+	_size.setY(y);
 }
 
-size_t Arcade::PixelBox::getWidth() const {
-	return 0;
+size_t Arcade::PixelBox::getWidth() const
+{
+	return _pos.getX();
 }
 
-size_t Arcade::PixelBox::getX() const {
-	return 0;
+size_t Arcade::PixelBox::getX() const
+{
+	return _size.getX();
 }
 
-void Arcade::PixelBox::setWidth(size_t width) {
-
+void Arcade::PixelBox::setWidth(size_t width)
+{
+	_pos.setX(width);
 }
 
-void Arcade::PixelBox::setX(size_t x) {
-
+void Arcade::PixelBox::setX(size_t x)
+{
+	_size.setX(x);
 }
 
-Arcade::Vect<size_t> Arcade::PixelBox::getSize() const {
-	return Arcade::Vect<size_t>();
+Arcade::Vect<size_t> Arcade::PixelBox::getSize() const
+{
+	return _size;
 }
 
-void Arcade::PixelBox::setSize(Arcade::Vect<size_t> size) {
-
+void Arcade::PixelBox::setSize(Arcade::Vect<size_t> size)
+{
+	_size = size
 }
 
-Arcade::Vect<size_t> Arcade::PixelBox::getPos() const {
-	return Arcade::Vect<size_t>();
+Arcade::Vect<size_t> Arcade::PixelBox::getPos() const
+{
+	return _pos;
 }
 
-void Arcade::PixelBox::setPos(Arcade::Vect<size_t> pos) {
-
+void Arcade::PixelBox::setPos(Arcade::Vect<size_t> pos)
+{
+	_pos = pos;
 }
 
-void Arcade::PixelBox::putPixel(Arcade::Vect<size_t> pos, Arcade::Color col) {
-
+void Arcade::PixelBox::putPixel(Arcade::Vect<size_t> pos, Arcade::Color col)
+{
 }
 
-Arcade::Color Arcade::PixelBox::getPixel(Arcade::Vect<size_t> pos) const {
-	return Arcade::Color();
+Arcade::Color Arcade::PixelBox::getPixel(Arcade::Vect<size_t> pos) const
+{
 }
 
 void
 Arcade::PixelBox::putRect(Arcade::Vect<size_t> pos, Arcade::Vect<size_t> size,
-			  Arcade::Color col) {
+			  Arcade::Color col)
+{
 
 }
 
-std::vector<Arcade::Color> &Arcade::PixelBox::getPixelArray() {
-	return <#initializer#>;
+std::vector<Arcade::Color> &Arcade::PixelBox::getPixelArray()
+{
+	return _colorFrame;
 }
