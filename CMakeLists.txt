@@ -35,10 +35,10 @@ set(sources
 
         #libs
 
-        lib/nCurses/entry.cpp
+        lib/lib_nCurses/entry.cpp
         lib/lib_SFML/SFML.cpp
         lib/lib_SFML/SFML.hpp
-        lib/SDL2/entry.cpp
+        lib/lib_SDL2/entry.cpp
 
         )
 

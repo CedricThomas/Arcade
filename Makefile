@@ -17,14 +17,14 @@ CORE_DEST_FOLDER =	$(shell pwd)
 
 NCURSES	=		lib_arcade_ncurses.so
 
-NCURSES_FOLDER	=	lib/nCurses
+NCURSES_FOLDER	=	lib/lib_nCurses
 
 NCURSES_DEST_FOLDER =	lib
 
 
 SDL	=		lib_arcade_sdl2.so
 
-SDL_FOLDER	=	lib/SDL2
+SDL_FOLDER	=	lib/lib_SDL2
 
 SDL_DEST_FOLDER =	lib
 
