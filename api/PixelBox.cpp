@@ -13,13 +13,6 @@ Arcade::PixelBox::PixelBox(Arcade::Vect<size_t> size, Arcade::Vect<size_t> pos,
 Arcade::Color col)
 : _colorFrame(size.getX() * size.getY(), col), _size(size), _pos(pos)
 {
-//	for (int i = 0; i < size.getX() * size.getY(); i++) {
-//		std::cout << "Colors : " << std::endl;
-//		std::cout << static_cast<int>(_colorFrame[i].getRed()) << std::endl;
-//		std::cout << static_cast<int>(_colorFrame[i].getGreen()) << std::endl;
-//		std::cout << static_cast<int>(_colorFrame[i].getBlue()) << std::endl;
-//		std::cout << static_cast<int>(_colorFrame[i].getAlpha()) << std::endl;
-//	}
 }
 
 size_t Arcade::PixelBox::getHeight() const
