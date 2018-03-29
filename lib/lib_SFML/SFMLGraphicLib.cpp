@@ -16,6 +16,10 @@ _lib_name(),
 _window(),
 _event()
 {
+	sf::Font font;
+	if (!font.loadFromFile("./assets/font/arial.ttf"))
+		throw ("No file for font found");
+	_sprite.setTexture(_texture);
 }
 
 Arcade::SFMLGraphicLib::~SFMLGraphicLib()
@@ -43,11 +47,13 @@ void Arcade::SFMLGraphicLib::openRenderer()
 
 void Arcade::SFMLGraphicLib::clearWindow()
 {
+	//TODO clean window
 	_window.clear();
 }
 
 void Arcade::SFMLGraphicLib::refreshWindow()
 {
+	_window.draw(_sprite);
 	_window.display();
 }
 
@@ -57,20 +63,17 @@ void Arcade::SFMLGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 	auto size = box.getSize();
 	auto pos = box.getPos();
 
-	_texture.update(static_cast<unsigned char *>(list),
-	                static_cast<unsigned int>(size.getX()),
-	                static_cast<unsigned int>(size.getY()),
-	                static_cast<unsigned int>(pos.getX()),
-	                static_cast<unsigned int>(pos.getY()));
+	_texture.update((unsigned char *)(list),
+			static_cast<unsigned int>(size.getX()),
+			static_cast<unsigned int>(size.getY()),
+			static_cast<unsigned int>(pos.getX()),
+			static_cast<unsigned int>(pos.getY()));
 }
 
 void Arcade::SFMLGraphicLib::drawText(Arcade::TextBox &box)
 {
-//	sf::Font font;
-//	if (!font.loadFromFile("./font/arial.ttf"))
-//		throw ("No file for font found");
-//	sf::Text text(box.getValue(), font, box.getFontSize());
-//	_window.draw(text);
+	sf::Text text(box.getValue(), _font, box.getFontSize());
+	_window.draw(text);
 }
 
 bool Arcade::SFMLGraphicLib::pollEvents()

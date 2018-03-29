@@ -38,6 +38,7 @@ namespace Arcade {
 		sf::Texture _texture;
 		sf::Sprite _sprite;
 		sf::Text _text;
+		sf::Font _font;
 
 		std::string _lib_name;
 		sf::RenderWindow _window;

@@ -55,8 +55,13 @@ void Arcade::Core::play()
 {
 	std::cout << "play" << std::endl;
 	//std::cout <<
+	auto box = PixelBox(Vect<size_t>(10, 10), Vect<size_t>(10,10), Color(255, 255, 255,255));
 	_lib->getInstance()->openRenderer();// << std::endl;
-	while (1);
+	_lib->getInstance()->drawPixelBox(box);
+	while (_lib->getInstance()->isOpen()) {
+		_lib->getInstance()->clearWindow();
+		_lib->getInstance()->refreshWindow();
+	}
 }
 
 void Arcade::Core::menu()

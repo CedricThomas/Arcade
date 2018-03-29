@@ -14,7 +14,9 @@ RM	= rm -f
 SRCS	= ./Core.cpp		\
 	  ./SyntaxAnalyser.cpp	\
 	  ./Errors.cpp		\
-	  ./main.cpp
+	  ./main.cpp        \
+	  ../api/Color.cpp  \
+	  ../api/PixelBox.cpp  \
 
 OBJS	= $(SRCS:.cpp=.o)
 

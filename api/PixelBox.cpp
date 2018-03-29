@@ -14,6 +14,7 @@ Arcade::PixelBox::PixelBox(Arcade::Vect<size_t> size, Arcade::Vect<size_t> pos,
 Arcade::Color col)
 : _colorFrame(size.getX() * size.getY(), col), _size(size), _pos(pos)
 {
+	
 }
 
 size_t Arcade::PixelBox::getHeight() const
