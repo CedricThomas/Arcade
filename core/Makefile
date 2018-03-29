@@ -11,15 +11,16 @@ CC	= g++
 
 RM	= rm -f
 
-SRCS	= ./Core.cpp \
-	  ./ParseError.cpp \
-	  ./MainParse.cpp \
-	  ./main.cpp 
+SRCS	= ./Core.cpp		\
+	  ./SyntaxAnalyser.cpp	\
+	  ./Errors.cpp		\
+	  ./main.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
-CPPFLAGS = -I ./pp
-CPPFLAGS += -W -Wall -Wextra
+CXXFLAGS += -W -Wall -Wextra
+
+LDFLAGS = -ldl
 
 all: $(NAME)
 

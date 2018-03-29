@@ -7,15 +7,23 @@
 
 #include <exception>
 #include <iostream>
-#include "MainParse.hpp"
+#include "Errors.hpp"
+#include "SyntaxAnalyser.hpp"
+#include "Core.hpp"
+
+static const std::string graph_folder_g = "./lib/";
+static const std::string games_folder_g = "./games/";
 
 int main(int argc, char **argv)
 {
-	try {
-		Arcade::MainParse(argc, argv);
-	}
-	catch (const std::exception &e) { // TODO create Parse exception
-		std::cerr << "ERROR: " << e.what() << std::endl;
-		return 84;
-	}
+	Arcade::DLLoader<Arcade::IGraphicLib> test("./lib/lib_arcade_sfml.so");
+//	try {
+//		std::string filepath(Arcade::SyntaxAnalyser::syntaxAnalyse(argc, argv));
+//		Arcade::Core core(graph_folder_g, games_folder_g, filepath);
+//		core.play();
+//	} catch (Arcade::LoadingError &e) {
+//		std::cerr << e.what() << std::endl;
+//		return 84;
+//	}
+//	return 0;
 }

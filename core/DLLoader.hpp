@@ -10,57 +10,53 @@
 
 	#include <string>
 	#include <dlfcn.h>
+	#include "Errors.hpp"
+
 namespace Arcade {
 	template <typename T>
 	class DLLoader {
 	public:
 
-		DLLoader(const std::string file, int mod)
-		: error_str(), error_bool(false), lib()
+		explicit DLLoader(const std::string file, int mod = RTLD_LAZY)
+		: _instance(nullptr), _lib()
 		{
-			this->lib = dlopen(file.c_str(), mod);
-			if (this->lib == nullptr) {
-				this->error_str = std::string(dlerror());
-				this->error_bool = true;
+			_lib = dlopen(file.c_str(), mod);
+			if (_lib == nullptr) {
+				auto str = "cstr : " + file + " : " + std::string(dlerror());
+				throw LoadingError(str);
+			}
+			loadInstance();
+		}
+
+		virtual ~DLLoader()
+		{
+			if (_lib != nullptr) {
+				if (_instance)
+					_instance = nullptr;
+				dlclose(_lib);
 			}
 		}
 
-		~DLLoader()
+		T *getInstance() const
 		{
-			if (this->lib)
-				if (dlclose(this->lib) != 0) {
-					error_str = std::string(dlerror());
-					this->error_bool = true;
-				}
+			return _instance;
 		}
 
-		T *getInstance(std::string sym_name="entryPoint") {
-			if (this->error_bool)
-				return nullptr;
-			auto *sym = dlsym(this->lib, sym_name.c_str());
+		T *loadInstance(std::string sym_name="entryPoint")
+		{
+			auto *sym = dlsym(_lib, sym_name.c_str());
 			if (sym == nullptr) {
-				this->error_str = std::string(dlerror());
-				this->error_bool = true;
-				return nullptr;
+				auto str = "load : " + std::string(dlerror());
+				throw LoadingError(str);
 			}
 			auto fct = reinterpret_cast<void *(*)()>(sym);
-			return reinterpret_cast<T *>(fct());
-		}
-
-		bool isError()
-		{
-			return this->error_bool;
-		}
-
-		const std::string &getError()
-		{
-			return error_str;
+			_instance = reinterpret_cast<T *>(fct());
+			return _instance;
 		}
 
 	private:
-		std::string error_str;
-		bool error_bool;
-		void *lib;
+		T *_instance;
+		void *_lib;
 	};
 }
 

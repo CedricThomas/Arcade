@@ -21,10 +21,10 @@ set(sources
 
         core/main.cpp
         core/DLLoader.hpp
-        core/ParseError.cpp
-        core/ParseError.hpp
-        core/MainParse.cpp
-        core/MainParse.hpp
+        core/Errors.cpp
+        core/Errors.hpp
+        core/SyntaxAnalyser.cpp
+        core/SyntaxAnalyser.hpp
         core/Core.cpp
         core/Core.hpp
 
