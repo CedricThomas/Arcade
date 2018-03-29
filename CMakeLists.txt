@@ -9,12 +9,15 @@ set(sources
         #api
 
         api/Color.hpp
+        api/Color.cpp
         api/entryPoint.cpp
         api/IGameLib.hpp
         api/IGraphicLib.hpp
         api/Keys.hpp
         api/PixelBox.hpp
+        api/PixelBox.cpp
         api/TextBox.hpp
+        api/TextBox.cpp
         api/Vect.hpp
 
         #core

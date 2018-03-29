@@ -5,7 +5,6 @@
 ** entry.cpp
 */
 
-#include <IGraphicLib.hpp>
 #include "SFMLGraphicLib.hpp"
 
 /* "Arcade::lib_SFML" : For example, use the class of your lib */

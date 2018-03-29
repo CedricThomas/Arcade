@@ -34,11 +34,15 @@ namespace Arcade {
 		int getMaxY() const final;
 		int getMaxX() const final;
 	private:
+
+		sf::Texture _texture;
+		sf::Sprite _sprite;
+		sf::Text _text;
+
 		std::string _lib_name;
 		sf::RenderWindow _window;
 		sf::Event _event;
 	};
 }
-
 
 #endif //ARCADE_SFML_HPP

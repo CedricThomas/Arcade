@@ -8,7 +8,13 @@
 #include <iostream>
 #include "SFMLGraphicLib.hpp"
 
-Arcade::SFMLGraphicLib::SFMLGraphicLib() : _event()
+Arcade::SFMLGraphicLib::SFMLGraphicLib()
+: _texture(),
+_sprite(),
+_text(),
+_lib_name(),
+_window(),
+_event()
 {
 }
 
@@ -32,7 +38,7 @@ void Arcade::SFMLGraphicLib::closeRenderer()
 
 void Arcade::SFMLGraphicLib::openRenderer()
 {
-	_window.create(sf::VideoMode(200, 200), "ok");
+	_window.create(sf::VideoMode(1920, 1080), "ok");
 }
 
 void Arcade::SFMLGraphicLib::clearWindow()
@@ -47,7 +53,15 @@ void Arcade::SFMLGraphicLib::refreshWindow()
 
 void Arcade::SFMLGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 {
+	auto list = &box.getPixelArray()[0];
+	auto size = box.getSize();
+	auto pos = box.getPos();
 
+	_texture.update(static_cast<unsigned char *>(list),
+	                static_cast<unsigned int>(size.getX()),
+	                static_cast<unsigned int>(size.getY()),
+	                static_cast<unsigned int>(pos.getX()),
+	                static_cast<unsigned int>(pos.getY()));
 }
 
 void Arcade::SFMLGraphicLib::drawText(Arcade::TextBox &box)
