@@ -43,11 +43,15 @@ void Arcade::SFML::refreshWindow() {
 }
 
 void Arcade::SFML::drawPixelBox(Arcade::PixelBox &box) {
-	//_window->draw((const sf::Drawable &) &box);
+
 }
 
 void Arcade::SFML::drawText(Arcade::TextBox &box) {
-	//_window->draw(&box);
+	sf::Font font;
+	if (!font.loadFromFile("./font/arial.ttf"))
+		throw ("No file for font found");
+	sf::Text text(box.getValue(), font, box.getFontSize());
+	_window->draw(text);
 }
 
 bool Arcade::SFML::pollEvents() {
@@ -55,6 +59,7 @@ bool Arcade::SFML::pollEvents() {
 }
 
 Arcade::Keys Arcade::SFML::getLastEvent() {
+	Arcade::Keys keys;
 	//return _event.type;
 }
 
@@ -63,12 +68,16 @@ void Arcade::SFML::clearEvents() {
 }
 
 Arcade::Vect<size_t> Arcade::SFML::getScreenSize() const {
+	Vect<size_t> vector;
+	vector.setY(_window->getSize().y);
+	vector.setX(_window->getSize().x);
+	return vector;
 }
 
 int Arcade::SFML::getMaxY() const {
-
+	_window->getSize().y;
 }
 
 int Arcade::SFML::getMaxX() const {
-
+	_window->getSize().x;
 }
