@@ -36,10 +36,13 @@ set(sources
         #libs
 
         lib/lib_nCurses/entry.cpp
+        lib/lib_nCurses/NCursesGraphicLib.cpp
+        lib/lib_nCurses/NCursesGraphicLib.hpp
 
         lib/lib_SFML/entry.cpp
         lib/lib_SFML/SFMLGraphicLib.cpp
         lib/lib_SFML/SFMLGraphicLib.hpp
+
         lib/lib_SDL2/entry.cpp
 
         )
