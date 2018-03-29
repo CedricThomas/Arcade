@@ -52,17 +52,17 @@ void Arcade::Color::setRed(unsigned char red)
 
 void Arcade::Color::setGreen(unsigned char green)
 {
-	_green = green
+	_green = green;
 }
 
 void Arcade::Color::setBlue(unsigned char blue)
 {
-	_blue = blue
+	_blue = blue;
 }
 
 void Arcade::Color::setAlpha(unsigned char alpha)
 {
-	_alpha = alpha
+	_alpha = alpha;
 }
 
 Arcade::Color::operator unsigned char *()
