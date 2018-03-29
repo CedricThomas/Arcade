@@ -12,14 +12,13 @@ Arcade::SFMLGraphicLib::SFMLGraphicLib()
 : _texture(),
 _sprite(),
 _text(),
-_lib_name(),
+_libName("SFML"),
 _window(),
 _event()
 {
-	sf::Font font;
-	if (!font.loadFromFile("./assets/font/arial.ttf"))
-		throw ("No file for font found");
-	_sprite.setTexture(_texture);
+	if (!_font.loadFromFile("./assets/font/arial.ttf"))
+		throw ("No file for font found"); // TODO search a solution
+	_text.setFont(_font);
 }
 
 Arcade::SFMLGraphicLib::~SFMLGraphicLib()
@@ -27,7 +26,7 @@ Arcade::SFMLGraphicLib::~SFMLGraphicLib()
 
 std::string Arcade::SFMLGraphicLib::getName() const
 {
-	return _lib_name;
+	return _libName;
 }
 
 bool Arcade::SFMLGraphicLib::isOpen() const
@@ -42,18 +41,19 @@ void Arcade::SFMLGraphicLib::closeRenderer()
 
 void Arcade::SFMLGraphicLib::openRenderer()
 {
-	_window.create(sf::VideoMode(1920, 1080), "ok");
+	auto title = "Arcade";
+	_window.create(sf::VideoMode(1920, 1080, 32), title, sf::Style::Close);
+	_texture.create(1920, 1080);
+	_sprite.setTexture(_texture, true);
 }
 
 void Arcade::SFMLGraphicLib::clearWindow()
 {
-	//TODO clean window
 	_window.clear();
 }
 
 void Arcade::SFMLGraphicLib::refreshWindow()
 {
-	_window.draw(_sprite);
 	_window.display();
 }
 
@@ -64,21 +64,35 @@ void Arcade::SFMLGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 	auto pos = box.getPos();
 
 	_texture.update((unsigned char *)(list),
-			static_cast<unsigned int>(size.getX()),
-			static_cast<unsigned int>(size.getY()),
-			static_cast<unsigned int>(pos.getX()),
-			static_cast<unsigned int>(pos.getY()));
+	                static_cast<unsigned int>(size.getX()),
+	                static_cast<unsigned int>(size.getY()),
+			0,
+			0);
+	sf::IntRect rect(0,
+		0,
+		static_cast<unsigned int>(size.getX()),
+		static_cast<unsigned int>(size.getY()));
+	_sprite.setTextureRect(rect);
+	_sprite.setPosition(pos.getX(), pos.getY());
+	_window.draw(_sprite);
 }
 
 void Arcade::SFMLGraphicLib::drawText(Arcade::TextBox &box)
 {
-	sf::Text text(box.getValue(), _font, box.getFontSize());
-	_window.draw(text);
+	_text.setString(box.getValue());
+	auto c = box.getColor();
+	sf::Color color(c.getRed(), c.getGreen(), c.getGreen(), c.getAlpha());
+	_text.setFillColor(color);
+	_text.setCharacterSize(static_cast<unsigned int>(box.getFontSize()));
+	auto pos = box.getPos();
+	_text.setPosition(pos.getX(), pos.getY());
+	_window.draw(_text);
 }
 
 bool Arcade::SFMLGraphicLib::pollEvents()
 {
 	_window.pollEvent(_event);
+	return true;
 }
 
 Arcade::Keys Arcade::SFMLGraphicLib::getLastEvent()
@@ -102,10 +116,10 @@ Arcade::Vect<size_t> Arcade::SFMLGraphicLib::getScreenSize() const
 
 int Arcade::SFMLGraphicLib::getMaxY() const
 {
-	_window.getSize().y;
+	return _window.getSize().y;
 }
 
 int Arcade::SFMLGraphicLib::getMaxX() const
 {
-	_window.getSize().x;
+	return _window.getSize().x;
 }

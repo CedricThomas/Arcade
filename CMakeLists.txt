@@ -47,6 +47,8 @@ set(sources
         lib/lib_SFML/SFMLGraphicLib.hpp
 
         lib/lib_SDL2/entry.cpp
+        lib/lib_SDL2/SDLGraphicLib.cpp
+        lib/lib_SDL2/SDLGraphicLib.hpp
 
         )
 

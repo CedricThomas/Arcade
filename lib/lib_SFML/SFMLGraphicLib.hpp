@@ -9,10 +9,10 @@
 #define ARCADE_SFML_HPP
 
 #include <SFML/Graphics.hpp>
-#include "../../api/PixelBox.hpp"
-#include "../../api/TextBox.hpp"
-#include "../../api/Keys.hpp"
-#include "../../api/IGraphicLib.hpp"
+#include "PixelBox.hpp"
+#include "TextBox.hpp"
+#include "Keys.hpp"
+#include "IGraphicLib.hpp"
 
 namespace Arcade {
 	class SFMLGraphicLib : public IGraphicLib {
@@ -40,7 +40,7 @@ namespace Arcade {
 		sf::Text _text;
 		sf::Font _font;
 
-		std::string _lib_name;
+		std::string _libName;
 		sf::RenderWindow _window;
 		sf::Event _event;
 	};

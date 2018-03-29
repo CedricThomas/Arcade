@@ -8,16 +8,17 @@
 
 NAME = lib_arcade_sfml.so
 
-SRC = entry.cpp \
-        SFMLGraphicLib.cpp
+SRC =	entry.cpp 		\
+        SFMLGraphicLib.cpp	\
+        PixelBox.cpp		\
+        Color.cpp		\
+        TextBox.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
 CXXFLAGS += -Wall -Wextra -fPIC
-CXXFLAGS += -I../../api/
 
 LDFLAGS	= -shared -lsfml-graphics -lsfml-window -lsfml-system
-
 
 all : $(NAME)
 

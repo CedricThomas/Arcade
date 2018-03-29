@@ -37,31 +37,31 @@ SFML_DEST_FOLDER =	lib
 
 
 
-GAME1	=		lib_arcade_pacman.so
+PACMAN	=		lib_arcade_pacman.so
 
-GAME1_FOLDER	=	games/pacman
+PACMAN_FOLDER	=	games/pacman
 
-GAME1_DEST_FOLDER =	games
+PACMAN_DEST_FOLDER =	games
 
 
-GAME2	=		lib_arcade_nibbler.so
+NIBBLER	=		lib_arcade_nibbler.so
 
-GAME2_FOLDER	=	games/nibbler
+NIBBLER_FOLDER	=	games/nibbler
 
-GAME2_DEST_FOLDER =	games
+NIBBLER_DEST_FOLDER =	games
 
 
 all: $(NAME)
 
-games: $(GAME1) $(GAME2)
+games: $(PACMAN) $(NIBBLER)
 
 graphicals: $(SFML) $(SDL) $(NCURSES)
 
-$(NAME): $(CORE) $(SFML) $(SDL) $(NCURSES) $(GAME1) $(GAME2)
+$(NAME): $(CORE) $(SDL) $(NCURSES) $(PACMAN) $(NIBBLER)  $(SFML)
 
-clean: clean_core clean_sfml clean_ncurses clean_sdl clean_game1 clean_game2
+clean: clean_core clean_sfml clean_ncurses clean_sdl clean_pacman clean_nibbler
 
-fclean: fclean_core fclean_sfml fclean_ncurses fclean_sdl fclean_game1 fclean_game2
+fclean: fclean_core fclean_sfml fclean_ncurses fclean_sdl fclean_pacman fclean_nibbler
 
 re: fclean all
 
@@ -69,17 +69,15 @@ re: fclean all
 
 
 
-
-
 $(CORE):
-	make -C $(CORE_FOLDER)
+	make -sC $(CORE_FOLDER)
 	cp $(CORE_FOLDER)/$(CORE) $(CORE_DEST_FOLDER)/$(NAME)
 
 clean_core:
-	make -C $(CORE_FOLDER) clean
+	make -sC $(CORE_FOLDER) clean
 
 fclean_core:
-	make -C $(CORE_FOLDER) fclean
+	make -sC $(CORE_FOLDER) fclean
 	rm -f $(CORE_DEST_FOLDER)/$(NAME)
 
 re_core: fclean_core $(CORE)
@@ -90,14 +88,14 @@ re_core: fclean_core $(CORE)
 
 
 $(SFML):
-	make -C $(SFML_FOLDER)
+	make -sC $(SFML_FOLDER)
 	cp $(SFML_FOLDER)/$(SFML) $(SFML_DEST_FOLDER)
 
 clean_sfml:
-	make -C $(SFML_FOLDER) clean
+	make -sC $(SFML_FOLDER) clean
 
 fclean_sfml:
-	make -C $(SFML_FOLDER) fclean
+	make -sC $(SFML_FOLDER) fclean
 	rm -f $(SFML_DEST_FOLDER)/$(SFML)
 
 re_sfml: fclean_sfml $(SFML)
@@ -107,14 +105,14 @@ re_sfml: fclean_sfml $(SFML)
 
 
 $(NCURSES):
-	make -C $(NCURSES_FOLDER)
+	make -sC $(NCURSES_FOLDER)
 	cp $(NCURSES_FOLDER)/$(NCURSES) $(NCURSES_DEST_FOLDER)
 
 clean_ncurses:
-	make -C $(NCURSES_FOLDER) clean
+	make -sC $(NCURSES_FOLDER) clean
 
 fclean_ncurses:
-	make -C $(NCURSES_FOLDER) fclean
+	make -sC $(NCURSES_FOLDER) fclean
 	rm -f $(NCURSES_DEST_FOLDER)/$(NCURSES)
 
 re_ncurses: fclean_ncurses $(NCURSES)
@@ -124,14 +122,14 @@ re_ncurses: fclean_ncurses $(NCURSES)
 
 
 $(SDL):
-	make -C $(SDL_FOLDER)
+	make -sC $(SDL_FOLDER)
 	cp $(SDL_FOLDER)/$(SDL) $(SDL_DEST_FOLDER)
 
 clean_sdl:
-	make -C $(SDL_FOLDER) clean
+	make -sC $(SDL_FOLDER) clean
 
 fclean_sdl:
-	make -C $(SDL_FOLDER) fclean
+	make -sC $(SDL_FOLDER) fclean
 	rm -f $(SDL_DEST_FOLDER)/$(SDL)
 
 re_sdl: fclean_sdl $(SDL)
@@ -141,34 +139,34 @@ re_sdl: fclean_sdl $(SDL)
 
 
 
-$(GAME1):
-	make -C $(GAME1_FOLDER)
-	cp $(GAME1_FOLDER)/$(GAME1) $(GAME1_DEST_FOLDER)
+$(PACMAN):
+	make -sC $(PACMAN_FOLDER)
+	cp $(PACMAN_FOLDER)/$(PACMAN) $(PACMAN_DEST_FOLDER)
 
-clean_game1:
-	make -C $(GAME1_FOLDER) clean
+clean_pacman:
+	make -sC $(PACMAN_FOLDER) clean
 
-fclean_game1:
-	make -C $(GAME1_FOLDER) fclean
-	rm -f $(GAME1_DEST_FOLDER)/$(GAME1)
+fclean_pacman:
+	make -sC $(PACMAN_FOLDER) fclean
+	rm -f $(PACMAN_DEST_FOLDER)/$(PACMAN)
 
-re_game1: fclean_game1 $(GAME1)
+re_pacman: fclean_pacman $(PACMAN)
 
-.PHONY: clean_game1 fclean_game1 re_game1
+.PHONY: clean_pacman fclean_pacman re_pacman
 
 
 
-$(GAME2):
-	make -C $(GAME2_FOLDER)
-	cp $(GAME2_FOLDER)/$(GAME2) $(GAME2_DEST_FOLDER)
+$(NIBBLER):
+	make -sC $(NIBBLER_FOLDER)
+	cp $(NIBBLER_FOLDER)/$(NIBBLER) $(NIBBLER_DEST_FOLDER)
 
-clean_game2:
-	make -C $(GAME2_FOLDER) clean
+clean_nibbler:
+	make -sC $(NIBBLER_FOLDER) clean
 
-fclean_game2:
-	make -C $(GAME2_FOLDER) fclean
-	rm -f $(GAME2_DEST_FOLDER)/$(GAME2)
+fclean_nibbler:
+	make -sC $(NIBBLER_FOLDER) fclean
+	rm -f $(NIBBLER_DEST_FOLDER)/$(NIBBLER)
 
-re_game2: fclean_game2 $(GAME2)
+re_nibbler: fclean_nibbler $(NIBBLER)
 
-.PHONY: clean_game2 fclean_game2 re_game2
+.PHONY: clean_nibbler fclean_nibbler re_nibbler

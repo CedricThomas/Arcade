@@ -4,8 +4,7 @@
 ** File description:
 ** PixelBox
 */
-#include <cstddef>
-#include <bits/valarray_before.h>
+#include <iostream>
 #include "Vect.hpp"
 #include "Color.hpp"
 #include "PixelBox.hpp"
@@ -14,7 +13,13 @@ Arcade::PixelBox::PixelBox(Arcade::Vect<size_t> size, Arcade::Vect<size_t> pos,
 Arcade::Color col)
 : _colorFrame(size.getX() * size.getY(), col), _size(size), _pos(pos)
 {
-	
+//	for (int i = 0; i < size.getX() * size.getY(); i++) {
+//		std::cout << "Colors : " << std::endl;
+//		std::cout << static_cast<int>(_colorFrame[i].getRed()) << std::endl;
+//		std::cout << static_cast<int>(_colorFrame[i].getGreen()) << std::endl;
+//		std::cout << static_cast<int>(_colorFrame[i].getBlue()) << std::endl;
+//		std::cout << static_cast<int>(_colorFrame[i].getAlpha()) << std::endl;
+//	}
 }
 
 size_t Arcade::PixelBox::getHeight() const
@@ -90,6 +95,14 @@ Arcade::Color Arcade::PixelBox::getPixel(Arcade::Vect<size_t> pos) const
 void Arcade::PixelBox::putRect(Arcade::Vect<size_t> pos,
 Arcade::Vect<size_t> size, Arcade::Color col)
 {
+	auto maxX = size.getX();
+	auto maxY = size.getY();
+	auto posX = pos.getX();
+	auto posY = pos.getY();
+
+	for (size_t x = 0; x < maxX; x++)
+		for (size_t y = 0; y < maxY; y++)
+			putPixel(Vect<size_t >(posX + x, posY + y), col);
 }
 
 std::vector<Arcade::Color> &Arcade::PixelBox::getPixelArray()

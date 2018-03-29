@@ -39,8 +39,11 @@ namespace Arcade {
 		std::vector<std::string> _libs;
 		std::vector<std::string> _games;
 
-		size_t _graphic_idx;
-		size_t _game_idx;
+		std::string _libsPath;
+		std::string _gamesPath;
+
+		size_t _graphicIdx;
+		size_t _gameIdx;
 	};
 
 }

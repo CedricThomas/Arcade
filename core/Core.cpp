@@ -12,7 +12,7 @@
 
 Arcade::Core::Core(const std::string &graph, const std::string &game,
 const std::string &selected)
-: _lib(nullptr), _game(nullptr), _libs(), _games(), _graphic_idx(0), _game_idx(0)
+: _lib(nullptr), _game(nullptr), _libs(), _games(), _graphicIdx(0), _gameIdx(0)
 {
 	loadLibs(graph);
 	loadGames(game);
@@ -25,9 +25,10 @@ void Arcade::Core::loadGames(const std::string &directory)
 	if (dir == nullptr)
 		throw LoadingError("Can't open games path " + directory);
 	auto entry = readdir(dir);
+	_gamesPath = directory;
 	while (entry) {
 		if ((entry->d_type & DT_REG) == DT_REG) {
-			auto f = directory +  entry->d_name;
+			auto f = std::string(entry->d_name);
 			_games.push_back(f);
 		}
 		entry = readdir(dir);
@@ -41,9 +42,10 @@ void Arcade::Core::loadLibs(const std::string &directory)
 	if (dir == nullptr)
 		throw LoadingError("Can't open libs path " + directory);
 	auto entry = readdir(dir);
+	_libsPath = directory;
 	while (entry) {
 		if ((entry->d_type & DT_REG) == DT_REG) {
-			auto f = directory +  entry->d_name;
+			auto f = std::string(entry->d_name);
 			_libs.push_back(f);
 		}
 		entry = readdir(dir);
@@ -54,14 +56,23 @@ void Arcade::Core::loadLibs(const std::string &directory)
 void Arcade::Core::play()
 {
 	std::cout << "play" << std::endl;
-	//std::cout <<
-	auto box = PixelBox(Vect<size_t>(10, 10), Vect<size_t>(10,10), Color(255, 255, 255,255));
-	_lib->getInstance()->openRenderer();// << std::endl;
-	_lib->getInstance()->drawPixelBox(box);
-	while (_lib->getInstance()->isOpen()) {
-		_lib->getInstance()->clearWindow();
-		_lib->getInstance()->refreshWindow();
-	}
+
+	auto box1 = PixelBox(Vect<size_t>(200, 200), Vect<size_t>(100,100), Color(0, 255, 0, 255));
+	box1.putRect(Vect<size_t>(10, 10), Vect<size_t>(10, 10), Color(0, 0, 255, 255));
+
+	auto box2 = PixelBox(Vect<size_t>(50,50), Vect<size_t>(250, 250), Color(255, 0, 0, 10));
+
+	auto text1 = TextBox("Prout", Vect<size_t >(80, 80));
+
+	_lib->getInstance()->openRenderer();
+
+	_lib->getInstance()->drawPixelBox(box1);
+	_lib->getInstance()->drawPixelBox(box2);
+	_lib->getInstance()->drawText(text1);
+
+	_lib->getInstance()->refreshWindow();
+	getchar();
+	_lib->getInstance()->closeRenderer();
 }
 
 void Arcade::Core::menu()
@@ -73,8 +84,8 @@ void Arcade::Core::selectGraphByIdx(size_t idx)
 {
 	if (idx > _libs.size())
 		throw LoadingError("the selected lib doesn't exist.");
-	_graphic_idx = idx;
-	_lib = std::make_unique<DLLoader<IGraphicLib>>(_libs[idx]);
+	_graphicIdx = idx;
+	_lib = std::make_unique<DLLoader<IGraphicLib>>(_libsPath + _libs[idx]);
 }
 
 void Arcade::Core::selectGraphByFilename(const std::string &name)
@@ -82,7 +93,7 @@ void Arcade::Core::selectGraphByFilename(const std::string &name)
 	bool found = false;
 
 	for (size_t i = 0; i < _libs.size(); i++) {
-		if (name == _libs[i]) {
+		if (name == (_libsPath + _libs[i])) {
 			selectGraphByIdx(i);
 			found = true;
 			break;

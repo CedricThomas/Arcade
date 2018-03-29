@@ -17,6 +17,7 @@ SRCS	= ./Core.cpp		\
 	  ./main.cpp        \
 	  ../api/Color.cpp  \
 	  ../api/PixelBox.cpp  \
+	  ../api/TextBox.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
