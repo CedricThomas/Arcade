@@ -22,8 +22,10 @@ namespace Arcade {
 		Core(const std::string &graph, const std::string &game,
 		const std::string &selected);
 		virtual ~Core() = default;
+
 		void play(); // play loop (=> game/menu getionnary)
 		void menu(); // menu subloop
+
 	private:
 		void loadGames(const std::string &directory);
 		void loadLibs(const std::string &directory);
