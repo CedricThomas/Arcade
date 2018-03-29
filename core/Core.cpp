@@ -54,6 +54,9 @@ void Arcade::Core::loadLibs(const std::string &directory)
 void Arcade::Core::play()
 {
 	std::cout << "play" << std::endl;
+	//std::cout <<
+	_lib->getInstance()->openRenderer();// << std::endl;
+	while (1);
 }
 
 void Arcade::Core::menu()

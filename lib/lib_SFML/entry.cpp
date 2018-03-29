@@ -6,16 +6,16 @@
 */
 
 #include <IGraphicLib.hpp>
-#include "SFML.hpp"
+#include "SFMLGraphicLib.hpp"
 
 /* "Arcade::lib_SFML" : For example, use the class of your lib */
-Arcade::SFML *ret = nullptr;
+Arcade::SFMLGraphicLib *ret = nullptr;
 
 __attribute__((constructor))
 void enter()
 {
 	/* Again, it's for example, use the class of your lib */
-	ret = new Arcade::SFML;
+	ret = new Arcade::SFMLGraphicLib;
 }
 
 __attribute__((destructor))
