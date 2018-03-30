@@ -66,8 +66,6 @@ void Arcade::NCursesGraphicLib::refreshWindow()
 		refresh();
 }
 
-
-
 void Arcade::NCursesGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 {
 	if (!_open)
@@ -130,7 +128,7 @@ int Arcade::NCursesGraphicLib::getMaxY() const
 	struct winsize	size;
 
 	ioctl(0, TIOCGWINSZ, &size);
-	return size.ws_row * _cursorYsize;
+	return static_cast<int>(size.ws_row * _cursorYsize);
 }
 
 int Arcade::NCursesGraphicLib::getMaxX() const
@@ -138,7 +136,7 @@ int Arcade::NCursesGraphicLib::getMaxX() const
 	struct winsize	size;
 
 	ioctl(0, TIOCGWINSZ, &size);
-	return size.ws_col * _cursorXsize;
+	return static_cast<int>(size.ws_col * _cursorXsize);
 }
 
 size_t Arcade::NCursesGraphicLib::getColorIndex(Arcade::Color color)
@@ -159,27 +157,26 @@ size_t Arcade::NCursesGraphicLib::getColorIndex(Arcade::Color color)
 	return 0;
 }
 
-Arcade::Color Arcade::NCursesGraphicLib::getAverageColor(Arcade::PixelBox &box, size_t x, size_t y)
+Arcade::Color Arcade::NCursesGraphicLib::getAverageColor(
+Arcade::PixelBox &box, size_t x, size_t y)
 {
-	size_t size = 0;
+	size_t s = 0;
 	size_t r = 0;
 	size_t g = 0;
 	size_t b = 0;
 
 	for (size_t idx = 0; idx < _cursorXsize * _cursorYsize; idx++) {
-		auto pos = Vect<size_t>(x * _cursorXsize + idx % _cursorYsize, y * _cursorYsize + idx / _cursorYsize);
+		auto pos = Vect<size_t>(x * _cursorXsize + idx % _cursorYsize,
+		y * _cursorYsize + idx / _cursorYsize);
 		auto color = box.getPixel(pos);
 		r += color.getRed();
 		g += color.getGreen();
 		b += color.getBlue();
-		size++;
+		s++;
 	}
-	if (size == 0)
-		size = 1;
-	return Arcade::Color(
-		static_cast<unsigned char>(r / size),
-		static_cast<unsigned char>(g / size),
-		static_cast<unsigned char>(b / size),
-		0
-	);
+	if (s == 0)
+		s = static_cast<size_t>(-1);
+	return Arcade::Color(static_cast<unsigned char>(r / s),
+	static_cast<unsigned char>(g / s), static_cast<unsigned char>(b / s),
+	0);
 }

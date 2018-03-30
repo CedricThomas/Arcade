@@ -30,6 +30,7 @@ bool Arcade::SDLGraphicLib::isOpen() const
 
 void Arcade::SDLGraphicLib::closeRenderer()
 {
+	SDL_DestroyTexture(_texture);
 	SDL_DestroyRenderer(_renderer);
 	SDL_DestroyWindow(_window);
 	TTF_Quit();
