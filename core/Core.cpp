@@ -93,7 +93,7 @@ void Arcade::Core::selectGraphByFilename(const std::string &name)
 	bool found = false;
 
 	for (size_t i = 0; i < _libs.size(); i++) {
-		if (name == (_libsPath + _libs[i])) {
+		if (name == _libs[i]) {
 			selectGraphByIdx(i);
 			found = true;
 			break;

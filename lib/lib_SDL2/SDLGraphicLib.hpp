@@ -8,7 +8,9 @@
 #ifndef ARCADE_SDLGRAPHICLIB_HPP
 	#define ARCADE_SDLGRAPHICLIB_HPP
 
-	#include "../../api/IGraphicLib.hpp"
+	#include <SDL2/SDL.h>
+	#include <SDL2/SDL_ttf.h>
+	#include "IGraphicLib.hpp"
 
 
 namespace Arcade {
@@ -31,6 +33,12 @@ namespace Arcade {
 		Vect<size_t> getScreenSize() const override;
 		int getMaxY() const override;
 		int getMaxX() const override;
+	private:
+		std::string _libName;
+		SDL_Window *_window;
+		SDL_Renderer *_renderer;
+		SDL_Texture *_texture;
+		TTF_Font *_font;
 	};
 };
 
