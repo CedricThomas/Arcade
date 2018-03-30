@@ -8,13 +8,17 @@
 
 NAME = lib_arcade_ncurses.so
 
-SRC = entry.cpp
+SRC =	entry.cpp				\
+		NCursesGraphicLib.cpp	\
+		PixelBox.cpp			\
+        Color.cpp				\
+        TextBox.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
 CXXFLAGS = -Wall -Wextra -fPIC
 
-LDFLAGS	= -shared
+LDFLAGS	= -shared -lm -lncurses
 
 
 all : $(NAME)
