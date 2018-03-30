@@ -34,6 +34,7 @@ namespace Arcade {
 		int getMaxY() const override;
 		int getMaxX() const override;
 	private:
+		bool _open;
 		std::string _libName;
 		SDL_Window *_window;
 		SDL_Renderer *_renderer;

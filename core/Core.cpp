@@ -59,13 +59,14 @@ void Arcade::Core::play()
 	auto box1 = PixelBox(Vect<size_t>(200, 200), Vect<size_t>(100,100), Color(0, 255, 0, 255));
 	box1.putRect(Vect<size_t>(10, 10), Vect<size_t>(10, 10), Color(0, 0, 255, 255));
 
-	auto box2 = PixelBox(Vect<size_t>(50,50), Vect<size_t>(250, 250), Color(255, 0, 0, 10));
+	auto box2 = PixelBox(Vect<size_t>(50,50), Vect<size_t>(250, 250), Color(255, 255, 0, 255));
 
 	auto text1 = TextBox("Prout", Vect<size_t >(80, 80));
 
 	for (size_t i = 0; i < _libs.size(); i++) {
-		std::cout << _libs[i] << std::endl;
-		selectGraphByIdx(i);
+//		std::cout << _libs[i] << std::endl;
+//		selectGraphByIdx(i);
+
 		_lib->getInstance()->openRenderer();
 
 		_lib->getInstance()->drawPixelBox(box1);
@@ -73,7 +74,9 @@ void Arcade::Core::play()
 		_lib->getInstance()->drawText(text1);
 
 		_lib->getInstance()->refreshWindow();
+
 		getchar();
+
 		_lib->getInstance()->closeRenderer();
 	}
 }

@@ -8,7 +8,6 @@
 #ifndef ARCADE_NCURSESGRAPHICLIB_HPP
 #define ARCADE_NCURSESGRAPHICLIB_HPP
 
-#include "Color.hpp"
 #include "IGraphicLib.hpp"
 
 namespace Arcade
@@ -32,11 +31,13 @@ class NCursesGraphicLib : public IGraphicLib
 	int getMaxY() const final;
 	int getMaxX() const final;
 	size_t getColorIndex(Arcade::Color color);
-	
+	Color getAverageColor(PixelBox &box, size_t x, size_t y);
 
   private:
 	std::string _libName;
-//	static const std::vector<std::pair<int, int>> _colors;
+	bool _open;
+	size_t _cursorXsize;
+	size_t _cursorYsize;
 };
 }
 

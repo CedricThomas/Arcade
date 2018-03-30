@@ -9,14 +9,14 @@
 NAME = lib_arcade_ncurses.so
 
 SRC =	entry.cpp				\
-		NCursesGraphicLib.cpp	\
-		PixelBox.cpp			\
+	NCursesGraphicLib.cpp			\
+	PixelBox.cpp				\
         Color.cpp				\
         TextBox.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
-CXXFLAGS = -Wall -Wextra -fPIC
+CXXFLAGS = -Wall -Wextra -fPIC -g
 
 LDFLAGS	= -shared -lm -lncurses
 
