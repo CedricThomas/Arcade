@@ -22,7 +22,8 @@ namespace Arcade {
 		{
 			_lib = dlopen(file.c_str(), mod);
 			if (_lib == nullptr) {
-				auto str = "cstr : " + file + " : " + std::string(dlerror());
+				auto str = "cstr : " + file;
+				str += + " : " + std::string(dlerror());
 				throw LoadingError(str);
 			}
 			loadInstance();

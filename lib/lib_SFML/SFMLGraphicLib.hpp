@@ -31,8 +31,8 @@ namespace Arcade {
 		Keys getLastEvent() final;
 		void clearEvents() final;
 		Vect<size_t> getScreenSize() const final;
-		int getMaxY() const final;
-		int getMaxX() const final;
+		size_t getMaxY() const final;
+		size_t getMaxX() const final;
 	private:
 
 		sf::Texture _texture;
@@ -43,6 +43,9 @@ namespace Arcade {
 		std::string _libName;
 		sf::RenderWindow _window;
 		sf::Event _event;
+
+		Arcade::Keys _lastEvent;
+		static const std::map<sf::Keyboard::Key, Arcade::Keys> _keymap;
 	};
 }
 

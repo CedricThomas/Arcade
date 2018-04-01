@@ -9,13 +9,55 @@
 #include <ncurses.h>
 #include <sys/ioctl.h>
 #include <iostream>
+#include <zconf.h>
 #include "NCursesGraphicLib.hpp"
+
+const std::map<int, Arcade::Keys> Arcade::NCursesGraphicLib::_keymap = {
+	{'a', Arcade::Keys::A},
+	{'b', Arcade::Keys::B},
+	{'c', Arcade::Keys::C},
+	{'d', Arcade::Keys::D},
+	{'e', Arcade::Keys::E},
+	{'f', Arcade::Keys::F},
+	{'g', Arcade::Keys::G},
+	{'h', Arcade::Keys::H},
+	{'i', Arcade::Keys::I},
+	{'j', Arcade::Keys::J},
+	{'k', Arcade::Keys::K},
+	{'l', Arcade::Keys::L},
+	{'m', Arcade::Keys::M},
+	{'n', Arcade::Keys::N},
+	{'o', Arcade::Keys::O},
+	{'b', Arcade::Keys::P},
+	{'q', Arcade::Keys::Q},
+	{'r', Arcade::Keys::R},
+	{'s', Arcade::Keys::S},
+	{'t', Arcade::Keys::T},
+	{'u', Arcade::Keys::U},
+	{'v', Arcade::Keys::V},
+	{'w', Arcade::Keys::W},
+	{'x', Arcade::Keys::X},
+	{'y', Arcade::Keys::Y},
+	{'z', Arcade::Keys::Z},
+	{KEY_LEFT, Arcade::Keys::LEFT},
+	{KEY_RIGHT, Arcade::Keys::RIGHT},
+	{KEY_UP, Arcade::Keys::UP},
+	{KEY_DOWN, Arcade::Keys::DOWN},
+	{KEY_ENTER, Arcade::Keys::ENTER},
+	{' ', Arcade::Keys::SPACE},
+	{KEY_DC, Arcade::Keys::DELETE},
+	{KEY_BACKSPACE, Arcade::Keys::BACKSPACE},
+	{'\t', Arcade::Keys::TAB},
+	{27, Arcade::Keys::ESC}
+};
 
 Arcade::NCursesGraphicLib::NCursesGraphicLib():
 _libName("NCurse"),
 _open(false),
 _cursorXsize(10),
-_cursorYsize(20)
+_cursorYsize(20),
+_lastEvent(NONE),
+_termios()
 {
 }
 
@@ -48,6 +90,7 @@ void Arcade::NCursesGraphicLib::openRenderer()
 	for (short i = 8; i < 16; i++)
 		init_pair(i, i - 8, i - 8);
 	cbreak();
+	timeout(-1);
 	curs_set(0);
 	keypad(stdscr, TRUE);
 	noecho();
@@ -102,16 +145,28 @@ void Arcade::NCursesGraphicLib::drawText(Arcade::TextBox &box)
 
 bool Arcade::NCursesGraphicLib::pollEvents()
 {
-	return false;
+	auto map = &Arcade::NCursesGraphicLib::_keymap;
+	auto ret = false;
+	int input = 0;
+	if (isOpen()) {
+		input = getch();
+		ret = true;
+		if (map->count(input) > 0) {
+			_lastEvent = map->at(input);
+		} else
+			ret = false;
+	}
+	return (ret);
 }
 
 Arcade::Keys Arcade::NCursesGraphicLib::getLastEvent()
 {
-	//return nullptr;
+	return _lastEvent;
 }
 
 void Arcade::NCursesGraphicLib::clearEvents()
 {
+	_lastEvent = NONE;
 }
 
 Arcade::Vect<size_t> Arcade::NCursesGraphicLib::getScreenSize() const
@@ -123,20 +178,20 @@ Arcade::Vect<size_t> Arcade::NCursesGraphicLib::getScreenSize() const
 	size.ws_row * _cursorYsize);
 }
 
-int Arcade::NCursesGraphicLib::getMaxY() const
+size_t Arcade::NCursesGraphicLib::getMaxY() const
 {
 	struct winsize	size;
 
 	ioctl(0, TIOCGWINSZ, &size);
-	return static_cast<int>(size.ws_row * _cursorYsize);
+	return static_cast<size_t>(size.ws_row * _cursorYsize);
 }
 
-int Arcade::NCursesGraphicLib::getMaxX() const
+size_t Arcade::NCursesGraphicLib::getMaxX() const
 {
 	struct winsize	size;
 
 	ioctl(0, TIOCGWINSZ, &size);
-	return static_cast<int>(size.ws_col * _cursorXsize);
+	return static_cast<size_t>(size.ws_col * _cursorXsize);
 }
 
 size_t Arcade::NCursesGraphicLib::getColorIndex(Arcade::Color color)

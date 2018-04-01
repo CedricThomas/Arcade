@@ -6,7 +6,47 @@
 */
 #include <SDL2/SDL.h>
 #include <iostream>
+#include <map>
 #include "SDLGraphicLib.hpp"
+
+const std::map<SDL_Keycode, Arcade::Keys> Arcade::SDLGraphicLib::_keymap = {
+	{SDLK_a, Arcade::Keys::A},
+        {SDLK_b, Arcade::Keys::B},
+        {SDLK_c, Arcade::Keys::C},
+        {SDLK_d, Arcade::Keys::D},
+        {SDLK_e, Arcade::Keys::E},
+        {SDLK_f, Arcade::Keys::F},
+        {SDLK_g, Arcade::Keys::G},
+        {SDLK_h, Arcade::Keys::H},
+        {SDLK_i, Arcade::Keys::I},
+        {SDLK_j, Arcade::Keys::J},
+        {SDLK_k, Arcade::Keys::K},
+        {SDLK_l, Arcade::Keys::L},
+        {SDLK_m, Arcade::Keys::M},
+        {SDLK_n, Arcade::Keys::N},
+        {SDLK_o, Arcade::Keys::O},
+        {SDLK_p, Arcade::Keys::P},
+        {SDLK_q, Arcade::Keys::Q},
+        {SDLK_r, Arcade::Keys::R},
+        {SDLK_s, Arcade::Keys::S},
+        {SDLK_t, Arcade::Keys::T},
+        {SDLK_u, Arcade::Keys::U},
+        {SDLK_v, Arcade::Keys::V},
+        {SDLK_w, Arcade::Keys::W},
+        {SDLK_x, Arcade::Keys::X},
+        {SDLK_y, Arcade::Keys::Y},
+        {SDLK_z, Arcade::Keys::Z},
+        {SDLK_LEFT, Arcade::Keys::LEFT},
+        {SDLK_RIGHT, Arcade::Keys::RIGHT},
+        {SDLK_UP, Arcade::Keys::UP},
+        {SDLK_DOWN, Arcade::Keys::DOWN},
+        {SDLK_RETURN, Arcade::Keys::ENTER},
+        {SDLK_SPACE, Arcade::Keys::SPACE},
+        {SDLK_DELETE, Arcade::Keys::DELETE},
+        {SDLK_BACKSPACE, Arcade::Keys::BACKSPACE},
+        {SDLK_TAB, Arcade::Keys::TAB},
+        {SDLK_ESCAPE, Arcade::Keys::ESC}
+};
 
 Arcade::SDLGraphicLib::SDLGraphicLib()
 : _open(false),
@@ -14,7 +54,8 @@ _libName("SDL2"),
 _window(nullptr),
 _renderer(nullptr),
 _texture(nullptr),
-_font(nullptr)
+_font(nullptr),
+  _lastEvent(NONE)
 {
 }
 
@@ -52,9 +93,11 @@ void Arcade::SDLGraphicLib::openRenderer()
 	auto mod = SDL_RENDERER_PRESENTVSYNC;
 	_renderer = SDL_CreateRenderer(_window, -1, mod);
 	_texture = SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA32,
-	                         SDL_TEXTUREACCESS_STREAMING, 1280, 720);
+	                         SDL_TEXTUREACCESS_STREAMING, 1920, 1080);
 	SDL_SetTextureBlendMode(_texture, SDL_BLENDMODE_BLEND);
 	_font = TTF_OpenFont("./assets/font/arial.ttf", 30);
+	if (!_font)
+		throw std::runtime_error("Font not found");
 	_open = true;
 }
 
@@ -105,17 +148,30 @@ void Arcade::SDLGraphicLib::drawText(Arcade::TextBox &box)
 
 bool Arcade::SDLGraphicLib::pollEvents()
 {
-	return false;
+	auto map = &Arcade::SDLGraphicLib::_keymap;
+	auto ret = false;
+	if (isOpen()) {
+		SDL_PollEvent(&_event);
+		ret = true;
+		if (_event.type == SDL_KEYDOWN &&
+		map->count(_event.key.keysym.sym) > 0) {
+			_lastEvent = map->at(_event.key.keysym.sym);
+		} else if (_event.type == SDL_QUIT) {
+			this->_lastEvent = ESC;
+		} else
+			ret = false;
+	}
+	return (ret);
 }
 
 Arcade::Keys Arcade::SDLGraphicLib::getLastEvent()
 {
-	return N;
+	return _lastEvent;
 }
 
 void Arcade::SDLGraphicLib::clearEvents()
 {
-
+	_lastEvent = NONE;
 }
 
 Arcade::Vect<size_t> Arcade::SDLGraphicLib::getScreenSize() const
@@ -127,20 +183,20 @@ Arcade::Vect<size_t> Arcade::SDLGraphicLib::getScreenSize() const
 	return Vect<size_t >(static_cast<size_t>(w), static_cast<size_t>(h));
 }
 
-int Arcade::SDLGraphicLib::getMaxY() const
+size_t Arcade::SDLGraphicLib::getMaxY() const
 {
 	int w = 0;
 	int h = 0;
 	if (_open)
 		SDL_GetWindowSize(_window, &w, &h);
-	return h;
+	return static_cast<size_t>(h);
 }
 
-int Arcade::SDLGraphicLib::getMaxX() const
+size_t Arcade::SDLGraphicLib::getMaxX() const
 {
 	int w = 0;
 	int h = 0;
 	if (_open)
 		SDL_GetWindowSize(_window, &w, &h);
-	return w;
+	return static_cast<size_t>(w);
 }

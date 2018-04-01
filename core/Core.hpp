@@ -19,19 +19,40 @@ namespace Arcade {
 
 	class Core {
 	public:
+		enum Status { // TODO check if xlegit
+			MENU,
+			GAME,
+			EXIT
+		};
+
 		Core(const std::string &graph, const std::string &game,
 		const std::string &selected);
 		virtual ~Core() = default;
+		void start();
 
-		void play(); // play loop (=> game/menu getionnary)
-		void menu(); // menu subloop
+
+		//Selectors
+
+		void selectNextLib();
+		void selectPrevLib();
+
+		void selectNextGame();
+		void selectPrevGame();
+
+
+		//Getters
+		const std::vector<std::string> &getLibs() const;
+		const std::vector<std::string> &getGames() const;
+		size_t getGraphicIdx() const;
+		size_t getGameIdx() const;
 
 	private:
+
 		void loadGames(const std::string &directory);
 		void loadLibs(const std::string &directory);
 
 		void selectGraphByFilename(const std::string &name);
-		void selectGraphByIdx(size_t idx);
+		void selectGraphByIdx(size_t idx, bool open = true);
 
 		std::unique_ptr<DLLoader<IGraphicLib>> _lib;
 		std::unique_ptr<DLLoader<IGameLib>> _game;
@@ -44,6 +65,11 @@ namespace Arcade {
 
 		size_t _graphicIdx;
 		size_t _gameIdx;
+
+		Status _status;
+		std::string _player;
+
+
 	};
 
 }

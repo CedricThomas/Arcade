@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 	try {
 		std::string filepath(Arcade::SyntaxAnalyser::syntaxAnalyse(argc, argv));
 		Arcade::Core core(graph_folder_g, games_folder_g, filepath);
-		core.play();
+		core.start();
 	} catch (Arcade::LoadingError &e) {
 		std::cerr << e.what() << std::endl;
 		return 84;

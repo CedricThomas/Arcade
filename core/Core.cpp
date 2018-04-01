@@ -12,7 +12,14 @@
 
 Arcade::Core::Core(const std::string &graph, const std::string &game,
 const std::string &selected)
-: _lib(nullptr), _game(nullptr), _libs(), _games(), _graphicIdx(0), _gameIdx(0)
+: _lib(nullptr),
+  _game(nullptr),
+  _libs(),
+  _games(),
+  _graphicIdx(0),
+  _gameIdx(0),
+  _status(MENU),
+  _player()
 {
 	loadLibs(graph);
 	loadGames(game);
@@ -53,40 +60,29 @@ void Arcade::Core::loadLibs(const std::string &directory)
 	closedir(dir);
 }
 
-void Arcade::Core::play()
+void Arcade::Core::start()
 {
-
-	auto box1 = PixelBox(Vect<size_t>(200, 200), Vect<size_t>(100,100), Color(0, 255, 0, 255));
-	box1.putRect(Vect<size_t>(10, 10), Vect<size_t>(10, 10), Color(0, 0, 255, 255));
-
-	auto box2 = PixelBox(Vect<size_t>(100,100), Vect<size_t>(200, 200), Color(255, 255, 0, 255));
-
-	auto text1 = TextBox("Prout", Vect<size_t >(80, 80));
-
 	_lib->getInstance()->openRenderer();
-
-	_lib->getInstance()->drawPixelBox(box1);
-	_lib->getInstance()->drawPixelBox(box2);
-	_lib->getInstance()->drawText(text1);
-
-	_lib->getInstance()->refreshWindow();
-
-	getchar();
-
+	while (_status != EXIT) {
+		if (_status == MENU) {
+			std::cout << "menu" << std::endl;
+		} else {
+			std::cout << "game" << std::endl;
+		}
+	}
 	_lib->getInstance()->closeRenderer();
 }
 
-void Arcade::Core::menu()
-{
-	std::cout << "menu" << std::endl;
-}
-
-void Arcade::Core::selectGraphByIdx(size_t idx)
+void Arcade::Core::selectGraphByIdx(size_t idx, bool open)
 {
 	if (idx > _libs.size())
 		throw LoadingError("the selected lib doesn't exist.");
+	if (open)
+		_lib->getInstance()->closeRenderer();
 	_graphicIdx = idx;
 	_lib = std::make_unique<DLLoader<IGraphicLib>>(_libsPath + _libs[idx]);
+	if (open)
+		_lib->getInstance()->openRenderer();
 }
 
 void Arcade::Core::selectGraphByFilename(const std::string &name)
@@ -95,12 +91,32 @@ void Arcade::Core::selectGraphByFilename(const std::string &name)
 
 	for (size_t i = 0; i < _libs.size(); i++) {
 		if (name == _libs[i]) {
-			selectGraphByIdx(i);
+			selectGraphByIdx(i, false);
 			found = true;
 			break;
 		}
 	}
 	if (!found)
 		throw LoadingError("the selected lib doesn't exist.");
+}
+
+const std::vector<std::string> &Arcade::Core::getLibs() const
+{
+	return _libs;
+}
+
+const std::vector<std::string> &Arcade::Core::getGames() const
+{
+	return _games;
+}
+
+size_t Arcade::Core::getGraphicIdx() const
+{
+	return _graphicIdx;
+}
+
+size_t Arcade::Core::getGameIdx() const
+{
+	return _gameIdx;
 }
 

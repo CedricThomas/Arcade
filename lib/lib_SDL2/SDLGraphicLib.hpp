@@ -10,7 +10,8 @@
 
 	#include <SDL2/SDL.h>
 	#include <SDL2/SDL_ttf.h>
-	#include "IGraphicLib.hpp"
+#include <map>
+#include "IGraphicLib.hpp"
 
 
 namespace Arcade {
@@ -31,8 +32,8 @@ namespace Arcade {
 		Keys getLastEvent() override;
 		void clearEvents() override;
 		Vect<size_t> getScreenSize() const override;
-		int getMaxY() const override;
-		int getMaxX() const override;
+		size_t getMaxY() const override;
+		size_t getMaxX() const override;
 	private:
 		bool _open;
 		std::string _libName;
@@ -40,6 +41,9 @@ namespace Arcade {
 		SDL_Renderer *_renderer;
 		SDL_Texture *_texture;
 		TTF_Font *_font;
+		SDL_Event _event;
+		Arcade::Keys _lastEvent;
+		static const std::map<SDL_Keycode, Arcade::Keys> _keymap;
 	};
 };
 
