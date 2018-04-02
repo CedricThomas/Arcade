@@ -22,7 +22,7 @@ namespace Arcade {
 		std::string getName() const final;
 		bool isOpen() const final;
 		void closeRenderer() final;
-		void openRenderer() final;
+		void openRenderer(const std::string &title) final;
 		void clearWindow() final;
 		void refreshWindow() final;
 		void drawPixelBox(PixelBox &box) final;
@@ -44,7 +44,7 @@ namespace Arcade {
 		sf::RenderWindow _window;
 		sf::Event _event;
 
-		Arcade::Keys _lastEvent;
+		std::vector<Arcade::Keys> _events;
 		static const std::map<sf::Keyboard::Key, Arcade::Keys> _keymap;
 	};
 }

@@ -12,6 +12,7 @@ CC	= g++
 RM	= rm -f
 
 SRCS	= ./Core.cpp		\
+	  ./Menu.cpp		\
 	  ./SyntaxAnalyser.cpp	\
 	  ./Errors.cpp		\
 	  ./main.cpp        \
@@ -21,7 +22,7 @@ SRCS	= ./Core.cpp		\
 
 OBJS	= $(SRCS:.cpp=.o)
 
-CXXFLAGS += -W -Wall -Wextra
+CXXFLAGS += -W -Wall -Wextra -g
 
 LDFLAGS = -ldl
 

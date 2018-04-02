@@ -19,11 +19,11 @@ namespace Arcade {
 	class SDLGraphicLib : public IGraphicLib {
 	public:
 		SDLGraphicLib();
-		virtual ~SDLGraphicLib() = default;
+		virtual ~SDLGraphicLib();
 		std::string getName() const override;
 		bool isOpen() const override;
 		void closeRenderer() override;
-		void openRenderer() override;
+		void openRenderer(const std::string &title) override;
 		void clearWindow() override;
 		void refreshWindow() override;
 		void drawPixelBox(PixelBox &box) override;
@@ -42,7 +42,7 @@ namespace Arcade {
 		SDL_Texture *_texture;
 		TTF_Font *_font;
 		SDL_Event _event;
-		Arcade::Keys _lastEvent;
+		std::vector<Arcade::Keys> _events;
 		static const std::map<SDL_Keycode, Arcade::Keys> _keymap;
 	};
 };

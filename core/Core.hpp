@@ -11,7 +11,9 @@
 	#include <vector>
 	#include <string>
 	#include <memory>
+	#include <map>
 	#include "DLLoader.hpp"
+	#include "Menu.hpp"
 	#include "../api/IGameLib.hpp"
 	#include "../api/IGraphicLib.hpp"
 
@@ -20,9 +22,9 @@ namespace Arcade {
 	class Core {
 	public:
 		enum Status { // TODO check if xlegit
-			MENU,
-			GAME,
-			EXIT
+			MENU = 0,
+			GAME = 1,
+			EXIT = 2
 		};
 
 		Core(const std::string &graph, const std::string &game,
@@ -30,8 +32,13 @@ namespace Arcade {
 		virtual ~Core() = default;
 		void start();
 
+		void apply_events(Arcade::Keys key);
 
-		//Selectors
+		void menu();
+		void game();
+
+		//Commons
+		void exitArcade();
 
 		void selectNextLib();
 		void selectPrevLib();
@@ -39,12 +46,24 @@ namespace Arcade {
 		void selectNextGame();
 		void selectPrevGame();
 
+		void selectGraphByIdx(int idx);
+		void selectGameByIdx(int idx);
+
+		// Game
+		void restartGame();
+		void goBackMenu();
+
+		// Menu
+		void startGame();
 
 		//Getters
 		const std::vector<std::string> &getLibs() const;
 		const std::vector<std::string> &getGames() const;
-		size_t getGraphicIdx() const;
-		size_t getGameIdx() const;
+		int getGraphicIdx() const;
+		int getGameIdx() const;
+
+		using core_bindings =
+		const std::map<Arcade::Keys, void (Arcade::Core::*)()>;
 
 	private:
 
@@ -52,7 +71,7 @@ namespace Arcade {
 		void loadLibs(const std::string &directory);
 
 		void selectGraphByFilename(const std::string &name);
-		void selectGraphByIdx(size_t idx, bool open = true);
+
 
 		std::unique_ptr<DLLoader<IGraphicLib>> _lib;
 		std::unique_ptr<DLLoader<IGameLib>> _game;
@@ -63,16 +82,19 @@ namespace Arcade {
 		std::string _libsPath;
 		std::string _gamesPath;
 
-		size_t _graphicIdx;
-		size_t _gameIdx;
+		int _graphicIdx;
+		int _gameIdx;
 
 		Status _status;
 		std::string _player;
 
+		Menu _menu;
 
+		static const core_bindings _menu_actions;
+		static const core_bindings _game_actions;
 	};
 
-}
 
+}
 
 #endif /* !ARCADE_CORE_HPP */

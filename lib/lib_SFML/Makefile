@@ -16,7 +16,7 @@ SRC =	entry.cpp 		\
 
 OBJ = $(SRC:.cpp=.o)
 
-CXXFLAGS += -W -Wall -Wextra -fPIC
+CXXFLAGS += -W -Wall -Wextra -fPIC -g
 
 LDFLAGS	= -shared -lsfml-graphics -lsfml-window -lsfml-system
 

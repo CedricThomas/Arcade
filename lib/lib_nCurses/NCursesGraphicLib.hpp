@@ -14,14 +14,14 @@
 
 namespace Arcade
 {
-	class NCursesGraphicLib : public IGraphicLib
-	{
-	  public:
+	class NCursesGraphicLib : public IGraphicLib {
+	public:
 		NCursesGraphicLib();
+		virtual ~NCursesGraphicLib();
 		std::string getName() const final;
 		bool isOpen() const final;
 		void closeRenderer() final;
-		void openRenderer() final;
+		void openRenderer(const std::string &title) final;
 		void clearWindow() final;
 		void refreshWindow() final;
 		void drawPixelBox(PixelBox &box) final;
@@ -35,12 +35,12 @@ namespace Arcade
 		size_t getColorIndex(Arcade::Color color);
 		Color getAverageColor(PixelBox &box, size_t x, size_t y);
 
-	  private:
+	private:
 		std::string _libName;
 		bool _open;
 		size_t _cursorXsize;
 		size_t _cursorYsize;
-		Arcade::Keys _lastEvent;
+		std::vector<Arcade::Keys> _events;
 		static const std::map<int, Arcade::Keys> _keymap;
 		struct termio _termios;
 	};

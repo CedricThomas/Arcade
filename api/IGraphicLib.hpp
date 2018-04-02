@@ -25,11 +25,11 @@ namespace Arcade {
 		// Main loop condition
 		virtual bool isOpen() const = 0;
 
-		// Closes the window => stop loop (go start)
+		// Closes the window => stop loop (go menu)
 		virtual void closeRenderer() = 0;
 
 		// Opens the window => start loop
-		virtual void openRenderer() = 0;
+		virtual void openRenderer(std::string const &title) = 0;
 
 		// Clears the screen
 		virtual void clearWindow() = 0;

@@ -10,6 +10,18 @@
 #include <fstream>
 #include "Core.hpp"
 
+const Arcade::Core::core_bindings Arcade::Core::_menu_actions = {
+	{Arcade::Keys::RIGHT, &Arcade::Core::selectNextLib},
+	{Arcade::Keys::LEFT, &Arcade::Core::selectPrevLib},
+	{Arcade::Keys::ESC, &Arcade::Core::exitArcade}
+};
+
+const Arcade::Core::core_bindings Arcade::Core::_game_actions = {
+	{Arcade::Keys::RIGHT, &Arcade::Core::selectNextLib},
+	{Arcade::Keys::LEFT, &Arcade::Core::selectPrevLib},
+	{Arcade::Keys::ESC, &Arcade::Core::exitArcade}
+};
+
 Arcade::Core::Core(const std::string &graph, const std::string &game,
 const std::string &selected)
 : _lib(nullptr),
@@ -19,7 +31,8 @@ const std::string &selected)
   _graphicIdx(0),
   _gameIdx(0),
   _status(MENU),
-  _player()
+  _player(),
+  _menu()
 {
 	loadLibs(graph);
 	loadGames(game);
@@ -62,27 +75,39 @@ void Arcade::Core::loadLibs(const std::string &directory)
 
 void Arcade::Core::start()
 {
-	_lib->getInstance()->openRenderer();
+	_lib->getInstance()->openRenderer("Arcade");
 	while (_status != EXIT) {
-		if (_status == MENU) {
-			std::cout << "menu" << std::endl;
-		} else {
-			std::cout << "game" << std::endl;
-		}
+		Arcade::Keys key;
+		_lib->getInstance()->pollEvents();
+		do {
+			key = _lib->getInstance()->getLastEvent();
+			apply_events(key);
+		} while (key != NONE);
+		if (_status == MENU)
+			menu();
+		else
+			game();
 	}
 	_lib->getInstance()->closeRenderer();
 }
 
-void Arcade::Core::selectGraphByIdx(size_t idx, bool open)
+void Arcade::Core::selectGraphByIdx(int idx)
 {
-	if (idx > _libs.size())
+	if (static_cast<size_t>(idx) > _libs.size() || idx < 0)
 		throw LoadingError("the selected lib doesn't exist.");
-	if (open)
-		_lib->getInstance()->closeRenderer();
 	_graphicIdx = idx;
 	_lib = std::make_unique<DLLoader<IGraphicLib>>(_libsPath + _libs[idx]);
-	if (open)
-		_lib->getInstance()->openRenderer();
+}
+
+void Arcade::Core::selectGameByIdx(int idx)
+{
+	if (static_cast<size_t>(idx) > _games.size() || idx < 0)
+		throw LoadingError("the selected lib doesn't exist.");
+	if (_game)
+		_game->getInstance()->stop();
+	_gameIdx = idx;
+	_game = std::make_unique<DLLoader<IGameLib>>(_gamesPath + _games[idx]);
+	_game->getInstance()->init();
 }
 
 void Arcade::Core::selectGraphByFilename(const std::string &name)
@@ -91,7 +116,7 @@ void Arcade::Core::selectGraphByFilename(const std::string &name)
 
 	for (size_t i = 0; i < _libs.size(); i++) {
 		if (name == _libs[i]) {
-			selectGraphByIdx(i, false);
+			selectGraphByIdx(static_cast<int>(i));
 			found = true;
 			break;
 		}
@@ -110,13 +135,97 @@ const std::vector<std::string> &Arcade::Core::getGames() const
 	return _games;
 }
 
-size_t Arcade::Core::getGraphicIdx() const
+int Arcade::Core::getGraphicIdx() const
 {
 	return _graphicIdx;
 }
 
-size_t Arcade::Core::getGameIdx() const
+int Arcade::Core::getGameIdx() const
 {
 	return _gameIdx;
 }
 
+void Arcade::Core::exitArcade()
+{
+	_status = EXIT;
+}
+
+void Arcade::Core::startGame()
+{
+	_status = GAME;
+	_game->getInstance()->open();
+}
+
+void Arcade::Core::goBackMenu()
+{
+	_game->getInstance()->close();
+	_status = MENU;
+}
+
+void Arcade::Core::restartGame()
+{
+	_game->getInstance()->init();
+}
+
+void Arcade::Core::selectNextGame()
+{
+	selectGameByIdx((_gameIdx + 1) % static_cast<int>(_games.size()));
+}
+
+void Arcade::Core::selectPrevGame()
+{
+	selectGameByIdx((_gameIdx - 1) % static_cast<int>(_games.size()));
+}
+
+void Arcade::Core::selectPrevLib()
+{
+	_lib->getInstance()->closeRenderer();
+	auto idx = (_graphicIdx - 1) % static_cast<int>(_libs.size());
+	if (idx == -1)
+		idx = static_cast<int>(_libs.size() - 1);
+	selectGraphByIdx(idx);
+	_lib->getInstance()->openRenderer("Arcade");
+}
+
+void Arcade::Core::selectNextLib()
+{
+	_lib->getInstance()->closeRenderer();
+	selectGraphByIdx((_graphicIdx + 1) % static_cast<int>(_libs.size()));
+	_lib->getInstance()->openRenderer("Arcade");
+}
+
+void Arcade::Core::menu()
+{
+	_lib->getInstance()->clearWindow();
+	_menu.refresh(*_lib->getInstance());
+	_lib->getInstance()->refreshWindow();
+}
+
+void Arcade::Core::game()
+{
+
+}
+
+void Arcade::Core::apply_events(Arcade::Keys key)
+{
+	const std::map<Status, const core_bindings *> actions = {
+		{MENU, &Arcade::Core::_menu_actions},
+		{GAME, &Arcade::Core::_game_actions},
+	};
+	const std::map<Status, std::function<void (Keys key)>> apply_keys = {
+		{MENU, [this](Keys key){
+
+
+
+		}},
+		{GAME, [this](Keys key){
+
+
+
+		}},
+	};
+	if (actions.count(_status) && actions.at(_status)->count(key) > 0) {
+		(this->*(actions.at(_status)->at(key)))();
+	} else if (actions.count(_status))
+		apply_keys.at(_status)(key);
+}

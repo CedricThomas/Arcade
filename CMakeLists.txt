@@ -30,6 +30,8 @@ set(sources
         core/SyntaxAnalyser.hpp
         core/Core.cpp
         core/Core.hpp
+        core/Menu.cpp
+        core/Menu.hpp
 
         #games
 

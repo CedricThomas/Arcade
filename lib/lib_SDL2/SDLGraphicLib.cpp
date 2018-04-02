@@ -55,7 +55,7 @@ _window(nullptr),
 _renderer(nullptr),
 _texture(nullptr),
 _font(nullptr),
-  _lastEvent(NONE)
+_events()
 {
 }
 
@@ -74,16 +74,17 @@ void Arcade::SDLGraphicLib::closeRenderer()
 	SDL_DestroyTexture(_texture);
 	SDL_DestroyRenderer(_renderer);
 	SDL_DestroyWindow(_window);
+	TTF_CloseFont(_font);
 	TTF_Quit();
 	SDL_Quit();
 	_open = false;
 }
 
-void Arcade::SDLGraphicLib::openRenderer()
+void Arcade::SDLGraphicLib::openRenderer(const std::string &title)
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	TTF_Init();
-	_window = SDL_CreateWindow("Arcade",
+	_window = SDL_CreateWindow(title.c_str(),
 	                           SDL_WINDOWPOS_CENTERED,
 	                           SDL_WINDOWPOS_CENTERED,
 	                           1920,
@@ -150,28 +151,34 @@ bool Arcade::SDLGraphicLib::pollEvents()
 {
 	auto map = &Arcade::SDLGraphicLib::_keymap;
 	auto ret = false;
-	if (isOpen()) {
-		SDL_PollEvent(&_event);
-		ret = true;
+	while (isOpen() && SDL_PollEvent(&_event)) {
 		if (_event.type == SDL_KEYDOWN &&
-		map->count(_event.key.keysym.sym) > 0) {
-			_lastEvent = map->at(_event.key.keysym.sym);
+		    map->count(_event.key.keysym.sym) > 0) {
+			_events.push_back(map->at(_event.key.keysym.sym));
+			ret = true;
 		} else if (_event.type == SDL_QUIT) {
-			this->_lastEvent = ESC;
-		} else
-			ret = false;
+			_events.push_back(ESC);
+			ret = true;
+		}
 	}
 	return (ret);
 }
 
 Arcade::Keys Arcade::SDLGraphicLib::getLastEvent()
 {
-	return _lastEvent;
+	auto elem = Arcade::Keys::NONE;
+
+	if (isOpen() && !_events.empty()) {
+		elem = _events.front();
+		_events.erase(_events.begin());
+	}
+	return elem;
 }
 
 void Arcade::SDLGraphicLib::clearEvents()
 {
-	_lastEvent = NONE;
+	if (isOpen())
+		_events.clear();
 }
 
 Arcade::Vect<size_t> Arcade::SDLGraphicLib::getScreenSize() const
@@ -199,4 +206,11 @@ size_t Arcade::SDLGraphicLib::getMaxX() const
 	if (_open)
 		SDL_GetWindowSize(_window, &w, &h);
 	return static_cast<size_t>(w);
+}
+
+Arcade::SDLGraphicLib::~SDLGraphicLib()
+{
+	std::cerr << "ok destroyed sdl" << std::endl;
+	if (isOpen())
+		closeRenderer();
 }

@@ -56,7 +56,7 @@ _text(),
 _libName("SFML"),
 _window(),
 _event(),
-_lastEvent(NONE)
+_events()
 {
 	if (!_font.loadFromFile("./assets/font/arial.ttf"))
 		throw std::runtime_error("Font not found");
@@ -64,7 +64,11 @@ _lastEvent(NONE)
 }
 
 Arcade::SFMLGraphicLib::~SFMLGraphicLib()
-= default;
+{
+	std::cerr << "ok destroyed sfml" << std::endl;
+	if (isOpen())
+		closeRenderer();
+}
 
 std::string Arcade::SFMLGraphicLib::getName() const
 {
@@ -82,9 +86,8 @@ void Arcade::SFMLGraphicLib::closeRenderer()
 		_window.close();
 }
 
-void Arcade::SFMLGraphicLib::openRenderer()
+void Arcade::SFMLGraphicLib::openRenderer(const std::string &title)
 {
-	auto title = "Arcade";
 	_window.create(sf::VideoMode(1920, 1080, 32), title, sf::Style::Close);
 	_texture.create(1920, 1080);
 	_sprite.setTexture(_texture, true);
@@ -147,28 +150,34 @@ bool Arcade::SFMLGraphicLib::pollEvents()
 {
 	auto map = &Arcade::SFMLGraphicLib::_keymap;
 	auto ret = false;
-	if (isOpen()) {
-		_window.pollEvent(_event);
-		ret = true;
+	while (isOpen() && _window.pollEvent(_event)) {
 		if (_event.type == sf::Event::KeyPressed &&
 		    map->count(_event.key.code) > 0) {
-			_lastEvent = map->at(_event.key.code);
+			_events.push_back(map->at(_event.key.code));
+			ret = true;
 		} else if (_event.type == sf::Event::Closed) {
-			this->_lastEvent = ESC;
-		} else
-			ret = false;
+			_events.push_back(ESC);
+			ret = true;
+		}
 	}
 	return (ret);
 }
 
 Arcade::Keys Arcade::SFMLGraphicLib::getLastEvent()
 {
-	return _lastEvent;
+	auto elem = Arcade::Keys::NONE;
+
+	if (isOpen() && !_events.empty()) {
+		elem = _events.front();
+		_events.erase(_events.begin());
+	}
+	return elem;
 }
 
 void Arcade::SFMLGraphicLib::clearEvents()
 {
-	_lastEvent = NONE;
+	if (isOpen())
+		_events.clear();
 }
 
 Arcade::Vect<size_t> Arcade::SFMLGraphicLib::getScreenSize() const

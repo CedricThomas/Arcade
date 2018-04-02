@@ -54,9 +54,9 @@ const std::map<int, Arcade::Keys> Arcade::NCursesGraphicLib::_keymap = {
 Arcade::NCursesGraphicLib::NCursesGraphicLib():
 _libName("NCurse"),
 _open(false),
-_cursorXsize(10),
-_cursorYsize(20),
-_lastEvent(NONE),
+_cursorXsize(11),
+_cursorYsize(21),
+_events(),
 _termios()
 {
 }
@@ -79,8 +79,9 @@ void Arcade::NCursesGraphicLib::closeRenderer()
 	_open = false;
 }
 
-void Arcade::NCursesGraphicLib::openRenderer()
+void Arcade::NCursesGraphicLib::openRenderer(const std::string &title)
 {
+	static_cast<void>(title);
 	if (_open)
 		return;
 	initscr();
@@ -90,7 +91,7 @@ void Arcade::NCursesGraphicLib::openRenderer()
 	for (short i = 8; i < 16; i++)
 		init_pair(i, i - 8, i - 8);
 	cbreak();
-	timeout(-1);
+	timeout(1);
 	curs_set(0);
 	keypad(stdscr, TRUE);
 	noecho();
@@ -119,6 +120,8 @@ void Arcade::NCursesGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 		size_t x = glob / (box.getHeight() / _cursorYsize);
 		size_t y = glob % (box.getHeight() / _cursorYsize);
 		auto idx = getColorIndex(getAverageColor(box, x, y));
+		if (y != 0)
+			std::cerr << idx << std::endl;
 		attron(COLOR_PAIR(idx + 8));
 		mvprintw(
 			static_cast<int>(box.getY() / _cursorYsize +  y),
@@ -152,7 +155,7 @@ bool Arcade::NCursesGraphicLib::pollEvents()
 		input = getch();
 		ret = true;
 		if (map->count(input) > 0) {
-			_lastEvent = map->at(input);
+			_events.push_back(map->at(input));
 		} else
 			ret = false;
 	}
@@ -161,12 +164,19 @@ bool Arcade::NCursesGraphicLib::pollEvents()
 
 Arcade::Keys Arcade::NCursesGraphicLib::getLastEvent()
 {
-	return _lastEvent;
+	auto elem = Arcade::Keys::NONE;
+
+	if (this->isOpen() && !_events.empty()) {
+		elem = _events.front();
+		_events.erase(_events.begin());
+	}
+	return elem;
 }
 
 void Arcade::NCursesGraphicLib::clearEvents()
 {
-	_lastEvent = NONE;
+	if (this->isOpen())
+		_events.clear();
 }
 
 Arcade::Vect<size_t> Arcade::NCursesGraphicLib::getScreenSize() const
@@ -234,4 +244,11 @@ Arcade::PixelBox &box, size_t x, size_t y)
 	return Arcade::Color(static_cast<unsigned char>(r / s),
 	static_cast<unsigned char>(g / s), static_cast<unsigned char>(b / s),
 	0);
+}
+
+Arcade::NCursesGraphicLib::~NCursesGraphicLib()
+{
+	std::cerr << "ok destroyed ncurses" << std::endl;
+	if (isOpen())
+		closeRenderer();
 }
