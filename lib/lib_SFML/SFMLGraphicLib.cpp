@@ -65,7 +65,6 @@ _events()
 
 Arcade::SFMLGraphicLib::~SFMLGraphicLib()
 {
-	std::cerr << "ok destroyed sfml" << std::endl;
 	if (isOpen())
 		closeRenderer();
 }
@@ -133,7 +132,7 @@ void Arcade::SFMLGraphicLib::drawText(Arcade::TextBox &box)
 		sf::Color color(
 			c.getRed(),
 			c.getGreen(),
-			c.getGreen(),
+			c.getBlue(),
 			c.getAlpha()
 		);
 		_text.setFillColor(color);

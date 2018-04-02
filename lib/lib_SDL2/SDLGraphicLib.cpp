@@ -131,7 +131,7 @@ void Arcade::SDLGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 
 void Arcade::SDLGraphicLib::drawText(Arcade::TextBox &box)
 {
-	if (!_open)
+	if (!_open || box.getValue().empty())
 		return;
 	auto raw = (unsigned char *)box.getColor();
 	SDL_Color c = {raw[0], raw[1], raw[2], raw[3]};
@@ -210,7 +210,6 @@ size_t Arcade::SDLGraphicLib::getMaxX() const
 
 Arcade::SDLGraphicLib::~SDLGraphicLib()
 {
-	std::cerr << "ok destroyed sdl" << std::endl;
 	if (isOpen())
 		closeRenderer();
 }

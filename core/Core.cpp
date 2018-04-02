@@ -197,7 +197,7 @@ void Arcade::Core::selectNextLib()
 void Arcade::Core::menu()
 {
 	_lib->getInstance()->clearWindow();
-	_menu.refresh(*_lib->getInstance());
+	_menu.refresh(*_lib->getInstance(), *this);
 	_lib->getInstance()->refreshWindow();
 }
 
@@ -214,14 +214,10 @@ void Arcade::Core::apply_events(Arcade::Keys key)
 	};
 	const std::map<Status, std::function<void (Keys key)>> apply_keys = {
 		{MENU, [this](Keys key){
-
-
-
+			this->_menu.applyEvent(key);
 		}},
 		{GAME, [this](Keys key){
-
-
-
+			this->_game->getInstance()->applyEvent(key);
 		}},
 	};
 	if (actions.count(_status) && actions.at(_status)->count(key) > 0) {

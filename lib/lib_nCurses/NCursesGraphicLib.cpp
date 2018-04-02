@@ -28,7 +28,7 @@ const std::map<int, Arcade::Keys> Arcade::NCursesGraphicLib::_keymap = {
 	{'m', Arcade::Keys::M},
 	{'n', Arcade::Keys::N},
 	{'o', Arcade::Keys::O},
-	{'b', Arcade::Keys::P},
+	{'p', Arcade::Keys::P},
 	{'q', Arcade::Keys::Q},
 	{'r', Arcade::Keys::R},
 	{'s', Arcade::Keys::S},
@@ -54,8 +54,8 @@ const std::map<int, Arcade::Keys> Arcade::NCursesGraphicLib::_keymap = {
 Arcade::NCursesGraphicLib::NCursesGraphicLib():
 _libName("NCurse"),
 _open(false),
-_cursorXsize(11),
-_cursorYsize(21),
+_cursorXsize(8),
+_cursorYsize(14),
 _events(),
 _termios()
 {
@@ -120,8 +120,6 @@ void Arcade::NCursesGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 		size_t x = glob / (box.getHeight() / _cursorYsize);
 		size_t y = glob % (box.getHeight() / _cursorYsize);
 		auto idx = getColorIndex(getAverageColor(box, x, y));
-		if (y != 0)
-			std::cerr << idx << std::endl;
 		attron(COLOR_PAIR(idx + 8));
 		mvprintw(
 			static_cast<int>(box.getY() / _cursorYsize +  y),
@@ -231,8 +229,8 @@ Arcade::PixelBox &box, size_t x, size_t y)
 	size_t b = 0;
 
 	for (size_t idx = 0; idx < _cursorXsize * _cursorYsize; idx++) {
-		auto pos = Vect<size_t>(x * _cursorXsize + idx % _cursorYsize,
-		y * _cursorYsize + idx / _cursorYsize);
+		auto pos = Vect<size_t>(x * _cursorXsize + (idx % _cursorXsize),
+		y * _cursorYsize + (idx / _cursorXsize));
 		auto color = box.getPixel(pos);
 		r += color.getRed();
 		g += color.getGreen();
@@ -248,7 +246,6 @@ Arcade::PixelBox &box, size_t x, size_t y)
 
 Arcade::NCursesGraphicLib::~NCursesGraphicLib()
 {
-	std::cerr << "ok destroyed ncurses" << std::endl;
 	if (isOpen())
 		closeRenderer();
 }
