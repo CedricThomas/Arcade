@@ -8,7 +8,8 @@
 
 NAME = lib_arcade_nibbler.so
 
-SRC = entry.cpp
+SRC = entry.cpp \
+        Nibbler.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
