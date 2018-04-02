@@ -8,6 +8,7 @@
 #include <iostream>
 #include <dirent.h>
 #include <fstream>
+#include <functional>
 #include "Core.hpp"
 
 const Arcade::Core::core_bindings Arcade::Core::_menu_actions = {
@@ -30,7 +31,7 @@ const std::string &selected)
   _games(),
   _graphicIdx(0),
   _gameIdx(0),
-  _status(MENU),
+  _status(GAME),
   _player(),
   _menu()
 {
@@ -76,6 +77,9 @@ void Arcade::Core::loadLibs(const std::string &directory)
 void Arcade::Core::start()
 {
 	_lib->getInstance()->openRenderer("Arcade");
+	selectGameByIdx(0);
+	_game->getInstance()->init();
+	_game->getInstance()->open();
 	while (_status != EXIT) {
 		Arcade::Keys key;
 		_lib->getInstance()->pollEvents();
@@ -197,13 +201,15 @@ void Arcade::Core::selectNextLib()
 void Arcade::Core::menu()
 {
 	_lib->getInstance()->clearWindow();
-	_menu.refresh(*_lib->getInstance());
+	_game->getInstance()->refresh(*_lib->getInstance());
 	_lib->getInstance()->refreshWindow();
 }
 
 void Arcade::Core::game()
 {
-
+	_lib->getInstance()->clearWindow();
+	_menu.refresh(*_lib->getInstance());
+	_lib->getInstance()->refreshWindow();
 }
 
 void Arcade::Core::apply_events(Arcade::Keys key)
