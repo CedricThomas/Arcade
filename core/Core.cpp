@@ -12,20 +12,20 @@
 #include "Core.hpp"
 
 const Arcade::Core::core_bindings Arcade::Core::_menu_actions = {
-	{Arcade::Keys::RIGHT, &Arcade::Core::selectNextLib},
-	{Arcade::Keys::LEFT, &Arcade::Core::selectPrevLib},
+	{Arcade::Keys::D, &Arcade::Core::selectNextLib},
+	{Arcade::Keys::Q, &Arcade::Core::selectPrevLib},
 	{Arcade::Keys::ESC, &Arcade::Core::exitArcade},
 	{Arcade::Keys::ENTER, &Arcade::Core::openGame}
 };
 
 const Arcade::Core::core_bindings Arcade::Core::_game_actions = {
-	{Arcade::Keys::RIGHT, &Arcade::Core::selectNextLib},
-	{Arcade::Keys::LEFT, &Arcade::Core::selectPrevLib},
+	{Arcade::Keys::D, &Arcade::Core::selectNextLib},
+	{Arcade::Keys::Q, &Arcade::Core::selectPrevLib},
 	{Arcade::Keys::ESC, &Arcade::Core::exitArcade},
 	{Arcade::Keys::BACKSPACE, &Arcade::Core::goBackMenu},
-	{Arcade::Keys::DOWN, &Arcade::Core::selectNextGame},
-	{Arcade::Keys::UP, &Arcade::Core::selectPrevGame},
-	{Arcade::Keys::ENTER, &Arcade::Core::resetGame}
+	{Arcade::Keys::S, &Arcade::Core::selectNextGame},
+	{Arcade::Keys::Z, &Arcade::Core::selectPrevGame},
+	{Arcade::Keys::R, &Arcade::Core::resetGame}
 };
 
 Arcade::Core::Core(const std::string &graph, const std::string &game,
@@ -137,14 +137,11 @@ void Arcade::Core::selectGameByIdx(int idx)
 {
 	if (static_cast<size_t>(idx) > _gamesPaths.size() || idx < 0)
 		throw LoadingError("the selected lib doesn't exist.");
-	if (_gameIdx >= 0) {
-		_game->getInstance()->close();
+	if (_gameIdx >= 0)
 		_game->getInstance()->stop();
-	}
 	_gameIdx = idx;
 	_game = std::make_unique<DLLoader<IGameLib>>(_gamesPaths[idx]);
 	_game->getInstance()->init();
-	_game->getInstance()->open();
 }
 
 void Arcade::Core::resetGame()
@@ -154,7 +151,7 @@ void Arcade::Core::resetGame()
 
 void Arcade::Core::goBackMenu()
 {
-	_game->getInstance()->close();
+	_game->getInstance()->stop();
 	_status = MENU;
 }
 
@@ -164,7 +161,7 @@ void Arcade::Core::openGame()
 	if (_gameIdx != idx)
 		selectGameByIdx(idx);
 	else
-		_game->getInstance()->open();
+		_game->getInstance()->init();
 	_status = GAME;
 }
 

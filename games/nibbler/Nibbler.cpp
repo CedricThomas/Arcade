@@ -5,39 +5,38 @@
 ** Nibbler
 */
 
-#include <iostream>
 #include <map>
 #include <zconf.h>
 #include "Nibbler.hpp"
 #include "IGameLib.hpp"
 
-static const char	**map_nibbler = {"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n",
-"X                              X",
-"X   XXX       XXX        XXX   X",
-"X                              X",
-"X        X             X       X",
-"X        X             X       X",
-"X        X             X       X",
-"X                              X",
-"X                              X",
-"X   X                      X   X",
-"X    X                    X    X",
-"X    X        XXXXX       X    X",
-"X   X        XXXXXXX       X   X",
-"X            XXXXXXX           X",
-"X       X    XXXXXXX    X      X",
-"X      X      XXXXX      X     X",
-"X      X                 X     X",
-"X       X               X      X",
-"X                              X",
-"X                              X",
-"X        X             X       X",
-"X        X             X       X",
-"X        X             X       X",
-"X                              X",
-"X   XXX       XXX        XXX   X",
-"X                              X",
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"};
+const std::vector<std::string> Arcade::Nibbler::_template = {
+	"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+	"X  XXX       XXX        XXX  X",
+	"X                            X",
+	"X       X             X      X",
+	"X       X             X      X",
+	"X       X             X      X",
+	"X                            X",
+	"X                            X",
+	"X  X                      X  X",
+	"X   X                    X   X",
+	"X   X        XXXXX       X   X",
+	"X  X        XXXXXXX       X  X",
+	"X           XXXXXXX          X",
+	"X      X    XXXXXXX    X     X",
+	"X     X      XXXXX      X    X",
+	"X     X                 X    X",
+	"X      X               X     X",
+	"X                            X",
+	"X                            X",
+	"X       X             X      X",
+	"X       X             X      X",
+	"X       X             X      X",
+	"X                            X",
+	"X  XXX       XXX        XXX  X",
+	"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+};
 
 Arcade::Nibbler::Nibbler()
 : _mapSize(30, 25),
@@ -47,7 +46,8 @@ _level(0),
 _score(0),
 _background(),
 _winsize(),
-_dir(0, 1)
+_dir(0, 1),
+_last()
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 }
@@ -56,16 +56,12 @@ void Arcade::Nibbler::genWalls()
 {
 	auto maxX = _mapSize.getX();
 	auto maxY = _mapSize.getY();
-	auto border = [maxX, maxY](size_t i) {
-		return (i % maxX == 0 || i % maxX == maxX - 1 ||
-		       i / maxX == 0 || i / maxX == maxY - 1);
-	};
 	for (size_t i = 0; i < maxX * maxY; i++) {
-		if (border(i))
+		if (Arcade::Nibbler::_template[i / maxX][i % maxX] == 'X')
 			_map[i / maxX][i % maxX].type = WALL;
 		else {
 			_map[i / maxX][i % maxX].type = EMPTY;
-			_map[i / maxX][i % maxX].connections = SELF;
+			_map[i / maxX][i % maxX].connect = SELF;
 		}
 	}
 }
@@ -74,12 +70,14 @@ bool Arcade::Nibbler::init()
 {
 	_dir = {0, 1};
 	_level = 0;
-	_score = 0;
 	_snake = std::vector<Vect<int>>(1, {1, 1});
 	genWalls();
 	for (int i = 0; i < 3; i++)
 		moveSnake(true);
 	genApple();
+	_score = 0;
+	_last = std::chrono::high_resolution_clock::now();
+	return true;
 }
 
 Arcade::Nibbler::~Nibbler()
@@ -104,36 +102,38 @@ const std::string Arcade::Nibbler::getName() const
 
 bool Arcade::Nibbler::stop()
 {
-	return false;
+	return true;
 }
 
-bool Arcade::Nibbler::close()
-{
-	return false;
-}
-
-bool Arcade::Nibbler::open()
-{
-
-	return false;
-}
-
-void Arcade::Nibbler::applyEvent(Arcade::Keys key)
+bool Arcade::Nibbler::applyEvent(Arcade::Keys key)
 {
 	const std::map<Arcade::Keys, Vect<int>> event = {
-		{S, {0, 1}},
-		{Z, {0, -1}},
-		{D, {1, 0}},
-		{Q, {-1, 0}}
+		{DOWN, {0, 1}},
+		{UP, {0, -1}},
+		{RIGHT, {1, 0}},
+		{LEFT, {-1, 0}}
 	};
-	if (event.count(key))
+	auto ret = false;
+	if (event.count(key) && !(event.at(key).getX() == -_dir.getX() &&
+		event.at(key).getY() == -_dir.getY())) {
 		_dir = event.at(key);
+		ret = true;
+	}
+	return ret;
 }
 
-void Arcade::Nibbler::update()
+bool Arcade::Nibbler::update()
 {
-	if (!moveSnake())
-		exit(84);
+	auto now = std::chrono::high_resolution_clock::now();
+	auto time_span =
+	std::chrono::duration_cast<std::chrono::duration<double>>(now - _last);
+	if (time_span.count() < (0.5 - (0.01 * _score / 100)))
+		return true;
+	_last = now;
+	auto ret = moveSnake();
+	if (ret)
+		shapeSnake();
+	return ret;
 }
 
 bool Arcade::Nibbler::moveSnake(bool append)
@@ -153,7 +153,7 @@ bool Arcade::Nibbler::moveSnake(bool append)
 	return true;
 }
 
-void Arcade::Nibbler::resizePixelbox(Arcade::Vect<size_t> winsize)
+void Arcade::Nibbler::resizePixelbox(const Arcade::Vect<size_t> &winsize)
 {
 	_winsize = winsize;
 	_background = PixelBox(_winsize, {0, 0});
@@ -186,18 +186,24 @@ void Arcade::Nibbler::drawSnake()
 	auto maxX = _mapSize.getX();
 	auto maxY = _mapSize.getY();
 	Vect<size_t> size(_winsize.getX() / maxX, _winsize.getY() / maxY);
+	auto head = true;
 	Color green(0, 255, 0, 255);
 	for (auto &n : _snake) {
-		Vect<size_t> real_pos(
+		Vect<size_t> realPos(
 			n.getX() * size.getX(),
 			n.getY() * size.getY()
 		);
-		_background.putRect(real_pos, size, green);
+		if (head)
+			drawSnakeHead(realPos);
+		else
+			drawSnakeElem(realPos, n);
+		head = false;
 	}
 }
 
 void Arcade::Nibbler::genApple()
 {
+	_score += 100;
 	bool generated = false;
 	while (!generated) {
 		auto x = rand() % _mapSize.getX();
@@ -207,6 +213,88 @@ void Arcade::Nibbler::genApple()
 			generated = true;
 		}
 	}
+}
+
+size_t Arcade::Nibbler::getScore()
+{
+	return _score;
+}
+
+void Arcade::Nibbler::drawSnakeElem(const Arcade::Vect<size_t> &realpos,
+	const Vect<int> &mappos)
+{
+	Color green(0, 255, 0, 255);
+	auto maxX = _mapSize.getX();
+	auto maxY = _mapSize.getY();
+	Vect<size_t> size(_winsize.getX() / maxX, _winsize.getY() / maxY);
+	Vect<size_t> border(size.getX() * 10 / 100, size.getY() * 10 / 100);
+	Vect<size_t> center(size.getX() * 80 / 100, size.getY() * 80 / 100);
+	_background.putRect(realpos + border, center, green);
+	static_cast<void>(mappos);
+//	if (_map[realpos.getY()][realpos.getY()].connect & SU)
+//		_background.putRect(realpos + border, center, green);
+//	if (_map[realpos.getY()][realpos.getY()].connect & SD)
+//
+//	if (_map[realpos.getY()][realpos.getY()].connect & SR)
+//
+//	if (_map[realpos.getY()][realpos.getY()].connect & SL)
+}
+
+void Arcade::Nibbler::shapeSnake()
+{
+	const std::map<std::pair<int, int>, connected_e> links = {
+		{{0, -1}, SU},
+		{{0, 1}, SD},
+		{{1, 0}, SL},
+		{{-1, 0}, SR}
+	};
+	_map[_snake[0].getY()][_snake[0].getX()].connect = (SU | SD | SL | SR);
+	for (size_t i = 1; i < _snake.size(); i++) {
+		auto x = _snake[i].getX();
+		auto y = _snake[i].getY();
+		auto xP = _snake[i- 1].getX();
+		auto yP = _snake[i - 1].getY();
+		_map[y][x].connect = links.at({x - xP, y - yP});
+		_map[yP][xP].connect |= links.at({xP - x, yP - y});
+	}
+}
+
+void Arcade::Nibbler::drawSnakeHead(const Arcade::Vect<size_t> &realPos)
+{
+	Vect<size_t> size(_winsize.getX() / _mapSize.getX(),
+	_winsize.getY() / _mapSize.getY());
+	Vect<size_t> lSize(size.getX() / 6, size.getY()/ 6);
+	_background.putRect(realPos, size, {0, 255, 0, 255});
+	drawLeftEye(realPos, lSize);
+	drawRightEye(realPos, lSize);
+}
+
+void Arcade::Nibbler::drawLeftEye(const Arcade::Vect<size_t> &rPos,
+const Vect<size_t> &lSize)
+{
+	const std::map<std::pair<int, int>, Vect<size_t>> leyes = {
+		{{0, -1}, {lSize.getX(), 4 * lSize.getY()}},
+		{{0, 1}, {lSize.getX(), lSize.getY()}},
+		{{1, 0}, {lSize.getX(), lSize.getY()}},
+		{{-1, 0}, {4 * lSize.getX(), lSize.getY()}}
+	};
+	auto x = rPos.getX() + leyes.at({_dir.getX(), _dir.getY()}).getX();
+	auto y = rPos.getY() + leyes.at({_dir.getX(), _dir.getY()}).getY();
+	_background.putRect({x, y}, lSize, {0, 0, 0, 255});
+}
+
+void Arcade::Nibbler::drawRightEye(const Arcade::Vect<size_t> &rPos,
+const Vect<size_t> &lSize)
+{
+	const std::map<std::pair<int, int>, Vect<size_t>> reyes = {
+		{{0, -1}, {4 * lSize.getX(), 4 * lSize.getY()}},
+		{{0, 1}, {4 * lSize.getX(), lSize.getY()}},
+		{{1, 0}, {lSize.getX(), 4 * lSize.getY()}},
+		{{-1, 0}, {4 * lSize.getX(), 4 *lSize.getY()}}
+	};
+	auto x = rPos.getX() + reyes.at({_dir.getX(), _dir.getY()}).getX();
+	auto y = rPos.getY() + reyes.at({_dir.getX(), _dir.getY()}).getY();
+	_background.putRect({x, y}, lSize, {0, 0, 0, 255});
 }
 
 

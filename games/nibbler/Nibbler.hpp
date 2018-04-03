@@ -10,59 +10,66 @@
 
 	#include <string>
 	#include <vector>
+#include <chrono>
 
-	#include "IGameLib.hpp"
+#include "IGameLib.hpp"
 	#include "IGraphicLib.hpp"
 
-enum type_e {
-	EMPTY = 0,
-	SNAKE = 2,
-	APPLE = 4,
-	WALL = 8
-};
-
-enum connected_e {
-	SELF = 0,
-	LEFT = 2,
-	RIGHT = 4,
-	DOWN = 8,
-	UP = 16,
-};
-
-struct board_s {
-
-	connected_e connections;
-	type_e type;
-};
-
-using board_t = struct board_s;
-
 namespace Arcade {
+
+	enum type_e {
+		EMPTY = 0,
+		SNAKE = 2,
+		APPLE = 4,
+		WALL = 8
+	};
+
+		enum connected_e {
+			SELF = 0,
+			SU = 2,
+			SR = 4,
+			SD = 8,
+			SL = 16,
+		};
+
+	struct board_s {
+		int connect;
+		type_e type;
+	};
+
+	using board_t = struct board_s;
 
 	class Nibbler : public IGameLib {
 	public:
 		bool init() override;
 		bool stop() override;
-		bool close() override;
-		bool open() override;
-		void applyEvent(Keys key) override;
-		void update() override;
+		bool applyEvent(Keys key) override;
+		bool update() override;
 		const std::string getName() const override;
 		Nibbler();
 		virtual ~Nibbler();
 		void refresh(IGraphicLib &graphicLib) override;
+		size_t getScore() override;
 	private:
 		// gen methods
 		void genWalls();
 		void genApple();
 
 		// refresh methods
-		void resizePixelbox(Vect<size_t> size);
+		void resizePixelbox(const Vect<size_t> &size);
 		void drawDrawWalls();
 		void drawSnake();
+		void drawSnakeHead(const Vect<size_t> &realPos);
+		void drawLeftEye(const Arcade::Vect<size_t> &rPos,
+		const Vect<size_t> &lSize);
+		void drawRightEye(const Arcade::Vect<size_t> &rPos,
+		const Vect<size_t> &lSize);
+		void drawSnakeElem(const Vect<size_t> &realpos,
+			const Vect<int> &mappos);
 
 		// utils methods
 		bool moveSnake(bool append = false);
+		void shapeSnake();
 
 		Vect<size_t> _mapSize;
 		std::vector<std::vector<board_t>> _map;
@@ -72,6 +79,9 @@ namespace Arcade {
 		PixelBox _background;
 		Vect<size_t> _winsize;
 		Vect<int> _dir;
+		std::chrono::high_resolution_clock::time_point _last;
+
+		static const std::vector<std::string> _template;
 	};
 }
 
