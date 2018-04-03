@@ -11,6 +11,34 @@
 #include "Nibbler.hpp"
 #include "IGameLib.hpp"
 
+static const char	**map_nibbler = {"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n",
+"X                              X",
+"X   XXX       XXX        XXX   X",
+"X                              X",
+"X        X             X       X",
+"X        X             X       X",
+"X        X             X       X",
+"X                              X",
+"X                              X",
+"X   X                      X   X",
+"X    X                    X    X",
+"X    X        XXXXX       X    X",
+"X   X        XXXXXXX       X   X",
+"X            XXXXXXX           X",
+"X       X    XXXXXXX    X      X",
+"X      X      XXXXX      X     X",
+"X      X                 X     X",
+"X       X               X      X",
+"X                              X",
+"X                              X",
+"X        X             X       X",
+"X        X             X       X",
+"X        X             X       X",
+"X                              X",
+"X   XXX       XXX        XXX   X",
+"X                              X",
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"};
+
 Arcade::Nibbler::Nibbler()
 : _mapSize(30, 25),
 _map(_mapSize.getY(), std::vector<board_t >(_mapSize.getX())),
