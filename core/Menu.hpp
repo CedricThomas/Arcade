@@ -24,6 +24,8 @@ namespace Arcade {
 		void refresh(IGraphicLib &graphicLib, const Core &core);
 		size_t getGameIdx() const;
 
+		const std::string &getPlayerName() const;
+
 	private:
 		void recalculate(Vect<size_t> winsize);
 		void drawLibs(Arcade::IGraphicLib &graphicLib,

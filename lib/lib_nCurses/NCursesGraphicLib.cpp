@@ -207,7 +207,7 @@ size_t Arcade::NCursesGraphicLib::getColorIndex(Arcade::Color color)
 	auto raw = (unsigned char *)color;
 	float sum = raw[0] + raw[1] + raw[2];
 
-	if (sum  > (90.0         / 100.0 * 3.0 * 255.0))
+	if (sum  > (90.0 / 100.0 * 3.0 * 255.0))
 		return 7;
 	for (size_t i = 0; i < 3; i++)
 		if (raw[i] * 100.0 / sum > 80.0)
@@ -246,6 +246,7 @@ Arcade::PixelBox &box, size_t x, size_t y)
 
 Arcade::NCursesGraphicLib::~NCursesGraphicLib()
 {
+	std::cerr << "ok destroy ncurses" << std::endl;
 	if (isOpen())
 		closeRenderer();
 }

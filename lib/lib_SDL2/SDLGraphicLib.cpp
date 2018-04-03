@@ -210,6 +210,7 @@ size_t Arcade::SDLGraphicLib::getMaxX() const
 
 Arcade::SDLGraphicLib::~SDLGraphicLib()
 {
+	std::cerr << "ok destroy sdl" << std::endl;
 	if (isOpen())
 		closeRenderer();
 }

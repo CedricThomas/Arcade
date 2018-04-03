@@ -50,7 +50,8 @@ Arcade::SFMLGraphicLib::_keymap = {
 
 
 Arcade::SFMLGraphicLib::SFMLGraphicLib()
-: _texture(),
+: _open(false),
+_texture(),
 _sprite(),
 _text(),
 _libName("SFML"),
@@ -65,6 +66,7 @@ _events()
 
 Arcade::SFMLGraphicLib::~SFMLGraphicLib()
 {
+	std::cerr << "ok destroy sfml" << std::endl;
 	if (isOpen())
 		closeRenderer();
 }
@@ -76,20 +78,26 @@ std::string Arcade::SFMLGraphicLib::getName() const
 
 bool Arcade::SFMLGraphicLib::isOpen() const
 {
-	return _window.isOpen();
+	return _open;
 }
 
 void Arcade::SFMLGraphicLib::closeRenderer()
 {
-	if (isOpen())
+	if (isOpen()) {
 		_window.close();
+		_open = false;
+	}
 }
 
 void Arcade::SFMLGraphicLib::openRenderer(const std::string &title)
 {
-	_window.create(sf::VideoMode(1920, 1080, 32), title, sf::Style::Close);
-	_texture.create(1920, 1080);
-	_sprite.setTexture(_texture, true);
+	if (!isOpen()) {
+		_window.create(sf::VideoMode(1920, 1080, 32), title,
+		               sf::Style::Close);
+		_texture.create(1920, 1080);
+		_sprite.setTexture(_texture, true);
+		_open = true;
+	}
 }
 
 void Arcade::SFMLGraphicLib::clearWindow()

@@ -21,6 +21,7 @@ namespace Arcade {
 		: _instance(nullptr), _lib()
 		{
 			_lib = dlopen(file.c_str(), mod);
+			_path = file;
 			if (_lib == nullptr) {
 				auto str = "cstr : " + file;
 				str += + " : " + std::string(dlerror());
@@ -47,6 +48,11 @@ namespace Arcade {
 			return _instance;
 		}
 
+		const std::string &getPath() const
+		{
+			return _path;
+		}
+
 		T *loadInstance(std::string sym_name="entryPoint")
 		{
 			auto *sym = dlsym(_lib, sym_name.c_str());
@@ -62,6 +68,7 @@ namespace Arcade {
 	private:
 		T *_instance;
 		void *_lib;
+		std::string _path;
 	};
 }
 

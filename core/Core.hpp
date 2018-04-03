@@ -9,6 +9,7 @@
 	#define ARCADE_CORE_HPP
 
 	#include <vector>
+	#include <list>
 	#include <string>
 	#include <memory>
 	#include <map>
@@ -35,8 +36,8 @@ namespace Arcade {
 		void apply_events(Arcade::Keys key);
 
 		//Commons
-		void exitArcade();
 
+		void exitArcade();
 		void selectNextLib();
 		void selectPrevLib();
 
@@ -70,11 +71,12 @@ namespace Arcade {
 		void selectGraphByFilename(const std::string &name);
 
 
-		std::unique_ptr<DLLoader<IGraphicLib>> _lib;
+		std::unique_ptr<DLLoader<IGraphicLib>> _graph;
 		std::unique_ptr<DLLoader<IGameLib>> _game;
-
-		std::vector<std::string> _libs;
-		std::vector<std::string> _games;
+		std::vector<std::string> _libsPaths;
+		std::vector<std::string> _gamesPaths;
+		std::vector<std::string> _libsNames;
+		std::vector<std::string> _gamesNames;
 
 		std::string _libsPath;
 		std::string _gamesPath;

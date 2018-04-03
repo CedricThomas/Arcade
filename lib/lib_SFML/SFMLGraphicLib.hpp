@@ -34,7 +34,7 @@ namespace Arcade {
 		size_t getMaxY() const final;
 		size_t getMaxX() const final;
 	private:
-
+		bool _open;
 		sf::Texture _texture;
 		sf::Sprite _sprite;
 		sf::Text _text;

@@ -145,3 +145,8 @@ size_t Arcade::Menu::getGameIdx() const
 {
 	return _idxGame;
 }
+
+const std::string &Arcade::Menu::getPlayerName() const
+{
+	return _player_name;
+}
