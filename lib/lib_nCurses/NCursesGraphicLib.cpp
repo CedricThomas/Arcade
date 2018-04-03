@@ -54,8 +54,8 @@ const std::map<int, Arcade::Keys> Arcade::NCursesGraphicLib::_keymap = {
 Arcade::NCursesGraphicLib::NCursesGraphicLib():
 _libName("NCurse"),
 _open(false),
-_cursorXsize(1),
-_cursorYsize(1),
+_cursorXsize(8),
+_cursorYsize(14),
 _events(),
 _termios()
 {
@@ -207,13 +207,13 @@ size_t Arcade::NCursesGraphicLib::getColorIndex(Arcade::Color color)
 	auto raw = (unsigned char *)color;
 	float sum = raw[0] + raw[1] + raw[2];
 
-	if (sum  > (90.0 / 100.0 * 3.0 * 255.0))
+	if (sum  > (90.0         / 100.0 * 3.0 * 255.0))
 		return 7;
 	for (size_t i = 0; i < 3; i++)
-		if (raw[i] * 100.0 / sum > 60.0)
+		if (raw[i] * 100.0 / sum > 80.0)
 			return static_cast<size_t>(pow(2, i));
 	for (size_t i = 0; i < 9; i++)
-		if ((raw[i / 3] + raw[i % 3]) * 100.0 / sum > 60.0 &&
+		if ((raw[i / 3] + raw[i % 3]) * 100.0 / sum > 80.0 &&
 			(i / 3 != i % 3))
 			return static_cast<size_t>
 			(pow(2, i % 3) + pow(2, i / 3));

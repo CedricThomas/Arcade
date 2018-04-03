@@ -11,7 +11,7 @@
 
 Arcade::Nibbler::Nibbler()
 : _mapSize(30, 25),
-_map(_mapSize.getX(), std::vector<board_t >(_mapSize.getY())),
+_map(_mapSize.getY(), std::vector<board_t >(_mapSize.getX())),
 _snake(4),
 _level(0),
 _score(0),
@@ -48,11 +48,9 @@ void Arcade::Nibbler::refresh(Arcade::IGraphicLib &graphicLib)
 void Arcade::Nibbler::recalculate(Arcade::Vect<size_t> winsize)
 {
 	_winsize = winsize;
-	std::cerr  << "("<< winsize.getX() << ";" << winsize.getY() << ")" << std::endl;
 	auto maxX = _mapSize.getX();
 	auto maxY = _mapSize.getY();
 	Vect<size_t> size(winsize.getX() / maxX, winsize.getY() / maxY);
-	std::cerr  << "("<< size.getX() << ";" << size.getY() << ")" << std::endl;
 	Color red(255, 0, 0, 255);
 	Color blue(0, 0, 255, 255);
 	_pixelbox = PixelBox(_winsize, {0, 0}, red);
