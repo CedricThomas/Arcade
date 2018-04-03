@@ -11,9 +11,6 @@
 #include <functional>
 #include "Core.hpp"
 
-
-//TODO ncurses -> sdl -> ncurses resize = segv
-
 const Arcade::Core::core_bindings Arcade::Core::_menu_actions = {
 	{Arcade::Keys::RIGHT, &Arcade::Core::selectNextLib},
 	{Arcade::Keys::LEFT, &Arcade::Core::selectPrevLib},

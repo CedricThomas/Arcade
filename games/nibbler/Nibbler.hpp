@@ -22,10 +22,11 @@ enum type_e {
 };
 
 enum connected_e {
-	LEFT = 1,
-	RIGHT = 2,
-	DOWN = 4,
-	UP = 8,
+	SELF = 0,
+	LEFT = 2,
+	RIGHT = 4,
+	DOWN = 8,
+	UP = 16,
 };
 
 struct board_s {
@@ -51,13 +52,24 @@ namespace Arcade {
 		virtual ~Nibbler();
 		void refresh(IGraphicLib &graphicLib) override;
 	private:
-		void recalculate(Vect<size_t> size);
+		// gen methods
+		void genWalls();
+		void genApple();
+
+		// refresh methods
+		void resizePixelbox(Vect<size_t> size);
+		void drawDrawWalls();
+		void drawSnake();
+
+		// utils methods
+		bool moveSnake(bool append = false);
+
 		Vect<size_t> _mapSize;
 		std::vector<std::vector<board_t>> _map;
 		std::vector<Vect<int>> _snake;
 		size_t _level;
 		size_t _score;
-		PixelBox _pixelbox;
+		PixelBox _background;
 		Vect<size_t> _winsize;
 		Vect<int> _dir;
 	};

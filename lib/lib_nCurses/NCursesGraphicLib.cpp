@@ -54,8 +54,8 @@ const std::map<int, Arcade::Keys> Arcade::NCursesGraphicLib::_keymap = {
 Arcade::NCursesGraphicLib::NCursesGraphicLib():
 _libName("NCurse"),
 _open(false),
-_cursorXsize(8),
-_cursorYsize(14),
+_cursorXsize(1),
+_cursorYsize(1),
 _events(),
 _termios()
 {
