@@ -22,13 +22,8 @@ _winsize()
 	auto maxY = _mapSize.getY();
 	for (size_t i = 0; i < maxX * maxY; i++) {
 		if (i % maxX == 0 || i % maxX == maxX - 1 ||
-		i / maxX == 0 || i / maxX == maxY - 1) {
+		i / maxX == 0 || i / maxX == maxY - 1)
 			_map[i / maxX][i % maxX].type = WALL;
-			std::cerr << "X";
-		} else
-			std::cerr << "O";
-		if (i % maxX == maxX - 1)
-			std::cerr << std::endl;
 	}
 }
 
