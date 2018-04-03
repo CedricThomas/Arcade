@@ -10,6 +10,7 @@
 
 	#include <string>
 	#include <vector>
+
 	#include "IGameLib.hpp"
 	#include "IGraphicLib.hpp"
 
@@ -22,7 +23,7 @@ enum type_e {
 
 enum connected_e {
 	LEFT = 1,
-	RIGHt = 2,
+	RIGHT = 2,
 	DOWN = 4,
 	UP = 8,
 };
@@ -37,7 +38,7 @@ using board_t = struct board_s;
 
 namespace Arcade {
 
-	class Nibbler : public IGameLib{
+	class Nibbler : public IGameLib {
 	public:
 		bool init() override;
 		bool stop() override;
@@ -53,11 +54,12 @@ namespace Arcade {
 		void recalculate(Vect<size_t> size);
 		Vect<size_t> _mapSize;
 		std::vector<std::vector<board_t>> _map;
-		std::vector<Vect<size_t>> _snake;
+		std::vector<Vect<int>> _snake;
 		size_t _level;
 		size_t _score;
 		PixelBox _pixelbox;
 		Vect<size_t> _winsize;
+		Vect<int> _dir;
 	};
 }
 
