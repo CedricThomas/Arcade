@@ -40,11 +40,12 @@ const std::vector<std::string> Arcade::Nibbler::_template = {
 
 Arcade::Nibbler::Nibbler()
 : _mapSize(30, 25),
-_map(_mapSize.getY(), std::vector<board_t >(_mapSize.getX())),
+_map(_mapSize.getY(), std::vector<type_e>(_mapSize.getX())),
 _snake(1, {1, 1}),
 _level(0),
 _score(0),
 _background(),
+_scoreBox("0", {0, 0}),
 _winsize(),
 _dir(0, 1),
 _last()
@@ -58,11 +59,9 @@ void Arcade::Nibbler::genWalls()
 	auto maxY = _mapSize.getY();
 	for (size_t i = 0; i < maxX * maxY; i++) {
 		if (Arcade::Nibbler::_template[i / maxX][i % maxX] == 'X')
-			_map[i / maxX][i % maxX].type = WALL;
-		else {
-			_map[i / maxX][i % maxX].type = EMPTY;
-			_map[i / maxX][i % maxX].connect = SELF;
-		}
+			_map[i / maxX][i % maxX] = WALL;
+		else
+			_map[i / maxX][i % maxX] = EMPTY;
 	}
 }
 
@@ -93,6 +92,7 @@ void Arcade::Nibbler::refresh(Arcade::IGraphicLib &graphicLib)
 	drawDrawWalls();
 	drawSnake();
 	graphicLib.drawPixelBox(_background);
+	graphicLib.drawText(_scoreBox);
 }
 
 const std::string Arcade::Nibbler::getName() const
@@ -130,26 +130,23 @@ bool Arcade::Nibbler::update()
 	if (time_span.count() < (0.5 - (0.01 * _score / 100)))
 		return true;
 	_last = now;
-	auto ret = moveSnake();
-	if (ret)
-		shapeSnake();
-	return ret;
+	return moveSnake();
 }
 
 bool Arcade::Nibbler::moveSnake(bool append)
 {
 	auto back = _snake.back();
 	auto front = _snake.at(0) + _dir;
-	if (_map[front.getY()][front.getX()].type == SNAKE ||
-	_map[front.getY()][front.getX()].type == WALL)
+	if (_map[front.getY()][front.getX()] == SNAKE ||
+	_map[front.getY()][front.getX()] == WALL)
 		return false;
-	if (_map[front.getY()][front.getX()].type != APPLE && !append) {
+	if (_map[front.getY()][front.getX()] != APPLE && !append) {
 		_snake.pop_back();
-		_map[back.getY()][back.getX()].type = EMPTY;
+		_map[back.getY()][back.getX()] = EMPTY;
 	} else if (!append)
 		genApple();
 	_snake.insert(_snake.begin(), front);
-	_map[front.getY()][front.getX()].type = SNAKE;
+	_map[front.getY()][front.getX()] = SNAKE;
 	return true;
 }
 
@@ -172,9 +169,9 @@ void Arcade::Nibbler::drawDrawWalls()
 			i % maxX * size.getX(),
 			i / maxX * size.getY()
 		);
-		if (_map[i / maxX][i % maxX].type == WALL)
+		if (_map[i / maxX][i % maxX] == WALL)
 			_background.putRect(pos, size, blue);
-		else if (_map[i / maxX][i % maxX].type == APPLE)
+		else if (_map[i / maxX][i % maxX] == APPLE)
 			_background.putRect(pos, size, red);
 		else
 			_background.putRect(pos, size, white);
@@ -187,7 +184,6 @@ void Arcade::Nibbler::drawSnake()
 	auto maxY = _mapSize.getY();
 	Vect<size_t> size(_winsize.getX() / maxX, _winsize.getY() / maxY);
 	auto head = true;
-	Color green(0, 255, 0, 255);
 	for (auto &n : _snake) {
 		Vect<size_t> realPos(
 			n.getX() * size.getX(),
@@ -196,7 +192,7 @@ void Arcade::Nibbler::drawSnake()
 		if (head)
 			drawSnakeHead(realPos);
 		else
-			drawSnakeElem(realPos, n);
+			drawSnakeElem(realPos);
 		head = false;
 	}
 }
@@ -204,12 +200,13 @@ void Arcade::Nibbler::drawSnake()
 void Arcade::Nibbler::genApple()
 {
 	_score += 100;
+	_scoreBox.setValue(std::to_string(_score));
 	bool generated = false;
 	while (!generated) {
 		auto x = rand() % _mapSize.getX();
 		auto y = rand() % _mapSize.getY();
-		if (_map[y][x].type == EMPTY) {
-			_map[y][x].type = APPLE;
+		if (_map[y][x] == EMPTY) {
+			_map[y][x] = APPLE;
 			generated = true;
 		}
 	}
@@ -220,43 +217,19 @@ size_t Arcade::Nibbler::getScore()
 	return _score;
 }
 
-void Arcade::Nibbler::drawSnakeElem(const Arcade::Vect<size_t> &realpos,
-	const Vect<int> &mappos)
+void Arcade::Nibbler::drawSnakeElem(const Arcade::Vect<size_t> &realpos)
 {
 	Color green(0, 255, 0, 255);
 	auto maxX = _mapSize.getX();
 	auto maxY = _mapSize.getY();
 	Vect<size_t> size(_winsize.getX() / maxX, _winsize.getY() / maxY);
-	Vect<size_t> border(size.getX() * 10 / 100, size.getY() * 10 / 100);
-	Vect<size_t> center(size.getX() * 80 / 100, size.getY() * 80 / 100);
+	auto prc = 10;
+	if (_winsize.getX() * _winsize.getY() < 10000)
+		prc = 0;
+	Vect<size_t> border(size.getX() * prc / 100, size.getY() * prc / 100);
+	Vect<size_t> center(size.getX() * (100 - 2 * prc) / 100,
+	size.getY() * (100 - 2 * prc) / 100);
 	_background.putRect(realpos + border, center, green);
-	static_cast<void>(mappos);
-//	if (_map[realpos.getY()][realpos.getY()].connect & SU)
-//		_background.putRect(realpos + border, center, green);
-//	if (_map[realpos.getY()][realpos.getY()].connect & SD)
-//
-//	if (_map[realpos.getY()][realpos.getY()].connect & SR)
-//
-//	if (_map[realpos.getY()][realpos.getY()].connect & SL)
-}
-
-void Arcade::Nibbler::shapeSnake()
-{
-	const std::map<std::pair<int, int>, connected_e> links = {
-		{{0, -1}, SU},
-		{{0, 1}, SD},
-		{{1, 0}, SL},
-		{{-1, 0}, SR}
-	};
-	_map[_snake[0].getY()][_snake[0].getX()].connect = (SU | SD | SL | SR);
-	for (size_t i = 1; i < _snake.size(); i++) {
-		auto x = _snake[i].getX();
-		auto y = _snake[i].getY();
-		auto xP = _snake[i- 1].getX();
-		auto yP = _snake[i - 1].getY();
-		_map[y][x].connect = links.at({x - xP, y - yP});
-		_map[yP][xP].connect |= links.at({xP - x, yP - y});
-	}
 }
 
 void Arcade::Nibbler::drawSnakeHead(const Arcade::Vect<size_t> &realPos)

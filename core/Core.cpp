@@ -12,8 +12,8 @@
 #include "Core.hpp"
 
 const Arcade::Core::core_bindings Arcade::Core::_menu_actions = {
-	{Arcade::Keys::D, &Arcade::Core::selectNextLib},
-	{Arcade::Keys::Q, &Arcade::Core::selectPrevLib},
+	{Arcade::Keys::RIGHT, &Arcade::Core::selectNextLib},
+	{Arcade::Keys::LEFT, &Arcade::Core::selectPrevLib},
 	{Arcade::Keys::ESC, &Arcade::Core::exitArcade},
 	{Arcade::Keys::ENTER, &Arcade::Core::openGame}
 };

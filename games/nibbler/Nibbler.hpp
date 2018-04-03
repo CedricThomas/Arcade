@@ -24,14 +24,6 @@ namespace Arcade {
 		WALL = 8
 	};
 
-		enum connected_e {
-			SELF = 0,
-			SU = 2,
-			SR = 4,
-			SD = 8,
-			SL = 16,
-		};
-
 	struct board_s {
 		int connect;
 		type_e type;
@@ -64,19 +56,18 @@ namespace Arcade {
 		const Vect<size_t> &lSize);
 		void drawRightEye(const Arcade::Vect<size_t> &rPos,
 		const Vect<size_t> &lSize);
-		void drawSnakeElem(const Vect<size_t> &realpos,
-			const Vect<int> &mappos);
+		void drawSnakeElem(const Vect<size_t> &realpos);
 
 		// utils methods
 		bool moveSnake(bool append = false);
-		void shapeSnake();
 
 		Vect<size_t> _mapSize;
-		std::vector<std::vector<board_t>> _map;
+		std::vector<std::vector<type_e>> _map;
 		std::vector<Vect<int>> _snake;
 		size_t _level;
 		size_t _score;
 		PixelBox _background;
+		TextBox _scoreBox;
 		Vect<size_t> _winsize;
 		Vect<int> _dir;
 		std::chrono::high_resolution_clock::time_point _last;
