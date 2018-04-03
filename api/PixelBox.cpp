@@ -77,11 +77,15 @@ void Arcade::PixelBox::setPos(Arcade::Vect<size_t> pos)
 
 void Arcade::PixelBox::putPixel(Arcade::Vect<size_t> pos, Arcade::Color col)
 {
+	if ((pos.getY() * _size.getX()) + pos.getX() >= _colorFrame.size())
+		return;
 	_colorFrame[(pos.getY() * _size.getX()) + pos.getX()] = col;
 }
 
 Arcade::Color Arcade::PixelBox::getPixel(Arcade::Vect<size_t> pos) const
 {
+	if ((pos.getY() * _size.getX()) + pos.getX() >= _colorFrame.size())
+		return Color(0, 0, 0, 255);
 	return _colorFrame[(pos.getY() * _size.getX()) + pos.getX()];
 }
 

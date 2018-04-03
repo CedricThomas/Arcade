@@ -124,18 +124,24 @@ const Arcade::Vect<size_t> &winsize)
 {
 	const auto &games = core.getGames();
 	size_t idxGames = static_cast<size_t>(core.getGameIdx());
-	auto size = games.size();
-	for (size_t i = 0; i < size; i++) {
+	auto s = games.size();
+	for (size_t i = 0; i < s; i++) {
 		Color color(
 			static_cast<unsigned char>(255 * (i != idxGames)),
-			static_cast<unsigned char>(255 * (i == _idxGame % size)),
+			static_cast<unsigned char>(255 * (i == _idxGame % s)),
 			0,
 			255
 		);
 		TextBox box(games[i], {
-			static_cast<size_t>(winsize.getX() * 0.03 + winsize.getX() / 2),
+			static_cast<size_t>(
+				winsize.getX() * 0.03 + winsize.getX() / 2),
 			static_cast<size_t>((winsize.getY() * 0.05) * (2 + i))
 		}, 30, color);
 		graphicLib.drawText(box);
 	}
+}
+
+size_t Arcade::Menu::getGameIdx() const
+{
+	return _idxGame;
 }

@@ -43,7 +43,7 @@ const std::map<int, Arcade::Keys> Arcade::NCursesGraphicLib::_keymap = {
 	{KEY_RIGHT, Arcade::Keys::RIGHT},
 	{KEY_UP, Arcade::Keys::UP},
 	{KEY_DOWN, Arcade::Keys::DOWN},
-	{KEY_ENTER, Arcade::Keys::ENTER},
+	{'\n', Arcade::Keys::ENTER},
 	{' ', Arcade::Keys::SPACE},
 	{KEY_DC, Arcade::Keys::DELETE},
 	{KEY_BACKSPACE, Arcade::Keys::BACKSPACE},
@@ -54,8 +54,8 @@ const std::map<int, Arcade::Keys> Arcade::NCursesGraphicLib::_keymap = {
 Arcade::NCursesGraphicLib::NCursesGraphicLib():
 _libName("NCurse"),
 _open(false),
-_cursorXsize(8),
-_cursorYsize(14),
+_cursorXsize(1),
+_cursorYsize(1),
 _events(),
 _termios()
 {

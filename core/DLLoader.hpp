@@ -40,6 +40,10 @@ namespace Arcade {
 
 		T *getInstance() const
 		{
+			if (_instance == nullptr) {
+				auto str = "load : No instance loaded";
+				throw LoadingError(str);
+			}
 			return _instance;
 		}
 

@@ -34,9 +34,6 @@ namespace Arcade {
 
 		void apply_events(Arcade::Keys key);
 
-		void menu();
-		void game();
-
 		//Commons
 		void exitArcade();
 
@@ -50,11 +47,11 @@ namespace Arcade {
 		void selectGameByIdx(int idx);
 
 		// Game
-		void restartGame();
+		void resetGame();
 		void goBackMenu();
 
 		// Menu
-		void startGame();
+		void openGame();
 
 		//Getters
 		const std::vector<std::string> &getLibs() const;

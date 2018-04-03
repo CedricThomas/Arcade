@@ -22,6 +22,8 @@ namespace Arcade {
 		virtual ~Menu();
 		void applyEvent(Keys key);
 		void refresh(IGraphicLib &graphicLib, const Core &core);
+		size_t getGameIdx() const;
+
 	private:
 		void recalculate(Vect<size_t> winsize);
 		void drawLibs(Arcade::IGraphicLib &graphicLib,

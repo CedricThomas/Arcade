@@ -7,38 +7,68 @@
 
 #include <iostream>
 #include "Nibbler.hpp"
-#include "../../api/IGameLib.hpp"
+#include "IGameLib.hpp"
 
-Arcade::Nibbler::Nibbler() : _snakeSize(4), _score(0), _level(1)
+Arcade::Nibbler::Nibbler()
+: _mapSize(30, 25),
+_map(_mapSize.getX(), std::vector<board_t >(_mapSize.getY())),
+_snake(4),
+_level(0),
+_score(0),
+_pixelbox(),
+_winsize()
 {
-	std::cout << "Construction" << std::endl;
+	auto maxX = _mapSize.getX();
+	auto maxY = _mapSize.getY();
+	for (size_t i = 0; i < maxX * maxY; i++) {
+		if (i % maxX == 0 || i % maxX == maxX - 1 ||
+		i / maxX == 0 || i / maxX == maxY - 1) {
+			_map[i / maxX][i % maxX].type = WALL;
+			std::cerr << "X";
+		} else
+			std::cerr << "O";
+		if (i % maxX == maxX - 1)
+			std::cerr << std::endl;
+	}
 }
 
 Arcade::Nibbler::~Nibbler()
 {
-
 }
 
 void Arcade::Nibbler::refresh(Arcade::IGraphicLib &graphicLib)
 {
-	auto size = graphicLib.getScreenSize();
-	if (!(_size == size))
-		recalculate(size);
-	graphicLib.drawPixelBox(_board);
+	auto winsize = graphicLib.getScreenSize();
+	if (_winsize.getY() != winsize.getY() ||
+	_winsize.getX() != winsize.getX())
+		recalculate(winsize);
+	graphicLib.drawPixelBox(_pixelbox);
 }
 
-void Arcade::Nibbler::recalculate(Arcade::Vect<size_t> size)
+void Arcade::Nibbler::recalculate(Arcade::Vect<size_t> winsize)
 {
-	Color left(255, 0, 0, 255);
-	Color right(0, 0, 255, 255);
-	_board = PixelBox(size, {0, 0}, right);
-	_board.putRect({0, 0}, {size.getX() / 2 - 10, size.getY()}, left);
-
+	_winsize = winsize;
+	std::cerr  << "("<< winsize.getX() << ";" << winsize.getY() << ")" << std::endl;
+	auto maxX = _mapSize.getX();
+	auto maxY = _mapSize.getY();
+	Vect<size_t> size(winsize.getX() / maxX, winsize.getY() / maxY);
+	std::cerr  << "("<< size.getX() << ";" << size.getY() << ")" << std::endl;
+	Color red(255, 0, 0, 255);
+	Color blue(0, 0, 255, 255);
+	_pixelbox = PixelBox(_winsize, {0, 0}, red);
+	for (size_t i = 0; i < maxX * maxY; i++)
+		if (_map[i / maxX][i % maxX].type == WALL) {
+			Vect<size_t> pos(
+				i % maxX * size.getX(),
+				i / maxX * size.getY()
+			);
+			_pixelbox.putRect(pos, size, blue);
+		}
 }
 
 const std::string Arcade::Nibbler::getName() const
 {
-	return nullptr;
+	return "Nibbler";
 }
 
 bool Arcade::Nibbler::init()
@@ -63,10 +93,8 @@ bool Arcade::Nibbler::open()
 
 void Arcade::Nibbler::applyEvent(Arcade::Keys key)
 {
-
 }
 
 void Arcade::Nibbler::update()
 {
-
 }

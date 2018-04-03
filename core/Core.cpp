@@ -11,16 +11,24 @@
 #include <functional>
 #include "Core.hpp"
 
+
+//TODO ncurses -> sdl -> ncurses resize = segv
+
 const Arcade::Core::core_bindings Arcade::Core::_menu_actions = {
 	{Arcade::Keys::RIGHT, &Arcade::Core::selectNextLib},
 	{Arcade::Keys::LEFT, &Arcade::Core::selectPrevLib},
-	{Arcade::Keys::ESC, &Arcade::Core::exitArcade}
+	{Arcade::Keys::ESC, &Arcade::Core::exitArcade},
+	{Arcade::Keys::ENTER, &Arcade::Core::openGame}
 };
 
 const Arcade::Core::core_bindings Arcade::Core::_game_actions = {
 	{Arcade::Keys::RIGHT, &Arcade::Core::selectNextLib},
 	{Arcade::Keys::LEFT, &Arcade::Core::selectPrevLib},
-	{Arcade::Keys::ESC, &Arcade::Core::exitArcade}
+	{Arcade::Keys::ESC, &Arcade::Core::exitArcade},
+	{Arcade::Keys::BACKSPACE, &Arcade::Core::goBackMenu},
+	{Arcade::Keys::DOWN, &Arcade::Core::selectNextGame},
+	{Arcade::Keys::UP, &Arcade::Core::selectPrevGame},
+	{Arcade::Keys::ENTER, &Arcade::Core::resetGame}
 };
 
 Arcade::Core::Core(const std::string &graph, const std::string &game,
@@ -31,7 +39,7 @@ const std::string &selected)
   _games(),
   _graphicIdx(0),
   _gameIdx(0),
-  _status(GAME),
+  _status(MENU),
   _player(),
   _menu()
 {
@@ -77,9 +85,6 @@ void Arcade::Core::loadLibs(const std::string &directory)
 void Arcade::Core::start()
 {
 	_lib->getInstance()->openRenderer("Arcade");
-	selectGameByIdx(0);
-	_game->getInstance()->init();
-	_game->getInstance()->open();
 	while (_status != EXIT) {
 		Arcade::Keys key;
 		_lib->getInstance()->pollEvents();
@@ -87,10 +92,12 @@ void Arcade::Core::start()
 			key = _lib->getInstance()->getLastEvent();
 			apply_events(key);
 		} while (key != NONE);
+		_lib->getInstance()->clearWindow();
 		if (_status == MENU)
-			menu();
+			_menu.refresh(*_lib->getInstance(), *this);
 		else
-			game();
+			_game->getInstance()->refresh(*_lib->getInstance());
+		_lib->getInstance()->refreshWindow();
 	}
 	_lib->getInstance()->closeRenderer();
 }
@@ -154,8 +161,11 @@ void Arcade::Core::exitArcade()
 	_status = EXIT;
 }
 
-void Arcade::Core::startGame()
+void Arcade::Core::openGame()
 {
+	auto idx = static_cast<int>(_menu.getGameIdx());
+	if (_game == nullptr || _gameIdx != idx)
+		selectGameByIdx(idx);
 	_status = GAME;
 	_game->getInstance()->open();
 }
@@ -166,7 +176,7 @@ void Arcade::Core::goBackMenu()
 	_status = MENU;
 }
 
-void Arcade::Core::restartGame()
+void Arcade::Core::resetGame()
 {
 	_game->getInstance()->init();
 }
@@ -174,11 +184,15 @@ void Arcade::Core::restartGame()
 void Arcade::Core::selectNextGame()
 {
 	selectGameByIdx((_gameIdx + 1) % static_cast<int>(_games.size()));
+	_game->getInstance()->open();
 }
 
 void Arcade::Core::selectPrevGame()
 {
-	selectGameByIdx((_gameIdx - 1) % static_cast<int>(_games.size()));
+	auto idx = (_gameIdx - 1) % static_cast<int>(_games.size());
+	if (idx == -1)
+		idx = static_cast<int>(_games.size() - 1);
+	selectGameByIdx(idx);
 }
 
 void Arcade::Core::selectPrevLib()
@@ -198,19 +212,6 @@ void Arcade::Core::selectNextLib()
 	_lib->getInstance()->openRenderer("Arcade");
 }
 
-void Arcade::Core::menu()
-{
-	_lib->getInstance()->clearWindow();
-	_menu.refresh(*_lib->getInstance(), *this);
-	_lib->getInstance()->refreshWindow();
-}
-
-void Arcade::Core::game()
-{
-	_lib->getInstance()->clearWindow();
-	_lib->getInstance()->refreshWindow();
-}
-
 void Arcade::Core::apply_events(Arcade::Keys key)
 {
 	const std::map<Status, const core_bindings *> actions = {
@@ -222,6 +223,7 @@ void Arcade::Core::apply_events(Arcade::Keys key)
 			this->_menu.applyEvent(key);
 		}},
 		{GAME, [this](Keys key){
+			_game->getInstance()->update();
 			this->_game->getInstance()->applyEvent(key);
 		}},
 	};

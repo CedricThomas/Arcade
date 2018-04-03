@@ -37,6 +37,8 @@ set(sources
 
         games/pacman/entry.cpp
         games/nibbler/entry.cpp
+        games/nibbler/Nibbler.cpp
+        games/nibbler/Nibbler.hpp
 
         #libs
 
