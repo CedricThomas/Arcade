@@ -7,12 +7,13 @@
 
 #include <map>
 #include <zconf.h>
+#include <iostream>
 #include "Nibbler.hpp"
 #include "IGameLib.hpp"
 
 const std::vector<std::string> Arcade::Nibbler::_template = {
 	"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-	"X  XXX       XXX        XXX  X",
+	"X  XXX        XXX       XXX  X",
 	"X                            X",
 	"X       X             X      X",
 	"X       X             X      X",
@@ -34,21 +35,22 @@ const std::vector<std::string> Arcade::Nibbler::_template = {
 	"X       X             X      X",
 	"X       X             X      X",
 	"X                            X",
-	"X  XXX       XXX        XXX  X",
+	"X  XXX        XXX        XXX  X",
 	"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 };
 
 Arcade::Nibbler::Nibbler()
 : _mapSize(30, 25),
 _map(_mapSize.getY(), std::vector<type_e>(_mapSize.getX())),
-_snake(1, {1, 1}),
+_snake(1, {15, 2}),
 _level(0),
-_score(0),
+_score(-100),
 _background(),
-_scoreBox("0", {0, 0}),
+_scoreBox("score : 0", {0, 0}),
 _winsize(),
 _dir(0, 1),
-_last()
+_last(),
+_loose(false)
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 }
@@ -67,14 +69,16 @@ void Arcade::Nibbler::genWalls()
 
 bool Arcade::Nibbler::init()
 {
+	_loose = false;
 	_dir = {0, 1};
 	_level = 0;
-	_snake = std::vector<Vect<int>>(1, {1, 1});
+	_snake = std::vector<Vect<int>>(1, {15, 2});
 	genWalls();
 	for (int i = 0; i < 3; i++)
 		moveSnake(true);
 	genApple();
 	_score = 0;
+	_scoreBox.setValue("score : " + std::to_string(_score));
 	_last = std::chrono::high_resolution_clock::now();
 	return true;
 }
@@ -89,8 +93,11 @@ void Arcade::Nibbler::refresh(Arcade::IGraphicLib &graphicLib)
 	if (_winsize.getY() != winsize.getY() ||
 	_winsize.getX() != winsize.getX())
 		resizePixelbox(winsize);
-	drawDrawWalls();
-	drawSnake();
+	if (!_loose) {
+		drawDrawWalls();
+		drawSnake();
+	} else
+		drawGameOver();
 	graphicLib.drawPixelBox(_background);
 	graphicLib.drawText(_scoreBox);
 }
@@ -115,7 +122,7 @@ bool Arcade::Nibbler::applyEvent(Arcade::Keys key)
 	};
 	auto ret = false;
 	if (event.count(key) && !(event.at(key).getX() == -_dir.getX() &&
-		event.at(key).getY() == -_dir.getY())) {
+		event.at(key).getY() == -_dir.getY()) && !_loose) {
 		_dir = event.at(key);
 		ret = true;
 	}
@@ -128,9 +135,10 @@ bool Arcade::Nibbler::update()
 	auto time_span =
 	std::chrono::duration_cast<std::chrono::duration<double>>(now - _last);
 	if (time_span.count() < (0.5 - (0.01 * _score / 100)))
-		return true;
+		return !_loose;
 	_last = now;
-	return moveSnake();
+	_loose = !moveSnake();
+	return !_loose;
 }
 
 bool Arcade::Nibbler::moveSnake(bool append)
@@ -200,7 +208,7 @@ void Arcade::Nibbler::drawSnake()
 void Arcade::Nibbler::genApple()
 {
 	_score += 100;
-	_scoreBox.setValue(std::to_string(_score));
+	_scoreBox.setValue("score : " + std::to_string(_score));
 	bool generated = false;
 	while (!generated) {
 		auto x = rand() % _mapSize.getX();
@@ -214,7 +222,7 @@ void Arcade::Nibbler::genApple()
 
 size_t Arcade::Nibbler::getScore()
 {
-	return _score;
+	return static_cast<size_t>(_score);
 }
 
 void Arcade::Nibbler::drawSnakeElem(const Arcade::Vect<size_t> &realpos)
@@ -270,4 +278,7 @@ const Vect<size_t> &lSize)
 	_background.putRect({x, y}, lSize, {0, 0, 0, 255});
 }
 
-
+void Arcade::Nibbler::drawGameOver()
+{
+	_scoreBox.setValue("GameOver");
+}

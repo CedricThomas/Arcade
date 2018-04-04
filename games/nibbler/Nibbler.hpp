@@ -50,6 +50,7 @@ namespace Arcade {
 		// refresh methods
 		void resizePixelbox(const Vect<size_t> &size);
 		void drawDrawWalls();
+		void drawGameOver();
 		void drawSnake();
 		void drawSnakeHead(const Vect<size_t> &realPos);
 		void drawLeftEye(const Arcade::Vect<size_t> &rPos,
@@ -65,12 +66,13 @@ namespace Arcade {
 		std::vector<std::vector<type_e>> _map;
 		std::vector<Vect<int>> _snake;
 		size_t _level;
-		size_t _score;
+		int _score;
 		PixelBox _background;
 		TextBox _scoreBox;
 		Vect<size_t> _winsize;
 		Vect<int> _dir;
 		std::chrono::high_resolution_clock::time_point _last;
+		bool _loose;
 
 		static const std::vector<std::string> _template;
 	};

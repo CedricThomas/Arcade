@@ -246,7 +246,7 @@ Arcade::PixelBox &box, size_t x, size_t y)
 
 Arcade::NCursesGraphicLib::~NCursesGraphicLib()
 {
-	std::cerr << "ok destroy ncurses" << std::endl;
+	std::cerr << "destroy ncurses" << std::endl;
 	if (isOpen())
 		closeRenderer();
 }

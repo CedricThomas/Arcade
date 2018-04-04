@@ -70,6 +70,8 @@ namespace Arcade {
 
 		void selectGraphByFilename(const std::string &name);
 
+		void updateGame();
+
 
 		std::unique_ptr<DLLoader<IGraphicLib>> _graph;
 		std::unique_ptr<DLLoader<IGameLib>> _game;
@@ -88,9 +90,11 @@ namespace Arcade {
 		std::string _player;
 
 		Menu _menu;
+		bool _gameLoose;
 
 		static const core_bindings _menu_actions;
 		static const core_bindings _game_actions;
+
 	};
 
 

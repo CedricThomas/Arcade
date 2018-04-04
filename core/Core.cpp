@@ -40,7 +40,8 @@ _graphicIdx(0),
 _gameIdx(-1),
 _status(MENU),
 _player(),
-_menu()
+_menu(),
+_gameLoose(false)
 {
 	loadLibs(graph);
 	loadGames(game);
@@ -60,10 +61,8 @@ void Arcade::Core::start()
 		_graph->getInstance()->clearWindow();
 		if (_status == MENU)
 			_menu.refresh(*_graph->getInstance(), *this);
-		else if (_status == GAME) {
-			_game->getInstance()->update();
-			_game->getInstance()->refresh(*_graph->getInstance());
-		}
+		else if (_status == GAME)
+			updateGame();
 		_graph->getInstance()->refreshWindow();
 	}
 	_graph->getInstance()->closeRenderer();
@@ -139,6 +138,7 @@ void Arcade::Core::selectGameByIdx(int idx)
 		throw LoadingError("the selected lib doesn't exist.");
 	if (_gameIdx >= 0)
 		_game->getInstance()->stop();
+	_gameLoose = false;
 	_gameIdx = idx;
 	_game = std::make_unique<DLLoader<IGameLib>>(_gamesPaths[idx]);
 	_game->getInstance()->init();
@@ -147,6 +147,7 @@ void Arcade::Core::selectGameByIdx(int idx)
 void Arcade::Core::resetGame()
 {
 	_game->getInstance()->init();
+	_gameLoose = false;
 }
 
 void Arcade::Core::goBackMenu()
@@ -160,8 +161,6 @@ void Arcade::Core::openGame()
 	auto idx = static_cast<int>(_menu.getGameIdx());
 	if (_gameIdx != idx)
 		selectGameByIdx(idx);
-	else
-		_game->getInstance()->init();
 	_status = GAME;
 }
 
@@ -236,4 +235,13 @@ void Arcade::Core::selectGraphByFilename(const std::string &name)
 	}
 	if (!found)
 		throw LoadingError("the selected lib doesn't exist.");
+}
+
+void Arcade::Core::updateGame()
+{
+	auto status = _game->getInstance()->update();
+	if (_gameLoose != !status)
+		std::cerr << "GAMEOVER" << std::endl;
+	_gameLoose = !status;
+	_game->getInstance()->refresh(*_graph->getInstance());
 }
