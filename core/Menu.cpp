@@ -7,6 +7,13 @@
 
 #include "Core.hpp"
 
+const Arcade::Menu::menu_bindings Arcade::Menu::_menu_actions = {
+	{Arcade::Keys::UP, &Arcade::Menu::applyArrows},
+	{Arcade::Keys::DOWN, &Arcade::Menu::applyArrows},
+	{Arcade::Keys::BACKSPACE, &Arcade::Menu::applyBackSpace},
+	{Arcade::Keys::TAB, &Arcade::Menu::applyTab},
+};
+
 const std::map<Arcade::Keys, char> Arcade::Menu::_keymap = {
 	{Arcade::Keys::A, 'a'},
 	{Arcade::Keys::B, 'b'},
@@ -37,31 +44,25 @@ const std::map<Arcade::Keys, char> Arcade::Menu::_keymap = {
 	{Arcade::Keys::SPACE, ' '}
 };
 
-void Arcade::Menu::applyEvent(Arcade::Keys key)
-{
-	if (Arcade::Menu::_keymap.count(key) > 0) {
-		_player_name += _keymap.at(key);
-		_player_name_box.setValue(_player_name);
-	}
-	if (key == BACKSPACE && !_player_name.empty()) {
-		_player_name.pop_back();
-		_player_name_box.setValue(_player_name);
-	}
-	if (key == UP) {
-		_idxGame -= 1;
-	}
-	if (key == DOWN) {
-		_idxGame += 1;
-	}
-}
-
 Arcade::Menu::Menu()
 : _board(),
-_size(),
-_player_name_box("", {0, 0}),
-_player_name(),
-_idxGame()
+  _size(),
+  _player_name_box(" Player : ", {0, 0}),
+  _player_name(),
+  _idxGame(),
+  _highscores(false),
+  _scoresManager()
 {
+}
+
+void Arcade::Menu::applyEvent(Arcade::Keys key)
+{
+	if (Arcade::Menu::_keymap.count(key) > 0 && _player_name.size() < 20) {
+		_player_name += _keymap.at(key);
+		_player_name_box.setValue(" Player : " + _player_name);
+	}
+	else if (Arcade::Menu::_menu_actions.count(key) > 0)
+		(this->*(Arcade::Menu::_menu_actions.at(key)))(key);
 }
 
 Arcade::Menu::~Menu()
@@ -76,7 +77,10 @@ void Arcade::Menu::refresh(Arcade::IGraphicLib &graphicLib, const Core &core)
 	graphicLib.drawPixelBox(_board);
 	graphicLib.drawText(_player_name_box);
 	drawGames(graphicLib, core, winsize);
-	drawLibs(graphicLib, core, winsize);
+	if (!_highscores)
+		drawLibs(graphicLib, core, winsize);
+	else
+		drawHighscores(graphicLib, core, winsize);
 }
 
 void Arcade::Menu::recalculate(Arcade::Vect<size_t> winsize)
@@ -103,7 +107,7 @@ const Vect<size_t> &winsize)
 {
 	const auto &libs = core.getLibs();
 	size_t idxLibs = static_cast<size_t>(core.getGraphicIdx());
-	for (size_t i = 0; i < libs.size(); i++) {
+	for (size_t i = 0; i < libs.size() && i < 20; i++) {
 		Color color(
 			255,
 			static_cast<unsigned char>(255 * (i == idxLibs)),
@@ -149,4 +153,47 @@ size_t Arcade::Menu::getGameIdx() const
 const std::string &Arcade::Menu::getPlayerName() const
 {
 	return _player_name;
+}
+
+void Arcade::Menu::applyBackSpace(Keys k)
+{
+	static_cast<void>(k);
+	if (!_player_name.empty()) {
+		_player_name.pop_back();
+		_player_name_box.setValue(" Player : " + _player_name);
+	}
+}
+
+void Arcade::Menu::applyArrows(Keys k)
+{
+	if (k == UP)
+		_idxGame -= 1;
+	if (k == DOWN)
+		_idxGame += 1;
+}
+
+void Arcade::Menu::drawHighscores(Arcade::IGraphicLib &graphicLib,
+const Arcade::Core &core, const Arcade::Vect<size_t> &w)
+{
+	const auto &games = core.getGames();
+	Color yellow(255, 255, 0, 255);
+	_scoresManager.loadMap(games[_idxGame]);
+	auto scores = _scoresManager.getScoreMap();
+	for (size_t i = 0; i < scores.size() && i < 20; i++) {
+		auto value = std::to_string(scores[i].second);
+		TextBox box(scores[i].first + " " + value,
+		{
+			static_cast<size_t>(w.getX() * 0.03),
+			static_cast<size_t>((w.getY() * 0.05) * (2 + i))
+		},
+		30, yellow);
+		graphicLib.drawText(box);
+	}
+	_scoresManager.unloadScores();
+}
+
+void Arcade::Menu::applyTab(Arcade::Keys k)
+{
+	static_cast<void>(k);
+	_highscores = !_highscores;
 }

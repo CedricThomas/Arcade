@@ -17,6 +17,7 @@
 	#include "Menu.hpp"
 	#include "../api/IGameLib.hpp"
 	#include "../api/IGraphicLib.hpp"
+#include "ScoreManager.hpp"
 
 namespace Arcade {
 
@@ -57,6 +58,7 @@ namespace Arcade {
 		//Getters
 		const std::vector<std::string> &getLibs() const;
 		const std::vector<std::string> &getGames() const;
+		const std::vector<std::string> &getGamesPaths() const;
 		int getGraphicIdx() const;
 		int getGameIdx() const;
 
@@ -71,7 +73,6 @@ namespace Arcade {
 		void selectGraphByFilename(const std::string &name);
 
 		void updateGame();
-
 
 		std::unique_ptr<DLLoader<IGraphicLib>> _graph;
 		std::unique_ptr<DLLoader<IGameLib>> _game;
@@ -91,6 +92,7 @@ namespace Arcade {
 
 		Menu _menu;
 		bool _gameLoose;
+		ScoreManager _scoreManager;
 
 		static const core_bindings _menu_actions;
 		static const core_bindings _game_actions;

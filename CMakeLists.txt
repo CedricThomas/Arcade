@@ -32,6 +32,8 @@ set(sources
         core/Core.hpp
         core/Menu.cpp
         core/Menu.hpp
+        core/ScoreManager.cpp
+        core/ScoreManager.hpp
 
         #games
 

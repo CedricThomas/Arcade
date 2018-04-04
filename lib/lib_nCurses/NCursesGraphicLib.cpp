@@ -116,9 +116,12 @@ void Arcade::NCursesGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 		return;
 	auto size = box.getSize();
 	auto full = size.getX() / _cursorXsize * size.getY() / _cursorYsize;
+	auto window = getScreenSize();
 	for (size_t glob = 0; glob < full; glob++) {
 		size_t x = glob / (box.getHeight() / _cursorYsize);
 		size_t y = glob % (box.getHeight() / _cursorYsize);
+		if (x > window.getX() || y > window.getY())
+			continue;
 		auto idx = getColorIndex(getAverageColor(box, x, y));
 		attron(COLOR_PAIR(idx + 8));
 		mvprintw(

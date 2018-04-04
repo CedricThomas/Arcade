@@ -14,6 +14,7 @@ RM	= rm -f
 SRCS	= ./Core.cpp		\
 	  ./Menu.cpp		\
 	  ./SyntaxAnalyser.cpp	\
+	  ./ScoreManager.cpp	\
 	  ./Errors.cpp		\
 	  ./main.cpp        \
 	  ../api/Color.cpp  \

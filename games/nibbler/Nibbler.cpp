@@ -35,7 +35,7 @@ const std::vector<std::string> Arcade::Nibbler::_template = {
 	"X       X             X      X",
 	"X       X             X      X",
 	"X                            X",
-	"X  XXX        XXX        XXX  X",
+	"X  XXX        XXX        XXX X",
 	"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 };
 

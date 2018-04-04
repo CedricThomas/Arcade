@@ -41,7 +41,8 @@ _gameIdx(-1),
 _status(MENU),
 _player(),
 _menu(),
-_gameLoose(false)
+_gameLoose(false),
+ _scoreManager()
 {
 	loadLibs(graph);
 	loadGames(game);
@@ -240,8 +241,20 @@ void Arcade::Core::selectGraphByFilename(const std::string &name)
 void Arcade::Core::updateGame()
 {
 	auto status = _game->getInstance()->update();
-	if (_gameLoose != !status)
-		std::cerr << "GAMEOVER" << std::endl;
+	if (_gameLoose != !status) {
+		_scoreManager.loadMap(_game->getInstance()->getName());
+		_scoreManager.insertScore(
+			_menu.getPlayerName(),
+			_game->getInstance()->getScore()
+		);
+		_scoreManager.writeScore();
+		_scoreManager.unloadScores();
+	}
 	_gameLoose = !status;
 	_game->getInstance()->refresh(*_graph->getInstance());
+}
+
+const std::vector<std::string> &Arcade::Core::getGamesPaths() const
+{
+	return _gamesPaths;
 }
