@@ -8,7 +8,11 @@
 
 NAME = lib_arcade_pacman.so
 
-SRC = entry.cpp
+SRC = entry.cpp \
+      	Color.cpp	\
+      	PixelBox.cpp	\
+      	TextBox.cpp	\
+             Pacman.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
