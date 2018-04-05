@@ -17,54 +17,52 @@
 // 5 bonus
 
 const std::vector<std::vector<int>> Arcade::Pacman::_template = {
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,2,2,2,2,2,2,2,2,2,2,2,2,0,2,2,2,2,2,2,2,2,2,2,2,2,0},
-	{0,5,0,0,0,0,2,0,0,0,0,0,2,0,2,0,0,0,0,0,2,0,0,0,0,5,0},
-	{0,2,0,0,0,0,2,0,0,0,0,0,2,0,2,0,0,0,0,0,2,0,0,0,0,2,0},
-	{0,2,0,0,0,0,2,0,0,0,0,0,2,0,2,0,0,0,0,0,2,0,0,0,0,2,0},
-	{0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0},
-	{0,2,0,0,0,0,2,0,0,2,0,0,0,0,0,0,0,2,0,0,2,0,0,0,0,2,0},
-	{0,2,0,0,0,0,2,0,0,2,0,0,0,0,0,0,0,2,0,0,2,0,0,0,0,2,0},
-	{0,2,2,2,2,2,2,0,0,2,2,2,2,0,2,2,2,2,0,0,2,2,2,2,2,2,0},
-	{0,0,0,0,0,0,2,0,0,0,0,0,2,0,2,0,0,0,0,0,2,0,0,0,0,0,0},
-	{0,0,0,0,0,0,2,0,0,2,2,2,2,2,2,2,2,2,0,0,2,0,0,0,0,0,0},
-	{0,0,0,0,0,0,2,0,0,2,0,0,0,1,0,0,0,2,0,0,2,0,0,0,0,0,0},
-	{0,0,0,0,0,0,2,2,2,2,0,3,1,1,1,3,0,2,2,2,2,0,0,0,0,0,0},
-	{0,0,0,0,0,0,2,0,0,2,0,1,1,1,1,1,0,2,0,0,2,0,0,0,0,0,0},
-	{0,0,0,0,0,0,2,0,0,2,0,1,1,1,1,1,0,2,0,0,2,0,0,0,0,0,0},
-	{0,0,0,0,0,0,2,0,0,2,0,3,1,1,1,3,0,2,0,0,2,0,0,0,0,0,0},
-	{0,0,0,0,0,0,2,0,0,2,0,0,0,0,0,0,0,2,0,0,2,0,0,0,0,0,0},
-	{0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0},
-	{0,2,0,0,0,0,2,0,0,0,0,0,2,0,2,0,0,0,0,0,2,0,0,0,0,2,0},
-	{0,2,0,0,0,0,2,0,0,0,0,0,2,0,2,0,0,0,0,0,2,0,0,0,0,2,0},
-	{0,2,2,2,0,0,2,2,2,2,2,2,2,4,2,2,2,2,2,2,2,0,0,2,2,2,0},
-	{0,0,0,2,0,0,2,0,0,2,0,0,0,0,0,0,0,2,0,0,2,0,0,2,0,0,0},
-	{0,0,0,2,0,0,2,0,0,2,0,0,0,0,0,0,0,2,0,0,2,0,0,2,0,0,0},
-	{0,2,2,2,2,2,2,0,0,2,2,2,2,0,2,2,2,2,0,0,2,2,2,2,2,2,0},
-	{0,2,0,0,0,0,0,0,0,0,0,0,2,0,2,0,0,0,0,0,0,0,0,0,0,2,0},
-	{0,5,0,0,0,0,0,0,0,0,0,0,2,0,2,0,0,0,0,0,0,0,0,0,0,5,0},
-	{0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-};
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0},
+	{0, 5, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 5, 0},
+	{0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0},
+	{0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0},
+	{0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0},
+	{0, 2, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 2, 0},
+	{0, 2, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 2, 0},
+	{0, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 0},
+	{0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 3, 1, 1, 1, 3, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 1, 1, 1, 1, 1, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 1, 1, 1, 1, 1, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 3, 1, 1, 1, 3, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0},
+	{0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0},
+	{0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0},
+	{0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0},
+	{0, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 0},
+	{0, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0, 0, 0},
+	{0, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0, 0, 0},
+	{0, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 0},
+	{0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0},
+	{0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0},
+	{0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 Arcade::Pacman::Pacman()
-: _boardSize(27, 28),
-_board(_boardSize.getY(), std::vector<int>(_boardSize.getX())),
-_score(0),
-_boardPixelbox(),
-_scoreTextbox("score : 0", {0, 0}),
-_winsize(),
-_last(),
-_loose(false),
-_lastScore(0),
-_ghosts(4),
-_pacman({13, 20}, _board)
+	: _boardSize(27, 28),
+	  _board(_boardSize.getY(), std::vector<int>(_boardSize.getX())),
+	  _score(0),
+	  _boardPixelbox(),
+	  _scoreTextbox("score : 0", {0, 0}),
+	  _winsize(),
+	  _last(),
+	  _loose(false),
+	  _lastScore(0),
+	  _ghosts(4),
+	  _pacman({13, 20}, _board)
 {
 }
 
 Arcade::Pacman::~Pacman()
 {
-
 }
 
 const std::string Arcade::Pacman::getName() const
@@ -89,7 +87,7 @@ bool Arcade::Pacman::init()
 
 void Arcade::Pacman::initGhosts()
 {
-// init all vector with map and pos
+	// init all vector with map and pos
 }
 
 void Arcade::Pacman::initPlayer()
@@ -108,8 +106,7 @@ bool Arcade::Pacman::applyEvent(Arcade::Keys key)
 		{DOWN, {0, 1}},
 		{UP, {0, -1}},
 		{RIGHT, {1, 0}},
-		{LEFT, {-1, 0}}
-	};
+		{LEFT, {-1, 0}}};
 
 	// set pacman dir
 	if (events.count(key) > 0)
@@ -127,17 +124,19 @@ bool Arcade::Pacman::update()
 	_last = now;
 	_pacman.update(_board);
 	auto pacgums = _pacman.getAtePacgumns();
-	_score = _pacman.getAtePacgumns() * 50;	
-	if (pacgums == 268)
-		nextLevel();
-	return true;
+	_score = _pacman.getAtePacgumns() * 50;
+	if (pacgums == 10) //268)
+		_pacman.kill();
+	//nextLevel();
+	_loose = !_pacman.isAlive();
+	return !_loose;
 }
 
 void Arcade::Pacman::refresh(Arcade::IGraphicLib &graphicLib)
 {
 	auto winsize = graphicLib.getScreenSize();
 	if (_winsize.getY() != winsize.getY() ||
-	    _winsize.getX() != winsize.getX())
+		_winsize.getX() != winsize.getX())
 		resizeWin(winsize);
 	if (!_loose)
 		drawBoard();
@@ -149,7 +148,7 @@ void Arcade::Pacman::refresh(Arcade::IGraphicLib &graphicLib)
 
 void Arcade::Pacman::drawGameOver()
 {
-	// draw game over
+	_scoreTextbox.setValue("GameOver");
 }
 
 void Arcade::Pacman::drawBoard()
@@ -162,11 +161,13 @@ void Arcade::Pacman::drawBoard()
 	auto maxX = _boardSize.getX();
 	auto maxY = _boardSize.getY();
 	Vect<size_t> size(_winsize.getX() / maxX, _winsize.getY() / maxY);
-	for (size_t i = 0; i < maxX * maxY; i++) {
+	for (size_t i = 0; i < maxX * maxY; i++)
+	{
 		Vect<size_t> pos(i % maxX * size.getX(),
-		i / maxX * size.getY());
+						 i / maxX * size.getY());
 		_boardPixelbox.putRect(pos, size, {0, 0, 0, 255});
-		if (events.count(_board[i / maxX ][i % maxX ]) > 0) {
+		if (events.count(_board[i / maxX][i % maxX]) > 0)
+		{
 			auto ptr = events.at(_board[i / maxX][i % maxX]);
 			(this->*(ptr))(pos, size);
 		}
@@ -175,32 +176,29 @@ void Arcade::Pacman::drawBoard()
 	_scoreTextbox.setValue("Score : " + std::to_string(_score + _lastScore));
 }
 
-void
-Arcade::Pacman::drawPacgum(const Vect <size_t> &pos, const Vect <size_t> &size)
+void Arcade::Pacman::drawPacgum(const Vect<size_t> &pos, const Vect<size_t> &size)
 {
 	auto prc = 20;
 	if (_winsize.getX() * _winsize.getY() < 10000)
 		prc = 0;
 	Vect<size_t> border(size.getX() * prc / 100, size.getY() * prc / 100);
 	Vect<size_t> center(size.getX() * (100 - 2 * prc) / 100,
-	                    size.getY() * (100 - 2 * prc) / 100);
+						size.getY() * (100 - 2 * prc) / 100);
 	_boardPixelbox.putRect(pos + border, center, {255, 255, 255, 255});
 }
 
-void
-Arcade::Pacman::drawBonus(const Vect <size_t> &pos, const Vect <size_t> &size)
+void Arcade::Pacman::drawBonus(const Vect<size_t> &pos, const Vect<size_t> &size)
 {
 	auto prc = 10;
 	if (_winsize.getX() * _winsize.getY() < 10000)
 		prc = 0;
 	Vect<size_t> border(size.getX() * prc / 100, size.getY() * prc / 100);
 	Vect<size_t> center(size.getX() * (100 - 2 * prc) / 100,
-	                    size.getY() * (100 - 2 * prc) / 100);
+						size.getY() * (100 - 2 * prc) / 100);
 	_boardPixelbox.putRect(pos + border, center, {255, 0, 255, 255});
 }
 
-void
-Arcade::Pacman::drawWall(const Vect <size_t> &pos, const Vect <size_t> &size)
+void Arcade::Pacman::drawWall(const Vect<size_t> &pos, const Vect<size_t> &size)
 {
 	_boardPixelbox.putRect(pos, size, {0, 0, 255, 255});
 }
@@ -221,7 +219,8 @@ size_t Arcade::Pacman::getScore()
 void Arcade::Pacman::genBoard()
 {
 	auto maxX = _boardSize.getX();
-	for (size_t i = 0; i < maxX * _boardSize.getY(); i++) {
+	for (size_t i = 0; i < maxX * _boardSize.getY(); i++)
+	{
 		auto val = Arcade::Pacman::_template[i / maxX][i % maxX];
 		_board[i / maxX][i % maxX] = static_cast<type_e>(pow(2, val));
 	}
@@ -239,4 +238,3 @@ void Arcade::Pacman::nextLevel()
 	init();
 	_lastScore = save;
 }
-
