@@ -92,8 +92,7 @@ void Arcade::SFMLGraphicLib::closeRenderer()
 void Arcade::SFMLGraphicLib::openRenderer(const std::string &title)
 {
 	if (!isOpen()) {
-		_window.create(sf::VideoMode(1920, 1080, 32), title,
-		               sf::Style::Close);
+		_window.create(sf::VideoMode(1920, 1080, 32), title);
 		_texture.create(1920, 1080);
 		_sprite.setTexture(_texture, true);
 		_open = true;
