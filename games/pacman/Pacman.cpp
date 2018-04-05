@@ -94,7 +94,7 @@ void Arcade::Pacman::initGhosts()
 
 void Arcade::Pacman::initPlayer()
 {
-// init pacman with map and pos
+	_pacman = Player({13, 20}, _board);
 }
 
 bool Arcade::Pacman::stop()
@@ -126,7 +126,10 @@ bool Arcade::Pacman::update()
 		return !_loose;
 	_last = now;
 	_pacman.update(_board);
-	_score = _pacman.getAtePacgumns() * 50;
+	auto pacgums = _pacman.getAtePacgumns();
+	_score = _pacman.getAtePacgumns() * 50;	
+	if (pacgums == 268)
+		nextLevel();
 	return true;
 }
 

@@ -88,7 +88,7 @@ void Arcade::Player::updatePacgum(std::vector<std::vector<int>> &board)
 		board[y][x] &= ~BONUS;
 		_powered = true;
 		_last = std::chrono::high_resolution_clock::now();
-		_pacGumsEat += 1;
+		_pacGumsEat += 2;
 	}
 	if (board[y][x] & PACGUM)
 	{
