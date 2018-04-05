@@ -43,7 +43,6 @@ Arcade::Nibbler::Nibbler()
 : _mapSize(30, 25),
 _map(_mapSize.getY(), std::vector<type_e>(_mapSize.getX())),
 _snake(1, {15, 2}),
-_level(0),
 _score(-100),
 _background(),
 _scoreBox("score : 0", {0, 0}),
@@ -71,7 +70,6 @@ bool Arcade::Nibbler::init()
 {
 	_loose = false;
 	_dir = {0, 1};
-	_level = 0;
 	_snake = std::vector<Vect<int>>(1, {15, 2});
 	genWalls();
 	for (int i = 0; i < 3; i++)
@@ -237,8 +235,7 @@ void Arcade::Nibbler::drawSnakeElem(const Arcade::Vect<size_t> &realpos)
 	Vect<size_t> border(size.getX() * prc / 100, size.getY() * prc / 100);
 	Vect<size_t> center(size.getX() * (100 - 2 * prc) / 100,
 	size.getY() * (100 - 2 * prc) / 100);
-	_background.putRect(realpos + border, center, green);
-}
+	_background.putRect(realpos + border, center, green);}
 
 void Arcade::Nibbler::drawSnakeHead(const Arcade::Vect<size_t> &realPos)
 {

@@ -65,7 +65,6 @@ namespace Arcade {
 		Vect<size_t> _mapSize;
 		std::vector<std::vector<type_e>> _map;
 		std::vector<Vect<int>> _snake;
-		size_t _level;
 		int _score;
 		PixelBox _background;
 		TextBox _scoreBox;

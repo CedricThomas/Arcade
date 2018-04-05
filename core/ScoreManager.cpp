@@ -21,7 +21,6 @@ void Arcade::ScoreManager::loadMap(const std::string &id)
 		return;
 	_isLoaded = true;
 	_fileName = "." + id + "_score";
-	std::cerr << _fileName << std::endl;
 	std::ifstream input(_fileName);
 	std::regex regex("^(\\S+)\\s+(\\d+)$");
 	std::smatch m;

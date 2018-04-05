@@ -48,7 +48,7 @@ Arcade::Menu::Menu()
 : _board(),
   _size(),
   _player_name_box(" Player : ", {0, 0}),
-  _player_name(),
+  _player_name("player"),
   _idxGame(),
   _highscores(false),
   _scoresManager()
@@ -176,7 +176,7 @@ void Arcade::Menu::drawHighscores(Arcade::IGraphicLib &graphicLib,
 const Arcade::Core &core, const Arcade::Vect<size_t> &w)
 {
 	const auto &games = core.getGames();
-	Color yellow(255, 255, 0, 255);
+	Color red(255, 0, 0, 255);
 	_scoresManager.loadMap(games[_idxGame]);
 	auto scores = _scoresManager.getScoreMap();
 	for (size_t i = 0; i < scores.size() && i < 20; i++) {
@@ -186,7 +186,7 @@ const Arcade::Core &core, const Arcade::Vect<size_t> &w)
 			static_cast<size_t>(w.getX() * 0.03),
 			static_cast<size_t>((w.getY() * 0.05) * (2 + i))
 		},
-		30, yellow);
+		30, red);
 		graphicLib.drawText(box);
 	}
 	_scoresManager.unloadScores();

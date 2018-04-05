@@ -39,6 +39,12 @@ set(sources
 
         games/pacman/entry.cpp
         games/nibbler/entry.cpp
+        games/pacman/Pacman.hpp
+        games/pacman/Pacman.cpp
+        games/pacman/Player.hpp
+        games/pacman/Player.cpp
+        games/pacman/Ghost.hpp
+        games/pacman/Ghost.cpp
         games/nibbler/Nibbler.cpp
         games/nibbler/Nibbler.hpp
 
