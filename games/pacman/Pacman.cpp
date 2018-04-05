@@ -125,7 +125,7 @@ bool Arcade::Pacman::update()
 	_pacman.update(_board);
 	auto pacgums = _pacman.getAtePacgumns();
 	_score = _pacman.getAtePacgumns() * 50;
-	if (pacgums == 10) //268)
+	if (pacgums == 268)
 		_pacman.kill();
 	//nextLevel();
 	_loose = !_pacman.isAlive();
