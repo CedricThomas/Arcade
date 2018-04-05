@@ -6,13 +6,7 @@
 */
 
 #include "Player.hpp"
-//
-//Vect<int> _dir;
-//Vect<int> _posPlayer;
-//bool _powered;
-//bool _alive;
-//std::chrono::high_resolution_clock::time_point _last;
-//int _pacGumsEat;
+
 Arcade::Player::Player(const Arcade::Vect<int> &pos,
 					   std::vector<std::vector<int>> &board)
 	: _dir(0, -1), _posPlayer(pos), _powered(false),

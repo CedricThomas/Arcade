@@ -126,6 +126,7 @@ bool Arcade::Pacman::update()
 		return !_loose;
 	_last = now;
 	_pacman.update(_board);
+	_score = _pacman.getAtePacgumns() * 50;
 	return true;
 }
 
@@ -168,6 +169,7 @@ void Arcade::Pacman::drawBoard()
 		}
 	}
 	drawEntities(size);
+	_scoreTextbox.setValue("Score : " + std::to_string(_score + _lastScore));
 }
 
 void
