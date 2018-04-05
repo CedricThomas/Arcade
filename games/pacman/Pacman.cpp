@@ -58,7 +58,7 @@ _last(),
 _loose(false),
 _lastScore(0),
 _ghosts(4),
-_pacman()
+_pacman({13, 20}, _board)
 {
 }
 
