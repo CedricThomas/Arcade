@@ -12,6 +12,7 @@
 	#include "IGameLib.hpp"
 	#include "IGraphicLib.hpp"
 	#include "Player.hpp"
+	#include "PacmanCommon.hpp"
 	#include "Ghost.hpp"
 
 //init
@@ -56,15 +57,6 @@
 
 namespace Arcade {
 
-	enum type_e {
-		WALL = 1,
-		EMPTY = 2,
-		PACGUM = 4,
-		GHOST = 8,
-		PACMAN = 16,
-		BONUS = 32
-	};
-
 	class Pacman : public IGameLib{
 		public:
 			const std::string getName() const override;
@@ -101,12 +93,14 @@ namespace Arcade {
 
 			void drawBoard();
 
-			void drawEntities();
+			void drawEntities(Vect<size_t>&);
 
 			void drawGameOver();
 
+			void nextLevel();
+
 			Vect<size_t> _boardSize;
-			std::vector<std::vector<type_e>> _board;
+			std::vector<std::vector<int>> _board;
 
 			// game basics resources
 			int _score;
@@ -115,6 +109,7 @@ namespace Arcade {
 			Vect<size_t> _winsize;
 			std::chrono::high_resolution_clock::time_point _last;
 			bool _loose;
+			int _lastScore;
 
 			// entities
 			std::vector<Ghost> _ghosts;

@@ -12,11 +12,13 @@ SRC = entry.cpp \
       	Color.cpp	\
       	PixelBox.cpp	\
       	TextBox.cpp	\
+      	Player.cpp  \
+      	Ghost.cpp   \
              Pacman.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
-CXXFLAGS = -Wall -Wextra -fPIC
+CXXFLAGS = -Wall -Wextra -fPIC -g
 
 LDFLAGS	= -shared
 
