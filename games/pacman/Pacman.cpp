@@ -179,7 +179,7 @@ Arcade::Pacman::drawPacgum(const Vect <size_t> &pos, const Vect <size_t> &size)
 	Vect<size_t> border(size.getX() * prc / 100, size.getY() * prc / 100);
 	Vect<size_t> center(size.getX() * (100 - 2 * prc) / 100,
 	                    size.getY() * (100 - 2 * prc) / 100);
-	_boardPixelbox.putRect(pos + border, center, {255, 255, 0, 255});
+	_boardPixelbox.putRect(pos + border, center, {255, 255, 255, 255});
 }
 
 void
