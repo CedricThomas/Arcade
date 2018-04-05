@@ -20,24 +20,27 @@ class Player
 {
   public:
 	Player(const Arcade::Vect<int> &dir,
-		   std::vector<std::vector<int>> &board);
-	void changeDir(const Vect<int> &dir, std::vector<std::vector<int>> &map);
+	std::vector<std::vector<int>> *board);
+	void changeDir(const Vect<int> &dir);
 	void kill();
-	void update(std::vector<std::vector<int>> &);
+	void init();
+	void update();
 	void draw(PixelBox &pixebox, const Vect<size_t> &size);
 	bool isPowered();
 	bool isAlive();
 	int getAtePacgumns();
 
   private:
+	std::vector<std::vector<int>> *_board;
 	Vect<int> _dir;
+	Vect<int> _basePos;
 	Vect<int> _posPlayer;
 	bool _powered;
 	bool _alive;
 	std::chrono::high_resolution_clock::time_point _last;
 	int _pacGumsEat;
-	void updatePos(std::vector<std::vector<int>> &);
-	void updatePacgum(std::vector<std::vector<int>> &);
+	void updatePos();
+	void updatePacgum();
 };
 }
 

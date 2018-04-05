@@ -47,7 +47,7 @@ const std::map<Arcade::Keys, char> Arcade::Menu::_keymap = {
 Arcade::Menu::Menu()
 : _board(),
   _size(),
-  _player_name_box(" Player : ", {0, 0}),
+  _player_name_box(" Player : player", {0, 0}),
   _player_name("player"),
   _idxGame(),
   _highscores(false),

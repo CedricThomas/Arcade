@@ -16,21 +16,28 @@
 namespace Arcade {
 
 	class Ghost {
+	public:
+		Ghost(const Vect<int> &_initPos,
+		std::vector<std::vector<int>> *board);
+
+		void update(Player &pacman);
+		void draw(PixelBox &pixebox, const Vect<size_t> &size,
+		Player &pacman);
 		void init();
 
-		public:
-		Ghost(const Vect<int> &_initPos, std::vector<std::vector<int>> &board);
-		void changeDir(const Vect<int> &dir);
-		void kill();
-		void update(Player &pacman);
-		void draw(PixelBox &pixebox, const Vect<size_t> &size);
+	private:
+		void updateDead();
+		void updateAlive(Player &pacman);
+		void moveAlive();
+		void moveDead();
+		void checkDead(Player &pacman);
 
-		private:
+		std::vector<std::vector<int>> *_board;
 		Vect<int> _initPos;
 		Vect<int> _dir;
 		Vect<int> _pos;
-		std::chrono::high_resolution_clock::time_point _last;
-		std::vector<std::vector<int>> _board;
+		bool _alive;
+		std::chrono::high_resolution_clock::time_point _live;
 
 	};
 

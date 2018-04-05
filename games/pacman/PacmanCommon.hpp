@@ -11,8 +11,8 @@
 namespace Arcade {
 
 	enum type_e {
-		WALL = 1,
-		EMPTY = 2,
+		EMPTY = 0,
+		WALL = 2,
 		PACGUM = 4,
 		GHOST = 8,
 		PACMAN = 16,
