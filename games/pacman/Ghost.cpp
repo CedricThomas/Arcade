@@ -174,19 +174,18 @@ bool Arcade::Ghost::searchPacman(const Arcade::Vect<int> &pos, size_t deep,
 const Arcade::Vect<int> &size)
 {
 	const std::vector<Vect<int>> dirs = {
-		{pos.getX(), pos.getY() + 1},
-		{pos.getX(), pos.getY() - 1},
-		{pos.getX() + 1, pos.getY()},
-		{pos.getX() - 1, pos.getY()}
+		{pos.getX(), pos.getY() + 1}, {pos.getX(), pos.getY() - 1},
+		{pos.getX() + 1, pos.getY()}, {pos.getX() - 1, pos.getY()}
 	};
-	if (deep == 0 || outOfMap(pos, size) ||
-	    (*_board)[pos.getY()][pos.getX()] & (WALL | SMELL))
+	if (deep == 0 || outOfMap(pos, size))
 		return false;
 	auto ret = ((*_board)[pos.getY()][pos.getX()] & (PACMAN));
 	(*_board)[pos.getY()][pos.getX()] |= SMELL;
 	for (size_t i = 0; i < dirs.size() && !ret && deep; i++) {
-		_pathPacman.push_back(dirs.at(i));
-		if (searchPacman(dirs.at(i), deep - 1, size))
+		auto n = dirs.at(i);
+		_pathPacman.push_back(n);
+		if (!checkPos(n, (WALL | GHOST | SMELL)) &&
+		searchPacman(dirs.at(i), deep - 1, size))
 			ret = true;
 		else
 			_pathPacman.pop_back();
@@ -215,4 +214,9 @@ void Arcade::Ghost::setupPacmanTrack()
 			i++;
 		(*_board)[_pos.getY()][_pos.getX()] &= ~SMELL;
 	}
+}
+
+bool Arcade::Ghost::checkPos(Arcade::Vect<int> pos, int mask)
+{
+	return static_cast<bool>((*_board)[pos.getY()][pos.getX()] & mask);
 }

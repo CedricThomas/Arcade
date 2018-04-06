@@ -33,6 +33,7 @@ namespace Arcade {
 	private:
 		// utils fcts
 		void changePos(Vect<int> pos);
+		bool checkPos(Vect<int> pos, int mask);
 		bool outOfMap(const Vect<int> &pos, const Vect<int> &size);
 
 		// update fcts
