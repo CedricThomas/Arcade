@@ -44,7 +44,7 @@ namespace Arcade {
 
 		// refresh methods
 		void resizePixelbox(const Vect<size_t> &size);
-		void drawDrawWalls();
+		void drawWalls();
 		void drawGameOver();
 		void drawSnake();
 		void drawSnakeHead(const Vect<size_t> &realPos);

@@ -93,7 +93,7 @@ void Arcade::Nibbler::refresh(Arcade::IGraphicLib &graphicLib)
 	_winsize.getX() != winsize.getX())
 		resizePixelbox(winsize);
 	if (!_loose) {
-		drawDrawWalls();
+		drawWalls();
 		drawSnake();
 	} else
 		drawGameOver();
@@ -169,7 +169,7 @@ void Arcade::Nibbler::resizePixelbox(const Arcade::Vect<size_t> &winsize)
 	_background = PixelBox(_winsize, {0, 0});
 }
 
-void Arcade::Nibbler::drawDrawWalls()
+void Arcade::Nibbler::drawWalls()
 {
 	auto maxX = _mapSize.getX();
 	auto maxY = _mapSize.getY();
