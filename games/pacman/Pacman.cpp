@@ -7,6 +7,7 @@
 
 #include <map>
 #include <cmath>
+#include <iostream>
 #include "Pacman.hpp"
 
 const std::vector<std::vector<int>> Arcade::Pacman::_template = {
@@ -110,6 +111,26 @@ bool Arcade::Pacman::init()
 	return true;
 }
 
+void Arcade::Pacman::genBoard()
+{
+	auto maxX = _boardSize.getX();
+	for (size_t i = 0; i < maxX * _boardSize.getY(); i++) {
+		auto val = Arcade::Pacman::_template[i / maxX][i % maxX];
+		auto enumType = static_cast<type_e>(pow(2, val));
+		if (enumType == 1)
+			enumType = EMPTY;
+		_board[i / maxX][i % maxX] = enumType;
+	}
+}
+
+
+void Arcade::Pacman::nextLevel()
+{
+	auto save = _score + _lastScore;
+	init();
+	_lastScore = save;
+}
+
 void Arcade::Pacman::initGhosts()
 {
 	for (auto &n : _ghosts)
@@ -149,10 +170,7 @@ bool Arcade::Pacman::update()
 	_pacman.update();
 	_loose = !_pacman.isAlive();
 	_score = _pacman.getAtePacgumns() * 50;
-	for (auto &n : _ghosts) {
-		n.update(_pacman);
-		_score += n.getDeath() * 100;
-	}
+	updateGhosts();
 	if (!_loose) {
 		auto pacgums = _pacman.getAtePacgumns();
 		if (pacgums == 268)
@@ -173,6 +191,12 @@ void Arcade::Pacman::refresh(Arcade::IGraphicLib &graphicLib)
 		drawGameOver();
 	graphicLib.drawPixelBox(_boardPixelbox);
 	graphicLib.drawText(_scoreTextbox);
+}
+
+void Arcade::Pacman::resizeWin(const Arcade::Vect<size_t> &winsize)
+{
+	_winsize = winsize;
+	_boardPixelbox = PixelBox(_winsize, {0, 0});
 }
 
 void Arcade::Pacman::drawGameOver()
@@ -246,27 +270,14 @@ size_t Arcade::Pacman::getScore()
 	return static_cast<size_t>(_score);
 }
 
-void Arcade::Pacman::genBoard()
+void Arcade::Pacman::updateGhosts()
 {
-	auto maxX = _boardSize.getX();
-	for (size_t i = 0; i < maxX * _boardSize.getY(); i++) {
-		auto val = Arcade::Pacman::_template[i / maxX][i % maxX];
-		auto enumType = static_cast<type_e>(pow(2, val));
-		if (enumType == 1)
-			enumType = EMPTY;
-		_board[i / maxX][i % maxX] = enumType;
+	for (auto &n : _ghosts)
+		n.setupPacmanTrack();
+	for (auto &n : _ghosts) {
+		n.update(_pacman);
+		_score += n.getDeathCounter() * 100;
 	}
-}
-
-void Arcade::Pacman::resizeWin(const Arcade::Vect<size_t> &winsize)
-{
-	_winsize = winsize;
-	_boardPixelbox = PixelBox(_winsize, {0, 0});
-}
-
-void Arcade::Pacman::nextLevel()
-{
-	auto save = _score + _lastScore;
-	init();
-	_lastScore = save;
+	for (auto &n : _ghosts)
+		n.resetPacmanTrack();
 }

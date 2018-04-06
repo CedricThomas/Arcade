@@ -11,7 +11,7 @@
 	#include <map>
 	#include "../api/IGraphicLib.hpp"
 	#include "../api/Keys.hpp"
-#include "ScoreManager.hpp"
+	#include "ScoreManager.hpp"
 
 namespace Arcade {
 

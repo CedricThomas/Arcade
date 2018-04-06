@@ -17,7 +17,8 @@ namespace Arcade {
 		GHOST = 8,
 		PACMAN = 16,
 		BONUS = 32,
-		PASS = 64
+		PASS = 64,
+		SMELL = 128,
 	};
 
 }

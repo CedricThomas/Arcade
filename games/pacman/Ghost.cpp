@@ -62,7 +62,18 @@ void Arcade::Ghost::updateAlive(Arcade::Player &pacman)
 	checkDead(pacman);
 }
 
-void Arcade::Ghost::moveAlive(Player &pacman) // TODO upgrade
+void Arcade::Ghost::moveAlive(Player &pacman)
+{
+	if (!_pathPacman.empty() && !pacman.isPowered())
+		changePos(_pathPacman.front());
+	else if (!_pathPacman.empty() && pacman.isPowered()) {
+		//auto pos = _pathPacman.front();
+		changePos(_pathPacman.front());
+	} else
+		moveRand();
+}
+
+void Arcade::Ghost::moveRand()
 {
 	const std::vector<Vect<int>> events = {
 		{0, 1},
@@ -77,7 +88,7 @@ void Arcade::Ghost::moveAlive(Player &pacman) // TODO upgrade
 		newX = _pos.getX() + events.at(idx).getX();
 		newY = _pos.getY() + events.at(idx).getY();
 	} while ((*_board)[newY][newX] & (WALL | GHOST));
-	_pos = {newX, newY};
+	changePos({newX, newY});
 }
 
 void Arcade::Ghost::moveDead()
@@ -99,19 +110,19 @@ void Arcade::Ghost::updateDead()
 void Arcade::Ghost::checkDead(Player &pacman)
 {
 	if (((*_board)[_pos.getY()][_pos.getX()]) & PACMAN) {
-//		if (pacman.isPowered()) {
+		if (pacman.isPowered()) {
 			_alive = false;
 			_death += 1;
 			auto y = static_cast<int>((*_board).size());
 			auto x = static_cast<int>((*_board)[0].size());
-			for (size_t i = 0; !searchPath(_pos, i, {x, y}); i++);
-//		} else
-//			pacman.kill();
+			for (size_t i = 0; !searchHome(_pos, i, {x, y}); i++);
+		} else
+			pacman.kill();
 	}
 }
 
-bool Arcade::Ghost::searchPath(const Arcade::Vect<int> &pos, size_t deep,
-const Arcade::Vect<int> &size)
+bool Arcade::Ghost::searchHome(const Arcade::Vect<int> &pos, size_t deep,
+	const Arcade::Vect<int> &size)
 {
 	const std::vector<Vect<int>> dirs = {
 		{pos.getX(), pos.getY() + 1},
@@ -126,7 +137,7 @@ const Arcade::Vect<int> &size)
 	(*_board)[pos.getY()][pos.getX()] |= PASS;
 	for (size_t i = 0; i < dirs.size() && !ret && deep; i++) {
 		_pathHome.push_back(dirs.at(i));
-		if (searchPath(dirs.at(i), deep - 1, size))
+		if (searchHome(dirs.at(i), deep - 1, size))
 			ret = true;
 		else
 			_pathHome.pop_back();
@@ -148,7 +159,54 @@ bool Arcade::Ghost::outOfMap(const Vect<int> &pos, const Vect<int> &size)
 	pos.getX() > size.getX() || pos.getY() < 0;
 }
 
-size_t Arcade::Ghost::getDeath() const
+size_t Arcade::Ghost::getDeathCounter() const
 {
 	return _death;
+}
+
+bool Arcade::Ghost::searchPacman(const Arcade::Vect<int> &pos, size_t deep,
+const Arcade::Vect<int> &size)
+{
+	const std::vector<Vect<int>> dirs = {
+		{pos.getX(), pos.getY() + 1},
+		{pos.getX(), pos.getY() - 1},
+		{pos.getX() + 1, pos.getY()},
+		{pos.getX() - 1, pos.getY()}
+	};
+	if (deep == 0 || outOfMap(pos, size) ||
+	    (*_board)[pos.getY()][pos.getX()] & (WALL | SMELL))
+		return false;
+	auto ret = ((*_board)[pos.getY()][pos.getX()] & (PACMAN));
+	(*_board)[pos.getY()][pos.getX()] |= SMELL;
+	for (size_t i = 0; i < dirs.size() && !ret && deep; i++) {
+		_pathPacman.push_back(dirs.at(i));
+		if (searchPacman(dirs.at(i), deep - 1, size))
+			ret = true;
+		else
+			_pathPacman.pop_back();
+	}
+	if (!ret)
+		(*_board)[pos.getY()][pos.getX()] &= ~SMELL;
+	return static_cast<bool>(ret);
+}
+
+void Arcade::Ghost::resetPacmanTrack()
+{
+	for (auto &n : _pathPacman)
+		(*_board)[n.getY()][n.getX()] &= ~SMELL;
+	_pathPacman.clear();
+}
+
+void Arcade::Ghost::setupPacmanTrack()
+{
+	auto now = std::chrono::high_resolution_clock::now();
+	auto diff =
+	std::chrono::duration_cast<std::chrono::duration<double>>(now - _live);
+	if (diff.count() >= 10 && _alive) {
+		auto y = static_cast<int>((*_board).size());
+		auto x = static_cast<int>((*_board)[0].size());
+		for (size_t i = 0; !searchPacman(_pos, i, {x, y}) && i < 15;)
+			i++;
+		(*_board)[_pos.getY()][_pos.getX()] &= ~SMELL;
+	}
 }

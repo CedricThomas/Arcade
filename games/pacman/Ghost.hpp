@@ -24,20 +24,39 @@ namespace Arcade {
 		void draw(PixelBox &pixebox, const Vect<size_t> &size,
 		Player &pacman);
 		void init();
-		size_t getDeath() const;
+		size_t getDeathCounter() const;
+
+		//track pacman
+		void setupPacmanTrack();
+		void resetPacmanTrack();
 
 	private:
+		// utils fcts
 		void changePos(Vect<int> pos);
-		void updateDead();
-		void updateAlive(Player &pacman);
-		void moveAlive(Player &pacman);
-		void moveDead();
-		void checkDead(Player &pacman);
-		bool searchPath(const Arcade::Vect<int> &pos, size_t deep,
-		const Arcade::Vect<int> &size);
 		bool outOfMap(const Vect<int> &pos, const Vect<int> &size);
 
+		// update fcts
+		void checkDead(Player &pacman);
+		void updateDead();
+		void updateAlive(Player &pacman);
+
+		// move fct
+		void moveAlive(Player &pacman);
+		void moveDead();
+		void moveRand();
+
+
+		// pathfinding fcts
+
+		bool searchHome(const Arcade::Vect<int> &pos, size_t deep,
+		const Arcade::Vect<int> &size);
+
+		bool searchPacman(const Arcade::Vect<int> &pos, size_t deep,
+		const Arcade::Vect<int> &size);
+
+
 		std::vector<Vect<int>> _pathHome;
+		std::vector<Vect<int>> _pathPacman;
 		std::vector<std::vector<int>> *_board;
 		Vect<int> _initPos;
 		Vect<int> _dir;

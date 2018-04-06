@@ -24,11 +24,6 @@ namespace Arcade {
 		WALL = 8
 	};
 
-	struct board_s {
-		int connect;
-		type_e type;
-	};
-
 	using board_t = struct board_s;
 
 	class Nibbler : public IGameLib {
