@@ -102,7 +102,7 @@ Arcade::Vect<size_t> size, Arcade::Color col)
 			putPixel(Vect<size_t >(posX + x, posY + y), col);
 }
 
-std::vector<Arcade::Color> &Arcade::PixelBox::getPixelArray()
+const std::vector<Arcade::Color> &Arcade::PixelBox::getPixelArray() const
 {
 	return _colorFrame;
 }

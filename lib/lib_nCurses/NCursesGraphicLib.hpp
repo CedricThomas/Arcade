@@ -24,8 +24,8 @@ namespace Arcade
 		void openRenderer(const std::string &title) final;
 		void clearWindow() final;
 		void refreshWindow() final;
-		void drawPixelBox(PixelBox &box) final;
-		void drawText(TextBox &box) final;
+		void drawPixelBox(const PixelBox &box) final;
+		void drawText(const TextBox &box) final;
 		bool pollEvents() final;
 		Keys getLastEvent() final;
 		void clearEvents() final;
@@ -33,7 +33,7 @@ namespace Arcade
 		size_t getMaxY() const final;
 		size_t getMaxX() const final;
 		size_t getColorIndex(Arcade::Color color);
-		Color getAverageColor(PixelBox &box, size_t x, size_t y);
+		Color getAverageColor(const PixelBox &box, size_t x, size_t y);
 
 	private:
 		std::string _libName;

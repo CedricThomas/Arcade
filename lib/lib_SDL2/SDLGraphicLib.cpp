@@ -114,7 +114,7 @@ void Arcade::SDLGraphicLib::refreshWindow()
 		SDL_RenderPresent(_renderer);
 }
 
-void Arcade::SDLGraphicLib::drawPixelBox(Arcade::PixelBox &box)
+void Arcade::SDLGraphicLib::drawPixelBox(const Arcade::PixelBox &box)
 {
 	if (_open) {
 		SDL_Rect rect;
@@ -129,7 +129,7 @@ void Arcade::SDLGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 	}
 }
 
-void Arcade::SDLGraphicLib::drawText(Arcade::TextBox &box)
+void Arcade::SDLGraphicLib::drawText(const Arcade::TextBox &box)
 {
 	if (!_open || box.getValue().empty())
 		return;

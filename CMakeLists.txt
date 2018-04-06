@@ -67,3 +67,4 @@ set(sources
 add_executable(arcade ${sources})
 
 target_include_directories(arcade PRIVATE .)
+target_include_directories(arcade PRIVATE api)

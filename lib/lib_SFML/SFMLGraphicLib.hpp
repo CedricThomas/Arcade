@@ -25,8 +25,8 @@ namespace Arcade {
 		void openRenderer(const std::string &title) final;
 		void clearWindow() final;
 		void refreshWindow() final;
-		void drawPixelBox(PixelBox &box) final;
-		void drawText(TextBox &box) final;
+		void drawPixelBox(const PixelBox &box) final;
+		void drawText(const TextBox &box) final;
 		bool pollEvents() final;
 		Keys getLastEvent() final;
 		void clearEvents() final;

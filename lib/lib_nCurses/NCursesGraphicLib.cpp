@@ -110,7 +110,7 @@ void Arcade::NCursesGraphicLib::refreshWindow()
 		refresh();
 }
 
-void Arcade::NCursesGraphicLib::drawPixelBox(Arcade::PixelBox &box)
+void Arcade::NCursesGraphicLib::drawPixelBox(const Arcade::PixelBox &box)
 {
 	if (!_open)
 		return;
@@ -133,7 +133,7 @@ void Arcade::NCursesGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 	}
 }
 
-void Arcade::NCursesGraphicLib::drawText(Arcade::TextBox &box)
+void Arcade::NCursesGraphicLib::drawText(const Arcade::TextBox &box)
 {
 	if (!_open)
 		return;
@@ -224,7 +224,7 @@ size_t Arcade::NCursesGraphicLib::getColorIndex(Arcade::Color color)
 }
 
 Arcade::Color Arcade::NCursesGraphicLib::getAverageColor(
-Arcade::PixelBox &box, size_t x, size_t y)
+const Arcade::PixelBox &box, size_t x, size_t y)
 {
 	size_t s = 0;
 	size_t r = 0;
