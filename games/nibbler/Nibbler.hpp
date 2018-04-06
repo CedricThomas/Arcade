@@ -21,7 +21,8 @@ namespace Arcade {
 		EMPTY = 0,
 		SNAKE = 2,
 		APPLE = 4,
-		WALL = 8
+		WALL = 8,
+		BONUS = 16
 	};
 
 	using board_t = struct board_s;
@@ -41,12 +42,17 @@ namespace Arcade {
 		// gen methods
 		void genWalls();
 		void genApple();
+		void genBonus();
+		void delBonus();
+
+		void updateBonus();
 
 		// refresh methods
 		void resizePixelbox(const Vect<size_t> &size);
 		void drawDrawWalls();
 		void drawGameOver();
 		void drawSnake();
+		void drawApple();
 		void drawSnakeHead(const Vect<size_t> &realPos);
 		void drawLeftEye(const Arcade::Vect<size_t> &rPos,
 		const Vect<size_t> &lSize);
@@ -56,7 +62,6 @@ namespace Arcade {
 
 		// utils methods
 		bool moveSnake(bool append = false);
-
 		Vect<size_t> _mapSize;
 		std::vector<std::vector<type_e>> _map;
 		std::vector<Vect<int>> _snake;
@@ -70,6 +75,9 @@ namespace Arcade {
 
 		bool _boost;
 
+		std::chrono::high_resolution_clock::time_point _lastBonus;
+		Vect<size_t > _posBonus;
+		void (Arcade::Nibbler::*_function)();
 		static const std::vector<std::string> _template;
 	};
 }

@@ -50,7 +50,10 @@ _winsize(),
 _dir(0, 1),
 _last(),
 _loose(false),
-_boost(false)
+_boost(false),
+_lastBonus(),
+_posBonus(0, 0),
+_function(&Arcade::Nibbler::genBonus)
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 }
@@ -79,6 +82,8 @@ bool Arcade::Nibbler::init()
 	_score = 0;
 	_scoreBox.setValue("score : " + std::to_string(_score));
 	_last = std::chrono::high_resolution_clock::now();
+	_lastBonus = std::chrono::high_resolution_clock::now();
+	_posBonus.setXY(0, 0);
 	return true;
 }
 
@@ -94,6 +99,7 @@ void Arcade::Nibbler::refresh(Arcade::IGraphicLib &graphicLib)
 		resizePixelbox(winsize);
 	if (!_loose) {
 		drawDrawWalls();
+		drawApple();
 		drawSnake();
 	} else
 		drawGameOver();
@@ -141,6 +147,7 @@ bool Arcade::Nibbler::update()
 	if (time_span.count() < (0.5 / div - (0.01 * _score / 100)))
 		return !_loose;
 	_last = now;
+	updateBonus();
 	_loose = !moveSnake();
 	_boost = false;
 	return !_loose;
@@ -154,10 +161,15 @@ bool Arcade::Nibbler::moveSnake(bool append)
 	_map[front.getY()][front.getX()] == WALL)
 		return false;
 	if (_map[front.getY()][front.getX()] != APPLE && !append) {
+		if (_map[front.getY()][front.getX()] == BONUS) {
+			_score += 500;
+			_scoreBox.setValue("score : " + std::to_string(_score));
+		}
 		_snake.pop_back();
 		_map[back.getY()][back.getX()] = EMPTY;
-	} else if (!append)
+	} else if (!append && _map[front.getY()][front.getX()] == APPLE) {
 		genApple();
+	}
 	_snake.insert(_snake.begin(), front);
 	_map[front.getY()][front.getX()] = SNAKE;
 	return true;
@@ -175,8 +187,6 @@ void Arcade::Nibbler::drawDrawWalls()
 	auto maxY = _mapSize.getY();
 	Vect<size_t> size(_winsize.getX() / maxX, _winsize.getY() / maxY);
 	Color blue(0, 0, 255, 255);
-	Color red(255, 0, 0, 255);
-	Color white(255, 255, 255, 255);
 	for (size_t i = 0; i < maxX * maxY; i++) {
 		Vect<size_t> pos(
 			i % maxX * size.getX(),
@@ -184,10 +194,6 @@ void Arcade::Nibbler::drawDrawWalls()
 		);
 		if (_map[i / maxX][i % maxX] == WALL)
 			_background.putRect(pos, size, blue);
-		else if (_map[i / maxX][i % maxX] == APPLE)
-			_background.putRect(pos, size, red);
-		else
-			_background.putRect(pos, size, white);
 	}
 }
 
@@ -294,4 +300,62 @@ const Vect<size_t> &lSize)
 void Arcade::Nibbler::drawGameOver()
 {
 	_scoreBox.setValue("GameOver");
+}
+
+void Arcade::Nibbler::genBonus()
+{
+	_function = &Arcade::Nibbler::delBonus;
+	bool generated = false;
+	while (!generated) {
+		auto x = rand() % _mapSize.getX();
+		auto y = rand() % _mapSize.getY();
+		if (_map[y][x] == EMPTY) {
+			_map[y][x] = BONUS;
+			_posBonus.setXY(x, y);
+			generated = true;
+		}
+	}
+}
+
+void Arcade::Nibbler::drawApple()
+{
+	auto maxX = _mapSize.getX();
+	auto maxY = _mapSize.getY();
+	Vect<size_t> size(_winsize.getX() / maxX, _winsize.getY() / maxY);
+	for (size_t i = 0; i < maxX * maxY; i++) {
+		Vect<size_t> pos(
+			i % maxX * size.getX(),
+			i / maxX * size.getY()
+		);
+		if (_map[i / maxX][i % maxX] == APPLE)
+			_background.putRect(pos, size, Color(255, 0, 0, 255));
+		else if (_map[i / maxX][i % maxX] == BONUS)
+			_background.putRect(pos, size, Color(rand() % 255,
+			rand() % 255,
+			rand() % 255,
+			255));
+		else if (_map[i / maxX][i % maxX] != WALL)
+			_background.putRect(pos, size,
+			Color(255, 255, 255, 255));
+	}
+}
+
+void Arcade::Nibbler::delBonus()
+{
+	if (_map[_posBonus.getY()][_posBonus.getX()] == BONUS)
+		_map[_posBonus.getY()][_posBonus.getX()] = EMPTY;
+	_function = &Arcade::Nibbler::genBonus;
+}
+
+void Arcade::Nibbler::updateBonus()
+{
+	auto now = std::chrono::high_resolution_clock::now();
+	auto diff =
+		std::chrono::duration_cast<std::chrono::duration<double>>(now
+			- _lastBonus);
+	std::cout << diff.count() << std::endl;
+	if (diff.count() < 10)
+		return;
+	_lastBonus = now;
+	(this->*_function)();
 }
