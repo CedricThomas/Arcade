@@ -103,7 +103,7 @@ void Arcade::Nibbler::refresh(Arcade::IGraphicLib &graphicLib)
 
 const std::string Arcade::Nibbler::getName() const
 {
-	return "Nibbler";
+	return "Rainbow Snake";
 }
 
 bool Arcade::Nibbler::stop()
