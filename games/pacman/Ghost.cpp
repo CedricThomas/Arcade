@@ -64,11 +64,17 @@ void Arcade::Ghost::updateAlive(Arcade::Player &pacman)
 
 void Arcade::Ghost::moveAlive(Player &pacman)
 {
+	auto y = static_cast<int>((*_board).size());
+	auto x = static_cast<int>((*_board)[0].size());
 	if (!_pathPacman.empty() && !pacman.isPowered())
 		changePos(_pathPacman.front());
 	else if (!_pathPacman.empty() && pacman.isPowered()) {
-		//auto pos = _pathPacman.front();
-		changePos(_pathPacman.front());
+		auto pos = _pos + _pos - _pathPacman.front();
+		if (outOfMap(pos, {x, y}) ||
+		(*_board)[pos.getY()][pos.getX()] & (WALL | GHOST))
+			moveRand();
+		else
+			changePos(pos);
 	} else
 		moveRand();
 }
