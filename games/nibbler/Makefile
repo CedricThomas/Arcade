@@ -9,14 +9,12 @@
 NAME = lib_arcade_nibbler.so
 
 SRC = entry.cpp \
-	Color.cpp	\
-	PixelBox.cpp	\
-	TextBox.cpp	\
         Nibbler.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
-CXXFLAGS = -Wall -Wextra -fPIC -g
+CXXFLAGS = -I../../api
+CXXFLAGS += -Wall -Wextra -fPIC -g
 
 LDFLAGS	= -shared
 

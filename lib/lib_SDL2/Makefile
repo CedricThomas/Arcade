@@ -9,13 +9,11 @@
 NAME = lib_arcade_sdl2.so
 
 SRC =	entry.cpp 		\
-        SDLGraphicLib.cpp	\
-        PixelBox.cpp		\
-        Color.cpp		\
-        TextBox.cpp
+        SDLGraphicLib.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
+CXXFLAGS += -I../../api
 CXXFLAGS += -W  -Wall -Wextra -fPIC -g
 
 LDFLAGS	= -shared -lSDL2_ttf -lSDL2

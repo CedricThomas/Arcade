@@ -10,8 +10,8 @@
 
 	#include <SDL2/SDL.h>
 	#include <SDL2/SDL_ttf.h>
-#include <map>
-#include "IGraphicLib.hpp"
+	#include <map>
+	#include "IGraphicLib.hpp"
 
 
 namespace Arcade {
