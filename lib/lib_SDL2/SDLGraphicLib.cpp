@@ -114,7 +114,7 @@ void Arcade::SDLGraphicLib::refreshWindow()
 		SDL_RenderPresent(_renderer);
 }
 
-void Arcade::SDLGraphicLib::drawPixelBox(Arcade::PixelBox &box)
+void Arcade::SDLGraphicLib::drawPixelBox(const Arcade::PixelBox &box)
 {
 	if (_open) {
 		SDL_Rect rect;
@@ -129,7 +129,7 @@ void Arcade::SDLGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 	}
 }
 
-void Arcade::SDLGraphicLib::drawText(Arcade::TextBox &box)
+void Arcade::SDLGraphicLib::drawText(const Arcade::TextBox &box)
 {
 	if (!_open || box.getValue().empty())
 		return;
@@ -139,7 +139,8 @@ void Arcade::SDLGraphicLib::drawText(Arcade::TextBox &box)
 	auto texture = SDL_CreateTextureFromSurface(_renderer, surface);
 	SDL_Rect rect;
 	rect.w = surface->w;
-	rect.h = surface->h;rect.x = static_cast<int>(box.getX());
+	rect.h = surface->h;
+	rect.x = static_cast<int>(box.getX());
 	rect.y = static_cast<int>(box.getY());
 	SDL_RenderCopy(_renderer, texture, nullptr, &rect);
 	SDL_FreeSurface(surface);

@@ -111,7 +111,7 @@ void Arcade::SFMLGraphicLib::refreshWindow()
 		_window.display();
 }
 
-void Arcade::SFMLGraphicLib::drawPixelBox(Arcade::PixelBox &box)
+void Arcade::SFMLGraphicLib::drawPixelBox(const Arcade::PixelBox &box)
 {
 	if (isOpen()) {
 		auto list = &box.getPixelArray()[0];
@@ -131,7 +131,7 @@ void Arcade::SFMLGraphicLib::drawPixelBox(Arcade::PixelBox &box)
 	}
 }
 
-void Arcade::SFMLGraphicLib::drawText(Arcade::TextBox &box)
+void Arcade::SFMLGraphicLib::drawText(const Arcade::TextBox &box)
 {
 	if (isOpen()) {
 		_text.setString(box.getValue());

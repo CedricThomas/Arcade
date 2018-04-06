@@ -98,7 +98,7 @@ void Arcade::Nibbler::refresh(Arcade::IGraphicLib &graphicLib)
 	_winsize.getX() != winsize.getX())
 		resizePixelbox(winsize);
 	if (!_loose) {
-		drawDrawWalls();
+		drawWalls();
 		drawApple();
 		drawSnake();
 	} else
@@ -181,12 +181,14 @@ void Arcade::Nibbler::resizePixelbox(const Arcade::Vect<size_t> &winsize)
 	_background = PixelBox(_winsize, {0, 0});
 }
 
-void Arcade::Nibbler::drawDrawWalls()
+void Arcade::Nibbler::drawWalls()
 {
 	auto maxX = _mapSize.getX();
 	auto maxY = _mapSize.getY();
 	Vect<size_t> size(_winsize.getX() / maxX, _winsize.getY() / maxY);
 	Color blue(0, 0, 255, 255);
+	Color red(255, 0, 0, 255);
+	Color white(255, 255, 255, 255);
 	for (size_t i = 0; i < maxX * maxY; i++) {
 		Vect<size_t> pos(
 			i % maxX * size.getX(),
@@ -194,6 +196,10 @@ void Arcade::Nibbler::drawDrawWalls()
 		);
 		if (_map[i / maxX][i % maxX] == WALL)
 			_background.putRect(pos, size, blue);
+		else if (_map[i / maxX][i % maxX] == APPLE)
+			_background.putRect(pos, size, red);
+		else
+			_background.putRect(pos, size, white);
 	}
 }
 

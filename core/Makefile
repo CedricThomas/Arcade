@@ -16,16 +16,16 @@ SRCS	= ./Core.cpp		\
 	  ./SyntaxAnalyser.cpp	\
 	  ./ScoreManager.cpp	\
 	  ./Errors.cpp		\
-	  ./main.cpp        \
-	  ../api/Color.cpp  \
+	  ./main.cpp      	\
+	  ../api/Color.cpp  	\
 	  ../api/PixelBox.cpp  \
 	  ../api/TextBox.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
-CXXFLAGS += -W -Wall -Wextra -g
+CXXFLAGS += -W -Wall -Wextra
 
-LDFLAGS = -ldl
+LDFLAGS = -ldl -rdynamic
 
 all: $(NAME)
 

@@ -9,16 +9,14 @@
 NAME = lib_arcade_pacman.so
 
 SRC = entry.cpp \
-      	Color.cpp	\
-      	PixelBox.cpp	\
-      	TextBox.cpp	\
       	Player.cpp  \
       	Ghost.cpp   \
              Pacman.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
-CXXFLAGS = -Wall -Wextra -fPIC -g
+CXXFLAGS = -I../../api
+CXXFLAGS += -Wall -Wextra -fPIC -g
 
 LDFLAGS	= -shared
 

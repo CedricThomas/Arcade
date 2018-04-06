@@ -10,8 +10,8 @@
 
 	#include <SDL2/SDL.h>
 	#include <SDL2/SDL_ttf.h>
-#include <map>
-#include "IGraphicLib.hpp"
+	#include <map>
+	#include "IGraphicLib.hpp"
 
 
 namespace Arcade {
@@ -26,8 +26,8 @@ namespace Arcade {
 		void openRenderer(const std::string &title) override;
 		void clearWindow() override;
 		void refreshWindow() override;
-		void drawPixelBox(PixelBox &box) override;
-		void drawText(TextBox &box) override;
+		void drawPixelBox(const PixelBox &box) override;
+		void drawText(const TextBox &box) override;
 		bool pollEvents() override;
 		Keys getLastEvent() override;
 		void clearEvents() override;

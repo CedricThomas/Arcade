@@ -23,6 +23,9 @@ int main(int argc, char **argv)
 	} catch (Arcade::LoadingError &e) {
 		std::cerr << e.what() << std::endl;
 		return 84;
+	} catch (Arcade::ParseError &e) {
+		std::cerr << e.what() << std::endl;
+		return 84;
 	}
 	return 0;
 }
