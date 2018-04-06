@@ -65,6 +65,7 @@ namespace Arcade {
 		bool _alive;
 		std::chrono::high_resolution_clock::time_point _live;
 		size_t _death;
+		size_t _turn;
 	};
 
 }

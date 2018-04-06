@@ -29,7 +29,10 @@ const Arcade::Vect<size_t> &size, Player &pacman)
 	if (_alive && pacman.isPowered())
 		pixebox.putRect(pos, size, {0, 255, 255, 255});
 	else if (_alive)
-		pixebox.putRect(pos, size, {255, 0, 0, 255});
+		pixebox.putRect(pos, size, {
+		static_cast<unsigned char>(rand() % 255),
+		static_cast<unsigned char>(rand() % 255),
+		static_cast<unsigned char>(rand() % 255), 255});
 	else
 		pixebox.putRect(pos, size, {0, 255, 0, 255});
 }
@@ -44,6 +47,7 @@ void Arcade::Ghost::init()
 
 void Arcade::Ghost::update(Player &pacman)
 {
+	_turn += 1;
 	if (_alive)
 		updateAlive(pacman);
 	else
@@ -73,7 +77,7 @@ void Arcade::Ghost::moveAlive(Player &pacman)
 		if (outOfMap(pos, {x, y}) ||
 		(*_board)[pos.getY()][pos.getX()] & (WALL | GHOST))
 			moveRand();
-		else
+		else if (_turn % 2)
 			changePos(pos);
 	} else
 		moveRand();
