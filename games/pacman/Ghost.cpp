@@ -159,6 +159,11 @@ bool Arcade::Ghost::searchHome(const Arcade::Vect<int> &pos, size_t deep,
 void Arcade::Ghost::changePos(Arcade::Vect<int> pos)
 {
 	(*_board)[_pos.getY()][_pos.getX()] &= ~GHOST;
+	auto x = static_cast<int>((*_board)[0].size());
+	if (x <= pos.getX())
+		pos.setX(0);
+	else if (pos.getX() < 0)
+		pos.setX(x - 1);
 	_pos = pos;
 	(*_board)[_pos.getY()][_pos.getX()] |= GHOST;
 }

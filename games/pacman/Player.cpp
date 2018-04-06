@@ -74,10 +74,15 @@ void Arcade::Player::updatePos()
 {
 	auto newX = _posPlayer.getX() + _dir.getX();
 	auto newY = _posPlayer.getY() + _dir.getY();
+	auto x = static_cast<int>((*_board)[0].size());
+	if (x <= newX)
+		newX = 0;
+	else if (newX < 0)
+		newX = x - 1;
 	if ((*_board)[newY][newX] & (PACGUM | BONUS | GHOST) ||
 	!((*_board)[newY][newX])) {
 		(*_board)[_posPlayer.getY()][_posPlayer.getX()] &= ~PACMAN;
-		_posPlayer += _dir;
+		_posPlayer = {newX, newY};
 		(*_board)[_posPlayer.getY()][_posPlayer.getX()] |= PACMAN;
 	}
 }
