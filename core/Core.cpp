@@ -159,7 +159,7 @@ void Arcade::Core::goBackMenu()
 
 void Arcade::Core::openGame()
 {
-	auto idx = static_cast<int>(_menu.getGameIdx());
+	auto idx = static_cast<int>(_menu.getGameIdx() % _gamesPaths.size());
 	if (_gameIdx != idx)
 		selectGameByIdx(idx);
 	_status = GAME;

@@ -179,7 +179,7 @@ const Arcade::Core &core, const Arcade::Vect<size_t> &w)
 	Color red(255, 0, 0, 255);
 	_scoresManager.loadMap(games[_idxGame]);
 	auto scores = _scoresManager.getScoreMap();
-	for (size_t i = 0; i < scores.size() && i < 20; i++) {
+	for (size_t i = 0; i < scores.size() && i < 10; i++) {
 		auto value = std::to_string(scores[i].second);
 		TextBox box(scores[i].first + " " + value,
 		{

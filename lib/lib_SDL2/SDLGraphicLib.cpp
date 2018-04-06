@@ -138,10 +138,9 @@ void Arcade::SDLGraphicLib::drawText(Arcade::TextBox &box)
 	auto surface = TTF_RenderText_Solid(_font, box.getValue().c_str(), c);
 	auto texture = SDL_CreateTextureFromSurface(_renderer, surface);
 	SDL_Rect rect;
-	rect.x = static_cast<int>(box.getX());
-	rect.y = static_cast<int>(box.getY());
 	rect.w = surface->w;
-	rect.h = surface->h;
+	rect.h = surface->h;rect.x = static_cast<int>(box.getX());
+	rect.y = static_cast<int>(box.getY());
 	SDL_RenderCopy(_renderer, texture, nullptr, &rect);
 	SDL_FreeSurface(surface);
 	SDL_DestroyTexture(texture);
