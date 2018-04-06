@@ -232,7 +232,11 @@ size_t Arcade::Nibbler::getScore()
 
 void Arcade::Nibbler::drawSnakeElem(const Arcade::Vect<size_t> &realpos)
 {
-	Color green(static_cast<unsigned char>(255 * _boost), 255, 0, 255);
+	Color color(0, 255, 0, 255);
+	if (_boost)
+		color = Color(static_cast<unsigned char>(rand() % 255),
+		static_cast<unsigned char>(rand() % 255),
+		static_cast<unsigned char>(rand() % 255), 255);
 	auto maxX = _mapSize.getX();
 	auto maxY = _mapSize.getY();
 	Vect<size_t> size(_winsize.getX() / maxX, _winsize.getY() / maxY);
@@ -242,16 +246,19 @@ void Arcade::Nibbler::drawSnakeElem(const Arcade::Vect<size_t> &realpos)
 	Vect<size_t> border(size.getX() * prc / 100, size.getY() * prc / 100);
 	Vect<size_t> center(size.getX() * (100 - 2 * prc) / 100,
 	size.getY() * (100 - 2 * prc) / 100);
-	_background.putRect(realpos + border, center, green);}
+	_background.putRect(realpos + border, center, color);}
 
 void Arcade::Nibbler::drawSnakeHead(const Arcade::Vect<size_t> &realPos)
 {
+	Color color(0, 255, 0, 255);
+	if (_boost)
+		color = Color(static_cast<unsigned char>(rand() % 255),
+		static_cast<unsigned char>(rand() % 255),
+		static_cast<unsigned char>(rand() % 255), 255);
 	Vect<size_t> size(_winsize.getX() / _mapSize.getX(),
 	_winsize.getY() / _mapSize.getY());
 	Vect<size_t> lSize(size.getX() / 6, size.getY()/ 6);
-	_background.putRect(realPos, size,
-	{static_cast<unsigned char>(255 * _boost), 255,
-	0, 255});
+	_background.putRect(realPos, size, color);
 	drawLeftEye(realPos, lSize);
 	drawRightEye(realPos, lSize);
 }
