@@ -272,14 +272,10 @@ size_t Arcade::Pacman::getScore()
 
 void Arcade::Pacman::updateGhosts()
 {
-//	for (auto &n : _ghosts)
-//		n.setupPacmanTrack();
 	for (auto &n : _ghosts) {
 		n.setupPacmanTrack();
 		n.update(_pacman);
 		_score += n.getDeathCounter() * 100;
 		n.resetPacmanTrack();
 	}
-//	for (auto &n : _ghosts)
-//		n.resetPacmanTrack();
 }
