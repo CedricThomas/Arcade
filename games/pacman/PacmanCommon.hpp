@@ -1,9 +1,9 @@
-//
-// EPITECH PROJECT, 2018
-// pacmancommon
-// File description:
-// pacmancommon
-//
+/*
+** EPITECH PROJECT, 2018
+** pacmancommon
+** File description:
+** pacmancommon
+*/
 
 #ifndef ARCADE_PACMANCOMMON_HPP
 	#define ARCADE_PACMANCOMMON_HPP

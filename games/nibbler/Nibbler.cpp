@@ -49,7 +49,8 @@ _scoreBox("score : 0", {0, 0}),
 _winsize(),
 _dir(0, 1),
 _last(),
-_loose(false)
+_loose(false),
+_boost(false)
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 }
@@ -119,6 +120,8 @@ bool Arcade::Nibbler::applyEvent(Arcade::Keys key)
 		{LEFT, {-1, 0}}
 	};
 	auto ret = false;
+	if (key == SPACE)
+		_boost = true;
 	if (event.count(key) && !(event.at(key).getX() == -_dir.getX() &&
 		event.at(key).getY() == -_dir.getY()) && !_loose) {
 		_dir = event.at(key);
@@ -129,13 +132,17 @@ bool Arcade::Nibbler::applyEvent(Arcade::Keys key)
 
 bool Arcade::Nibbler::update()
 {
+	auto div = 1;
+	if (_boost)
+		div = 2;
 	auto now = std::chrono::high_resolution_clock::now();
 	auto time_span =
 	std::chrono::duration_cast<std::chrono::duration<double>>(now - _last);
-	if (time_span.count() < (0.5 - (0.01 * _score / 100)))
+	if (time_span.count() < (0.5 / div - (0.01 * _score / 100)))
 		return !_loose;
 	_last = now;
 	_loose = !moveSnake();
+	_boost = false;
 	return !_loose;
 }
 
@@ -225,7 +232,7 @@ size_t Arcade::Nibbler::getScore()
 
 void Arcade::Nibbler::drawSnakeElem(const Arcade::Vect<size_t> &realpos)
 {
-	Color green(0, 255, 0, 255);
+	Color green(static_cast<unsigned char>(255 * _boost), 255, 0, 255);
 	auto maxX = _mapSize.getX();
 	auto maxY = _mapSize.getY();
 	Vect<size_t> size(_winsize.getX() / maxX, _winsize.getY() / maxY);
@@ -242,7 +249,9 @@ void Arcade::Nibbler::drawSnakeHead(const Arcade::Vect<size_t> &realPos)
 	Vect<size_t> size(_winsize.getX() / _mapSize.getX(),
 	_winsize.getY() / _mapSize.getY());
 	Vect<size_t> lSize(size.getX() / 6, size.getY()/ 6);
-	_background.putRect(realPos, size, {0, 255, 0, 255});
+	_background.putRect(realPos, size,
+	{static_cast<unsigned char>(255 * _boost), 255,
+	0, 255});
 	drawLeftEye(realPos, lSize);
 	drawRightEye(realPos, lSize);
 }

@@ -68,6 +68,8 @@ namespace Arcade {
 		std::chrono::high_resolution_clock::time_point _last;
 		bool _loose;
 
+		bool _boost;
+
 		static const std::vector<std::string> _template;
 	};
 }
