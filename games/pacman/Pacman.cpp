@@ -153,6 +153,7 @@ bool Arcade::Pacman::update()
 
 void Arcade::Pacman::refresh(Arcade::IGraphicLib &graphicLib)
 {
+	graphicLib.clearWindow();
 	auto winsize = graphicLib.getScreenSize();
 	if (_winsize.getY() != winsize.getY() ||
 		_winsize.getX() != winsize.getX())
@@ -163,6 +164,7 @@ void Arcade::Pacman::refresh(Arcade::IGraphicLib &graphicLib)
 		drawGameOver();
 	graphicLib.drawPixelBox(_boardPixelbox);
 	graphicLib.drawText(_scoreTextbox);
+	graphicLib.refreshWindow();
 }
 
 void Arcade::Pacman::resizeWin(const Arcade::Vect<size_t> &winsize)

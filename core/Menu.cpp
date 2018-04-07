@@ -71,6 +71,7 @@ Arcade::Menu::~Menu()
 
 void Arcade::Menu::refresh(Arcade::IGraphicLib &graphicLib, const Core &core)
 {
+	graphicLib.clearWindow();
 	auto winsize = graphicLib.getScreenSize();
 	if (_size.getY() != winsize.getY() || _size.getX() != winsize.getX())
 		recalculate(winsize);
@@ -81,6 +82,7 @@ void Arcade::Menu::refresh(Arcade::IGraphicLib &graphicLib, const Core &core)
 		drawLibs(graphicLib, core, winsize);
 	else
 		drawHighscores(graphicLib, core, winsize);
+	graphicLib.refreshWindow();
 }
 
 void Arcade::Menu::recalculate(Arcade::Vect<size_t> winsize)

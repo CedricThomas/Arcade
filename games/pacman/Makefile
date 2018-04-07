@@ -11,7 +11,7 @@ NAME = lib_arcade_pacman.so
 SRC = entry.cpp \
       	Player.cpp  \
       	Ghost.cpp   \
-             Pacman.cpp
+        Pacman.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

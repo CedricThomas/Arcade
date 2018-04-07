@@ -93,6 +93,7 @@ Arcade::Nibbler::~Nibbler()
 
 void Arcade::Nibbler::refresh(Arcade::IGraphicLib &graphicLib)
 {
+	graphicLib.clearWindow();
 	auto winsize = graphicLib.getScreenSize();
 	if (_winsize.getY() != winsize.getY() ||
 	_winsize.getX() != winsize.getX())
@@ -105,6 +106,7 @@ void Arcade::Nibbler::refresh(Arcade::IGraphicLib &graphicLib)
 		drawGameOver();
 	graphicLib.drawPixelBox(_background);
 	graphicLib.drawText(_scoreBox);
+	graphicLib.refreshWindow();
 }
 
 const std::string Arcade::Nibbler::getName() const
