@@ -10,7 +10,6 @@ set(sources
 
         api/Color.hpp
         api/Color.cpp
-        api/entryPoint.cpp
         api/IGameLib.hpp
         api/IGraphicLib.hpp
         api/Keys.hpp
@@ -62,6 +61,9 @@ set(sources
         lib/lib_SDL2/SDLGraphicLib.cpp
         lib/lib_SDL2/SDLGraphicLib.hpp
 
+
+        graph/SFML/SFML.hpp
+        graph/SFML/SFML.cpp
         )
 
 add_executable(arcade ${sources})

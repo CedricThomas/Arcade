@@ -55,10 +55,11 @@ void Arcade::Core::start()
 	while (_status != EXIT) {
 		Arcade::Keys key;
 		_graph->getInstance()->pollEvents();
-		do {
-			key = _graph->getInstance()->getLastEvent();
+		key = _graph->getInstance()->getLastEvent();
+		while (key != NONE) {
 			apply_events(key);
-		} while (key != NONE);
+			key = _graph->getInstance()->getLastEvent();
+		}
 		_graph->getInstance()->clearWindow();
 		if (_status == MENU)
 			_menu.refresh(*_graph->getInstance(), *this);
@@ -147,6 +148,7 @@ void Arcade::Core::selectGameByIdx(int idx)
 
 void Arcade::Core::resetGame()
 {
+	_game->getInstance()->stop();
 	_game->getInstance()->init();
 	_gameLoose = false;
 }
