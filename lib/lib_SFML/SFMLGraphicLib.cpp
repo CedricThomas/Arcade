@@ -66,7 +66,6 @@ _events()
 
 Arcade::SFMLGraphicLib::~SFMLGraphicLib()
 {
-	std::cerr << "destroy sfml" << std::endl;
 	if (isOpen())
 		closeRenderer();
 }

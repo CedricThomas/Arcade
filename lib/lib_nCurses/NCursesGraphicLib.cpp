@@ -232,8 +232,9 @@ const Arcade::PixelBox &box, size_t x, size_t y)
 	size_t b = 0;
 
 	for (size_t idx = 0; idx < _cursorXsize * _cursorYsize; idx++) {
-		auto pos = Vect<size_t>(x * _cursorXsize + (idx % _cursorXsize),
-		y * _cursorYsize + (idx / _cursorXsize));
+		auto pos = Vect<size_t>(
+			x * _cursorXsize + (idx % _cursorXsize),
+			y * _cursorYsize + (idx / _cursorXsize));
 		auto color = box.getPixel(pos);
 		r += color.getRed();
 		g += color.getGreen();
@@ -249,7 +250,6 @@ const Arcade::PixelBox &box, size_t x, size_t y)
 
 Arcade::NCursesGraphicLib::~NCursesGraphicLib()
 {
-	std::cerr << "destroy ncurses" << std::endl;
 	if (isOpen())
 		closeRenderer();
 }
