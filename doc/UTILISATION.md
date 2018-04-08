@@ -52,6 +52,9 @@ By the way you can press **Tab** to see the high score.
 
 Once you got all the parameters you want just press **Enter** and enjoy our Arcade.
 
+## In game 
+In the game you can go back to the menu with the **Backspace**. You can Navigate through libs and games with **J**, **K**, **L** and **I**.
+
 ## PacMan
 The good old arcade game [PacMan](http://www.pacman1.net) (don't mistake him for Tupac thought).
 As the original:
