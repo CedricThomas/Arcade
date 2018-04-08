@@ -260,7 +260,8 @@ void Arcade::Nibbler::drawSnakeElem(const Arcade::Vect<size_t> &realpos)
 	Vect<size_t> border(size.getX() * prc / 100, size.getY() * prc / 100);
 	Vect<size_t> center(size.getX() * (100 - 2 * prc) / 100,
 	size.getY() * (100 - 2 * prc) / 100);
-	_background.putRect(realpos + border, center, color);}
+	_background.putRect(realpos + border, center, color);
+}
 
 void Arcade::Nibbler::drawSnakeHead(const Arcade::Vect<size_t> &realPos)
 {

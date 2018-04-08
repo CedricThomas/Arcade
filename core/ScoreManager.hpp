@@ -20,7 +20,8 @@ namespace  Arcade {
 		//load
 		void loadMap(const std::string &id);
 		//get
-		const std::vector<std::pair<std::string, size_t >> &getScoreMap()
+		const
+		std::vector<std::pair<std::string, size_t>> &getScoreMap()
 		const;
 
 		//insert

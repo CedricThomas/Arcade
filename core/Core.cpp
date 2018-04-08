@@ -19,12 +19,12 @@ const Arcade::Core::core_bindings Arcade::Core::_menu_actions = {
 };
 
 const Arcade::Core::core_bindings Arcade::Core::_game_actions = {
-	{Arcade::Keys::D, &Arcade::Core::selectNextLib},
-	{Arcade::Keys::Q, &Arcade::Core::selectPrevLib},
+	{Arcade::Keys::L, &Arcade::Core::selectNextLib},
+	{Arcade::Keys::J, &Arcade::Core::selectPrevLib},
 	{Arcade::Keys::ESC, &Arcade::Core::exitArcade},
 	{Arcade::Keys::BACKSPACE, &Arcade::Core::goBackMenu},
-	{Arcade::Keys::S, &Arcade::Core::selectNextGame},
-	{Arcade::Keys::Z, &Arcade::Core::selectPrevGame},
+	{Arcade::Keys::K, &Arcade::Core::selectNextGame},
+	{Arcade::Keys::I, &Arcade::Core::selectPrevGame},
 	{Arcade::Keys::R, &Arcade::Core::resetGame}
 };
 
